@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const AppRoutes = () => {
   const location = useLocation();
-  const hideNavbar = ["/wallet", "/pay"];
+  const hideNavbar = ["/transaction", "/pay"];
   const shouldHide = hideNavbar.some((path) =>
     location.pathname.startsWith(path)
   );
@@ -22,7 +22,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="about" element={<About />} />
-        <Route path="wallet" element={<Wallet />} />
+        <Route path="transactions/:linkId" element={<Wallet />} />
         <Route path="pay/:id" element={<Payment />} />
         <Route path="*" element={<Error />} />
       </Routes>

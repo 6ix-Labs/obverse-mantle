@@ -29,6 +29,11 @@ interface PaymentData {
   address?: string;
   decimals?: number;
   payerDetails?: Record<string, any>;
+  network?: string;
+  // Add other fields from your backend response as needed
+  linkId?: string;
+  status?: string;
+  type?: string;
 }
 
 const Payment = () => {
@@ -161,10 +166,16 @@ const Payment = () => {
       toast.error(validation.errorMessage, { position: "top-right" });
       return;
     }
+    console.log("Transfer params:", {
+      tokenAddress: paymentData!.tokenAddress,
+      toAddress: paymentData!.address,
+      amount: paymentData!.amount,
+      decimals: paymentData!.decimals,
+    });
 
     try {
       await transferToken({
-        tokenAddress: "0x827C54Bd992e7E60f9FAd50675ca9990aDf50001" as Address, // Using MockUSDC token address for now
+        tokenAddress: paymentData!.tokenAddress as Address, // Now using dynamic tokenAddress from backend 
         toAddress: paymentData!.address as Address,
         amount: paymentData!.amount!,
         decimals: paymentData!.decimals || 6,
@@ -195,10 +206,10 @@ const Payment = () => {
         fieldName === "email"
           ? "email"
           : fieldName === "phone"
-          ? "tel"
-          : fieldName === "age"
-          ? "number"
-          : "text";
+            ? "tel"
+            : fieldName === "age"
+              ? "number"
+              : "text";
 
       return (
         <div key={fieldName}>
@@ -376,12 +387,12 @@ const Payment = () => {
                 {isTransferring
                   ? "Processing Payment..."
                   : isConnecting
-                  ? "Connecting..."
-                  : transferSuccess
-                  ? "Payment Completed ✅"
-                  : authenticated
-                  ? "Proceed to Pay"
-                  : "Connect Wallet to Pay"}
+                    ? "Connecting..."
+                    : transferSuccess
+                      ? "Payment Completed ✅"
+                      : authenticated
+                        ? "Proceed to Pay"
+                        : "Connect Wallet to Pay"}
               </button>
             </form>
           </>
