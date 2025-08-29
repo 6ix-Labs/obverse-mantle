@@ -66,10 +66,10 @@ export const Navbar = ({ children, className, scrollThreshold = 100 }: NavbarPro
 
     // Add event listener with passive option for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     // Initial check on mount
     handleScroll();
-    
+
     // Cleanup
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -83,9 +83,9 @@ export const Navbar = ({ children, className, scrollThreshold = 100 }: NavbarPro
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(
-              child as React.ReactElement<{ visible?: boolean }>,
-              { visible },
-            )
+            child as React.ReactElement<{ visible?: boolean }>,
+            { visible },
+          )
           : child,
       )}
     </motion.div>
@@ -209,7 +209,7 @@ export const MobileNavMenu = ({
   // Close menu when clicking outside
   useEffect(() => {
     if (!isOpen) return;
-    
+
     const handleClickOutside = (e: MouseEvent) => {
       // Check if click is outside the menu
       const target = e.target as HTMLElement;
@@ -217,12 +217,12 @@ export const MobileNavMenu = ({
         onClose();
       }
     };
-    
+
     // Add with a slight delay to prevent immediate closing
     const timer = setTimeout(() => {
       document.addEventListener('click', handleClickOutside);
     }, 100);
-    
+
     return () => {
       clearTimeout(timer);
       document.removeEventListener('click', handleClickOutside);
@@ -258,7 +258,7 @@ export const MobileNavToggle = ({
   onClick: () => void;
 }) => {
   return (
-    <button 
+    <button
       onClick={onClick}
       aria-label={isOpen ? "Close menu" : "Open menu"}
       className="p-2 focus:outline-none"
@@ -300,9 +300,9 @@ export const NavbarButton = ({
   className?: string;
   variant?: "primary" | "secondary" | "dark" | "gradient";
 } & (
-  | React.ComponentPropsWithoutRef<"a">
-  | React.ComponentPropsWithoutRef<"button">
-)) => {
+    | React.ComponentPropsWithoutRef<"a">
+    | React.ComponentPropsWithoutRef<"button">
+  )) => {
   const baseStyles =
     "px-4 py-2 rounded-md bg-white button bg-white text-black font-semibold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center disabled:opacity-10 disabled:cursor-not-allowed";
 

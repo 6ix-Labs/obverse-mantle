@@ -25,19 +25,19 @@ export const buttonStyles = cva(["transition-colors"], {
                 "justify-center",
                 "p-2.5",
             ],
-         normal: [
-            "rounded-[12px]",
-            "items-center",
-            "justify-center",
-            "flex",
-            "px-6",
-            "py-3",
-            "font-figtree",
-            "font-normal",
-            "border",
-            "text-gray-600"
+            normal: [
+                "rounded-[12px]",
+                "items-center",
+                "justify-center",
+                "flex",
+                "px-6",
+                "py-3",
+                "font-figtree",
+                "font-normal",
+                "border",
+                "text-gray-600"
 
-         ]
+            ]
         },
 
     },
@@ -50,11 +50,11 @@ export const buttonStyles = cva(["transition-colors"], {
 
 )
 type ButtonProps = VariantProps<typeof buttonStyles> & ComponentProps<"button">
-export function Button({variant, size, className, ...props}: ButtonProps) {
+export function Button({ variant, size, className, ...props }: ButtonProps) {
     return (
-        <button 
-        {...props}
-         className={twMerge(buttonStyles({ variant, size }), className)}
+        <button
+            {...props}
+            className={twMerge(buttonStyles({ variant, size }), className)}
         />
     )
 }
