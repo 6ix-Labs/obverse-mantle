@@ -82,6 +82,11 @@ export const useERC20Transfer = (): {
         maxFeePerGas: BigInt("0x132b3a0"),
         maxPriorityFeePerGas: BigInt("0x132b3a0"),
       });
+
+      console.log("Transaction hash:", hash);
+      console.log("Transaction success:", isSuccess);
+
+
     } catch (error) {
       const errorMessage = error instanceof Error ? error : new Error('Unknown error occurred');
       setCustomError(errorMessage);
