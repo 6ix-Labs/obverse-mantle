@@ -6,10 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { PrivyProvider } from '@privy-io/react-auth';
 import { WagmiProvider } from '@privy-io/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { mantleSepoliaTestnet } from "viem/chains";
 import { wagmiConfig } from './wagmiConfig';
-import { base, berachain, polygon, arbitrum, mantle, mainnet } from 'viem/chains';
-// import { addRpcUrlOverrideToChain } from '@privy-io/react-auth';
+import { base, arbitrum, mantle, mainnet, baseSepolia, lisk, liskSepolia, mantleSepoliaTestnet } from 'viem/chains';
 
 const queryClient = new QueryClient();
 
@@ -35,9 +33,9 @@ root.render(
           showWalletLoginFirst: false,
           accentColor: "#E85e38",
         },
-        loginMethods: ["wallet", "email"],
-        defaultChain: base,
-        supportedChains: [mainnet, base, arbitrum, mantle]
+        loginMethods: ["wallet"],
+        defaultChain: mantleSepoliaTestnet,
+        supportedChains: [mainnet, base, baseSepolia, arbitrum, mantle, mantleSepoliaTestnet, lisk, liskSepolia]
       }}
     >
       <QueryClientProvider client={queryClient}>

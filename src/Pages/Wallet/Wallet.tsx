@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { topT, topT2, transactions } from "../../contants";
+import { topT, topT2 } from "../../contants";
 import { Link, useParams } from "react-router";
 import axios from "axios";
 import { logo, logoText, walletIcon, walletIconDark } from "../../assets/icons";
@@ -7,7 +7,6 @@ import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
 import { Button } from "../../Components/Button/Button";
 import { Skeleton } from "../../Components/Skeleton/Skeleton";
-// import { RiWalletLine } from "react-icons/ri";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
 const Wallet = () => {
@@ -16,9 +15,8 @@ const Wallet = () => {
     paymentLink?: {
       title?: string;
       totalAmountReceived?: number;
-      // add other properties as needed
     };
-    // add other properties as needed
+
   };
 
   const [data, setData] = useState<PaymentLinkData | null>(null);

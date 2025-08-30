@@ -5,7 +5,7 @@ import { Button } from "../../Components/Button/Button";
 import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
-import { useConnectOrCreateWallet, usePrivy } from "@privy-io/react-auth";
+import { useConnectOrCreateWallet, usePrivy, useWallets } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";
 import {
   Navbar,
@@ -20,6 +20,8 @@ import WalletConnect from "../Wallet/WalletConnect";
 import { useERC20Transfer } from "../../hooks";
 import { type Address } from "viem";
 import { toast } from "react-toastify";
+import { handleUSDCAddress } from "../../helper";
+import { baseSepolia } from "viem/chains";
 
 interface PaymentData {
   title?: string;
@@ -30,7 +32,6 @@ interface PaymentData {
   decimals?: number;
   payerDetails?: Record<string, any>;
   network?: string;
-  // Add other fields from your backend response as needed
   linkId?: string;
   status?: string;
   type?: string;
@@ -43,10 +44,12 @@ const Payment = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const { connectOrCreateWallet } = useConnectOrCreateWallet();
-  const { ready, authenticated, user, } = usePrivy();
+  const { ready, authenticated, user } = usePrivy();
+  const { wallets } = useWallets();
+  const activeWallet = wallets?.[0];
+  const chainId = activeWallet ? Number(activeWallet.chainId) : undefined;
   const { address } = useAccount();
-
-  const userAddress = user?.wallet?.address || address;
+  const userAddress = address || user?.wallet?.address;
   const { id } = useParams();
 
   const {
@@ -158,6 +161,8 @@ const Payment = () => {
     return { isValid: true };
   };
 
+  const tokenAddress = handleUSDCAddress(chainId || baseSepolia.id);
+
   const handlePayment = async () => {
     const validation = validatePaymentData();
 
@@ -167,17 +172,17 @@ const Payment = () => {
       return;
     }
     console.log("Transfer params:", {
-      tokenAddress: paymentData!.tokenAddress,
-      toAddress: paymentData!.address,
+      tokenAddress: tokenAddress ,
+      toAddress: paymentData!.address as Address,
       amount: paymentData!.amount,
-      decimals: paymentData!.decimals,
+      decimals: paymentData!.decimals || 6,
     });
 
     try {
       await transferToken({
-        tokenAddress: paymentData!.tokenAddress as Address, // Now using dynamic tokenAddress from backend 
+        tokenAddress: tokenAddress as Address,
         toAddress: paymentData!.address as Address,
-        amount: paymentData!.amount!,
+        amount: "1",
         decimals: paymentData!.decimals || 6,
       });
       if (transferSuccess) {
