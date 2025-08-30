@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coinbase/onchainkit": "^0.38.19",
     "@privy-io/react-auth": "^2.21.4",
     "@privy-io/wagmi": "^1.0.6",
     "@solana/spl-token": "^0.4.13",

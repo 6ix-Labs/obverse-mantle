@@ -82,7 +82,7 @@ const Wallet = () => {
             variant="ghost"
             onClick={toggleDarkMode}
             className="bg-gray-200 dark:bg-gray-700"
-          >
+          > 
             {darkMode ? <SunIcon /> : <MoonIcon />}
           </Button>
         </div>
