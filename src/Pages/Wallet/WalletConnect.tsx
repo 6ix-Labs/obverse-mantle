@@ -5,6 +5,7 @@ import { useLogin, usePrivy } from "@privy-io/react-auth";
 import { Button } from "../../Components/Button/Button";
 import { UserPill } from "@privy-io/react-auth/ui";
 import { RiWallet2Line } from "react-icons/ri";
+import { ChainDropdown } from "../../Components/Dropdown/ChainDropdown";
 
 function WalletConnect() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -45,6 +46,7 @@ function WalletConnect() {
               </span>
             }
           />
+         <ChainDropdown/>
         </div>
       ) : (
         <>

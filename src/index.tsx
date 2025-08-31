@@ -8,6 +8,7 @@ import { WagmiProvider } from '@privy-io/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { wagmiConfig } from './wagmiConfig';
 import { base, baseSepolia, lisk, liskSepolia } from 'viem/chains';
+import { ChainProvider } from './hooks/useChainManager';
 
 const queryClient = new QueryClient();
 
@@ -40,7 +41,9 @@ root.render(
     >
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
-          <App />
+          <ChainProvider>
+            <App />
+          </ChainProvider>
         </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>

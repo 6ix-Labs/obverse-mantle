@@ -21,7 +21,9 @@ import { useERC20Transfer } from "../../hooks";
 import { type Address } from "viem";
 import { toast } from "react-toastify";
 import { handleUSDCAddress } from "../../helper";
-import { baseSepolia, liskSepolia } from "viem/chains";
+import { baseSepolia } from "viem/chains";
+
+import { useChainManager } from "../../hooks/useChainManager";
 
 interface PaymentData {
   title?: string;
@@ -51,6 +53,8 @@ const Payment = () => {
   const { address } = useAccount();
   const userAddress = address || user?.wallet?.address;
   const { id } = useParams();
+
+  const { chain } = useChainManager();
 
   const {
     transferToken,
@@ -359,25 +363,15 @@ const Payment = () => {
                     ✅ Payment successful!
                   </p>
                   <p className="text-xs text-green-600 dark:text-green-400 mt-1 break-all">
-                    Transaction: {chainId === liskSepolia.id && (
+                    Transaction: 
                       <a
-                        href={`https://sepolia-blockscout.lisk.com/transaction/${transactionHash}`}
+                        href={`${chain?.blockExplorers?.default.url ?? ''}/tx/${transactionHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-green-600 dark:text-green-400 hover:underline"
                       >
-                        https://sepolia-blockscout.lisk.com/transaction/{transactionHash}
+                        View on {chain?.blockExplorers?.default.name ?? 'Explorer'}
                       </a>
-                    )} {chainId === baseSepolia.id && (
-                      <a
-                        href={`https://sepolia.basescan.org//tx/${transactionHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-green-600 dark:text-green-400 hover:underline"
-                      >
-                        https://sepolia.basescan.org/tx/{transactionHash}
-                      </a>
-                    )}
                   </p>
                   <button
                     type="button"
