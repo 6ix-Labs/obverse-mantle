@@ -24,7 +24,7 @@ export const ChainProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const { wallets, ready } = useWallets();
   const activeWallet = wallets?.[0];
 
-  const allChains: Chain[] = [baseSepolia, liskSepolia];
+  const allChains: Chain[] = [liskSepolia, baseSepolia];
 
   const value = useMemo<ChainContextValue>(() => {
     const chainId = activeWallet ? Number(activeWallet.chainId.split(':')[1]) : undefined;
