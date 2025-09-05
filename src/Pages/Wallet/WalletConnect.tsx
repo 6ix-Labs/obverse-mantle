@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useLogin, usePrivy } from "@privy-io/react-auth";
 import { Button } from "../../Components/Button/Button";
-import { UserPill } from "@privy-io/react-auth/ui";
-import { RiWallet2Line } from "react-icons/ri";
+// import { UserPill } from "@privy-io/react-auth/ui";
+// import { RiWallet2Line } from "react-icons/ri";
 import { ChainDropdown } from "../../Components/Dropdown/ChainDropdown";
+import WalletSheet from "./WalletSheet";
 
 function WalletConnect() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,22 +31,7 @@ function WalletConnect() {
     <div>
       {authenticated && user && user.wallet?.address ? (
         <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-3">
-          <UserPill
-            expanded={true}
-            ui={{
-              minimal: false,
-              background: undefined,
-            }}
-            label={
-              <span className="w-full h-full flex items-center gap-3 text-left transition-colors duration-150 text-white">
-                <RiWallet2Line className="h-5 w-5 text-white" />
-                <span className="text-sm font-medium">
-                  {user.wallet?.address?.slice(0, 6)}...
-                  {user.wallet?.address?.slice(-4)}
-                </span>
-              </span>
-            }
-          />
+          <WalletSheet />
          <ChainDropdown/>
         </div>
       ) : (

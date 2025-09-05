@@ -24,6 +24,7 @@ import { handleUSDCAddress } from "../../helper";
 import { baseSepolia } from "viem/chains";
 
 import { useChainManager } from "../../hooks/useChainManager";
+import WalletSheet from "../Wallet/WalletSheet";
 
 interface PaymentData {
   title?: string;
@@ -261,6 +262,7 @@ const Payment = () => {
             </Button>
 
             <WalletConnect />
+            {/* <WalletSheet /> */}
           </div>
         </NavBody>
         <MobileNav>
