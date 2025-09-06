@@ -32,7 +32,7 @@ function WalletConnect() {
       {authenticated && user && user.wallet?.address ? (
         <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-3">
           <WalletSheet />
-         <ChainDropdown/>
+          <ChainDropdown />
         </div>
       ) : (
         <>

@@ -35,7 +35,7 @@ root.render(
           showWalletLoginFirst: false,
           accentColor: "#E85e38",
         },
-        loginMethods: ["wallet"],
+        loginMethods: ["wallet","email"],
         defaultChain: baseSepolia,
         supportedChains: [baseSepolia, base, lisk, liskSepolia]
       }}

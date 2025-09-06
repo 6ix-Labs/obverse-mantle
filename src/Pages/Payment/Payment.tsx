@@ -260,7 +260,6 @@ const Payment = () => {
             >
               {darkMode ? <SunIcon /> : <MoonIcon />}
             </Button>
-
             <WalletConnect />
             {/* <WalletSheet /> */}
           </div>
@@ -365,15 +364,15 @@ const Payment = () => {
                     ✅ Payment successful!
                   </p>
                   <p className="text-xs text-green-600 dark:text-green-400 mt-1 break-all">
-                    Transaction: 
-                      <a
-                        href={`${chain?.blockExplorers?.default.url ?? ''}/tx/${transactionHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-green-600 dark:text-green-400 hover:underline"
-                      >
-                        View on {chain?.blockExplorers?.default.name ?? 'Explorer'}
-                      </a>
+                    Transaction:
+                    <a
+                      href={`${chain?.blockExplorers?.default.url ?? ''}/tx/${transactionHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 dark:text-green-400 hover:underline"
+                    >
+                      View on {chain?.blockExplorers?.default.name ?? 'Explorer'}
+                    </a>
                   </p>
                   <button
                     type="button"
@@ -384,16 +383,17 @@ const Payment = () => {
                   </button>
                 </div>
               )}
-
               {isTransferring && (
-                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                  <p className="text-sm text-blue-700 dark:text-blue-300">
-                    🔄 Processing payment... Please wait and do not close this
-                    page.
-                  </p>
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-3 border-blue-600 dark:border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-sm text-blue-700 dark:text-blue-300 text-center">
+                      Processing payment... Please wait and do not close this
+                      page.
+                    </p>
+                  </div>
                 </div>
               )}
-
               <button
                 type="button"
                 onClick={(e) => {
