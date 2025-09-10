@@ -29,7 +29,7 @@ root.render(
           priceDisplay: {
             primary: "fiat-currency",
             secondary: "native-token",
-          },
+           },
         },
         appearance: {
           showWalletLoginFirst: false,
