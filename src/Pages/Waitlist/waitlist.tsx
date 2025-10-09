@@ -42,7 +42,7 @@ const Main = () => {
 
       <MainNavbar />
 
-      <div className="w-full max-w-[700px] flex flex-col items-center justify-center mb-[60px] md:mb-0 gap-5 sm:gap-8 flex-1 z-10 px-4 relative">
+      <div className="w-full max-w-[700px] flex flex-col items-center gap-5 sm:gap-8 mt-10 sm:mt-40 md:mt-20 z-10 px-4 relative">
         <div>
           <Button
             size="normal"

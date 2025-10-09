@@ -18,16 +18,21 @@ const MainNavbar = () => {
   }
 
   return (
-    <header className="w-full bg-transparent">
-      <nav className="sm:px-10 lg:mx-20 sm:mx-15 mx-5 px-5 flex justify-between py-3  items-center rounded-[64px] bg-[#22201D] border border-[#2d2b29]">
+    <header className="w-full bg-transparent px-3 sm:px-5">
+      <nav className="px-4 sm:px-6 md:px-10 max-w-[1400px] mx-auto flex justify-between py-2.5 sm:py-3 md:py-3.5 items-center rounded-[40px] sm:rounded-[50px] md:rounded-[64px] bg-[#22201D] border border-[#2d2b29]">
 
         <Link to="/" onClick={closeMenu}>
-          <div className="flex sm:gap-4 gap-2">
-            <img src={logoDark} alt="logo" />
-            <img src={logoTextDark} alt="logoText" />
+          <div className="flex gap-2 sm:gap-3 md:gap-4 items-center">
+            <img src={logoDark} alt="logo" className="h-6 sm:h-7 md:h-8 w-auto" />
+            <img src={logoTextDark} alt="logoText" className="h-4 sm:h-5 md:h-6 w-auto" />
           </div>
         </Link>
-        <Button className="flex bg-[#FF7849] text-[#131313] rounded-[50px] border-[#FFBAA2] text-[12px] font-medium max-sm:px-5" variant="normal" size="normal" onClick={() => popUp()}>
+        <Button
+          className="flex bg-[#FF7849] text-[#131313] rounded-[25px] sm:rounded-[35px] md:rounded-[50px] border-[#FFBAA2] text-[10px] sm:text-[11px] md:text-[12px] font-medium px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 hover:bg-[#ff8c63] transition-colors whitespace-nowrap"
+          variant="normal"
+          size="normal"
+          onClick={() => popUp()}
+        >
           Join Waitlist
         </Button>
       </nav>
