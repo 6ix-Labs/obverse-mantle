@@ -7,19 +7,21 @@ import WhatMakes from '../../sections/WhatMakes/WhatMakes'
 import PaymentApp from '../../sections/PaymentApp/PaymentApp'
 import ReadyToAccept from '../../sections/ReadyToAccept/ReadyToAccept'
 import Testimonials from '../../sections/Testimonials/Testimonials'
+import Main from '../Waitlist/waitlist'
 
 const Home = () => {
   return (
-    <section>
-      <Hero />
-      <Herotext />
-      <SendScanDone />
-      <BuiltFor />
-      <WhatMakes />
-      <PaymentApp />
-      <Testimonials />
-      <ReadyToAccept />
-    </section>
+    // <section>
+    //   <Hero />
+    //   <Herotext />
+    //   <SendScanDone />
+    //   <BuiltFor />
+    //   <WhatMakes />
+    //   <PaymentApp />
+    //   <Testimonials />
+    //   <ReadyToAccept />
+    // </section>
+    <Main/>
   )
 }
 

@@ -18,9 +18,11 @@ import Payment1 from "./Scene 7 (1).png"
 import Get1 from "./Scene 7 (2).png"
 
 import obverse from "./Frame 2147225576.png"
+import Ellipse from "./Ellipse.png"
 
 import paymentDarkBg from "./paymentDark.png"
 import paymentLightBg from "./paymentLight.png"
+import { m } from "framer-motion"
 
 export {
 rImg,
@@ -45,5 +47,6 @@ Get1,
 obverse,
 
 paymentLightBg,
-paymentDarkBg
+paymentDarkBg,
+Ellipse
 }

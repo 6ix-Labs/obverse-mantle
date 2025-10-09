@@ -6,12 +6,12 @@ import Error from "./Pages/Error/Error";
 import Footer from "./Components/Footer/Footer";
 import Wallet from "./Pages/Wallet/Wallet";
 import Payment from "./Pages/Payment/Payment";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "./Components/ui/sonner";
+import Main from "./Pages/Waitlist/waitlist";
 
 const AppRoutes = () => {
   const location = useLocation();
-  const hideNavbar = ["/transaction", "/pay"];
+  const hideNavbar = ["/transaction", "/pay", "/"];
   const shouldHide = hideNavbar.some((path) =>
     location.pathname.startsWith(path)
   );
@@ -20,7 +20,8 @@ const AppRoutes = () => {
     <main className="max-container">
       {!shouldHide && <Navbar />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Main />} />
         <Route path="about" element={<About />} />
         <Route path="transactions/:linkId" element={<Wallet />} />
         <Route path="pay/:id" element={<Payment />} />
@@ -35,18 +36,7 @@ const AppRoutes = () => {
 const App = () => (
   <BrowserRouter>
     <AppRoutes />
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
+    <Toaster />
   </BrowserRouter>
 );
 

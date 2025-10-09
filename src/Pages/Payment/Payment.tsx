@@ -87,13 +87,13 @@ const Payment = () => {
       }
     };
 
-    if (id) { 
+    if (id) {
       fetchPaymentLink();
     }
   }, [id]);
 
-  const handleTransaction = ()=>{
-    
+  const handleTransaction = () => {
+
   }
 
   const toggleDarkMode = () => {
