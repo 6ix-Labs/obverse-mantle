@@ -42,7 +42,7 @@ const Main = () => {
 
       <MainNavbar />
 
-      <div className="w-full max-w-[700px] flex flex-col items-center gap-5 sm:gap-8 mt-10 sm:mt-20 z-10 px-4 relative">
+      <div className="w-full max-w-[700px] flex flex-col items-center justify-center mb-[60px] md:mb-0 gap-5 sm:gap-8 flex-1 z-10 px-4 relative">
         <div>
           <Button
             size="normal"
@@ -71,14 +71,14 @@ const Main = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email address"
             disabled={isSubmitting}
-            className="flex-1 p-3 sm:p-4 md:p-5 pr-[100px] sm:pr-[140px] md:pr-[160px] bg-transparent border-[0.5px] border-[#393939] text-white text-[13px] sm:text-[14px] md:text-[16px] rounded-[30px] sm:rounded-[35px] md:rounded-[40px] focus:outline-none focus:border-[#FF7849] transition-colors placeholder:font-onest placeholder:text-[11px] sm:placeholder:text-[13px] md:placeholder:text-[14px] placeholder:text-gray-400 disabled:opacity-50"
+            className="flex-1 p-3 sm:p-4 md:p-5 pr-[110px] sm:pr-[140px] md:pr-[160px] bg-transparent border-[0.5px] border-[#393939] text-white text-[13px] sm:text-[15px] md:text-[16px] rounded-[30px] sm:rounded-[35px] md:rounded-[40px] focus:outline-none focus:border-[#FF7849] transition-colors placeholder:font-onest placeholder:text-[11px] sm:placeholder:text-[13px] md:placeholder:text-[14px] placeholder:text-gray-400 disabled:opacity-50"
           />
           <Button
             type="submit"
             size="normal"
             variant="normal"
             disabled={isSubmitting}
-            className="absolute text-[#131313] rounded-[15px] sm:rounded-[18px] md:rounded-[20px] bg-[#FF7849] right-2 sm:right-3 font-medium font-figtree text-[11px] sm:text-[13px] md:text-[14px] px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 disabled:opacity-50 hover:bg-[#ff8c63] transition-colors whitespace-nowrap"
+            className="absolute text-[#131313] rounded-[15px] sm:rounded-[18px] md:rounded-[20px] bg-[#FF7849] right-2 sm:right-3 font-medium font-figtree text-[11px] sm:text-[13px] md:text-[14px] px-3 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 disabled:opacity-50 hover:bg-[#ff8c63] transition-colors whitespace-nowrap"
           >
             {isSubmitting ? "Sending..." : "Get Notified"}
           </Button>
