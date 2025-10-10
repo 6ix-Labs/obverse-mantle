@@ -18,8 +18,8 @@ const MainNavbar = () => {
   }
 
   return (
-    <header className="w-full bg-transparent px-3 sm:px-5">
-      <nav className="px-4 sm:px-6 md:px-10 max-w-[1400px] mx-auto flex justify-between py-2.5 sm:py-3 md:py-3.5 items-center rounded-[40px] sm:rounded-[50px] md:rounded-[64px] bg-[#22201D] border border-[#2d2b29]">
+    <header className="w-full cursor-pointer bg-transparent px-3 sm:px-5">
+      <nav className="px-4 sm:px-6 md:px-10 w-[85%] md:w-[50%] mx-auto flex justify-between py-2.5 sm:py-3 md:py-3.5 items-center rounded-[40px] sm:rounded-[50px] md:rounded-[64px] bg-[#22201D] border border-[#2d2b29]">
 
         <Link to="/" onClick={closeMenu}>
           <div className="flex gap-2 sm:gap-3 md:gap-4 items-center">
