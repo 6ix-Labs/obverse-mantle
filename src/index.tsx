@@ -19,8 +19,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <PrivyProvider
-      appId="cmekbv52y00s1l50aq2bxzfgx"
-      clientId="client-WY6Ppy4s4mEpZyqT3g4niHFbsAhLKjxvwq1jPSrb32PmL"
+      appId={import.meta.env.VITE_APP_ID}
+      clientId={import.meta.env.VITE_CLIENT_ID}
       config={{
         // Create embedded wallets for users who don't have a wallet
         embeddedWallets: {
