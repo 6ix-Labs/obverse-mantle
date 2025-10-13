@@ -13,6 +13,11 @@ import walletIconDark from "./Frame 427319284 (1).svg"
 import avatarIcon from "./AvatarIcon.svg"
 import logoDark from './logodark.svg'
 import logoTextDark from './logotextdark.svg'
+import T from "./T.svg"
+import SG from "./SG.svg"
+import SB from "./SB.svg"
+import N from "./N.svg"
+import D from "./D.svg"
 
 
 export { 
@@ -34,5 +39,11 @@ export {
     walletIconDark,
      avatarIcon,
      logoDark,
-     logoTextDark
+     logoTextDark,
+
+     T,
+     SG,
+     SB,
+     N,
+     D,
 };

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import MainNavbar from "./MainNavbar.tsx";
+
 // import { Ellipse, paymentDarkBg } from "../";
 // import { Button } from "./ui/Button";
 import { Button } from "../../Components/Button/Button.tsx";
-import { Ellipse } from "../../assets/images/index.ts";
+
 import { sendEmailToTelegram } from "../../helper/telegram.ts";
 import { toast } from "sonner";
-import { BackgroundLines } from "../../components/ui/background-lines.tsx";
-
+import { BackgroundLines } from "@/Components/ui/background-lines.tsx";
+import MainNavbar from "./MainNavbar.tsx";
+import CardDemo from "@/Components/cards-demo-3.tsx";
 
 const Main = () => {
   const [email, setEmail] = useState("");
@@ -35,25 +36,26 @@ const Main = () => {
     setIsSubmitting(false);
   };
   return (
-    <BackgroundLines className="w-full min-h-screen flex flex-col items-center justify-start px-4 bg-[#070707]">
-      <section
-        className="w-full min-h-screen flex flex-col items-center justify-start pt-5 px-4 relative"
-      >
+   <BackgroundLines className="w-full min-h-screen flex flex-col items-center justify-start px-3 bg-[#070707]">
+       <section className="sm:w-full min-h-screen flex flex-col items-center justify-start pt-5 sm:px-4 relative">
+
         <MainNavbar />
 
-        <div className="w-full max-w-[700px] flex flex-col items-center gap-5 sm:gap-8 mt-10 sm:mt-40 md:mt-20 z-10 px-4 relative">
+        {/* <div className="w-full max-w-[700px] flex flex-col items-center gap-5 sm:gap-8 mt-10 sm:mt-40 md:mt-20 z-10 px-4 relative"> */}
+
+        <div className="w-full max-w-[700px] flex flex-col items-center gap-5 sm:gap-8 mt-10 sm:mt-40 md:mt-20 z-10 relative">
           <div>
             <Button
               size="normal"
               variant="normal"
-              className="font-onest text-[12px] sm:text-[14px] bg-[#FF784917] text-[#FF7849] border-[18%] border-[#FFBAA224] px-4 sm:px-6"
+              className="font-onest text-[12px] sm:text-[14px] py-2 px-4 bg-[#2b1e1a] text-[#FF7849] border-[0.5px] border-[#FFBAA224] rounded-[80px]"
             >
               Coming Soon!
             </Button>
           </div>
 
           <div className="flex gap-3 sm:gap-4 flex-col items-center w-full">
-            <h1 className="font-onest leading-tight font-bold text-[24px] sm:text-[35px] md:text-[38px] lg:text-[50px] max-w-full bg-gradient-to-r from-[#FFFFFF] to-[#FF7849] bg-clip-text text-transparent text-center px-4">
+            <h1 className="font-onest sm:leading-tight leading-none font-bold text-[40px] sm:text-[35px] md:text-[38px] lg:text-[50px] max-w-full bg-gradient-to-r from-[#FFFFFF] to-[#FF7849] bg-clip-text text-transparent text-center px-4">
               Accept Stablecoins in chat <br className="hidden sm:block" />
               <span className="sm:hidden"> </span>with built-in invoicing
             </h1>
@@ -63,25 +65,49 @@ const Main = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex items-center relative w-full mt-5 max-w-md">
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center max-sm:flex-col sm:gap-0 gap-3                                                                                                       relative w-full mt-5 max-w-md"
+          >
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
               disabled={isSubmitting}
-              className="flex-1 p-3 sm:p-4 md:p-5 pr-[110px] sm:pr-[140px] md:pr-[160px] bg-transparent border-[0.5px] border-[#393939] text-white text-[13px] sm:text-[15px] md:text-[16px] rounded-[30px] sm:rounded-[35px] md:rounded-[40px] focus:outline-none focus:border-[#FF7849] transition-colors placeholder:font-onest placeholder:text-[11px] sm:placeholder:text-[13px] md:placeholder:text-[14px] placeholder:text-gray-400 disabled:opacity-50"
+              className="flex-1 p-4 max-sm:w-full md:p-5 bg-transparent border-[0.5px] border-[#393939] text-white rounded-[40px] sm:text-[15px] md:text-[16px] focus:outline-none placeholder:font-onest placeholder:text-[14px] placeholder:text-white focus:border-[#FF7849] transition-colors  disabled:opacity-50"
             />
             <Button
               type="submit"
               size="normal"
               variant="normal"
               disabled={isSubmitting}
-              className="absolute text-[#131313] rounded-[15px] sm:rounded-[18px] md:rounded-[20px] bg-[#FF7849] right-2 sm:right-3 font-medium font-figtree text-[11px] sm:text-[13px] md:text-[14px] px-3 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 disabled:opacity-50 hover:bg-[#ff8c63] transition-colors whitespace-nowrap"
+              className="sm:absolute max-sm:w-full sm:right-3 max-sm:block bg-[#FF7849] text-[#131313] rounded-[40px] border-[#FFBAA2] text-[13px] sm:text-[11px] md:text-[12px] font-mediumpx-3 sm:px-7 px-5 md:px-10 py-3.5 sm:py-3.5 md:py-3 disabled:opacity hover:bg-[#ff8c63] transition-colors whitespace-nowrap"
             >
-              {isSubmitting ? "Sending..." : "Get Notified"}
+              {isSubmitting ? "Sending..." : "Join Waitlist"}
             </Button>
           </form>
+
+          <div className="border lg:min-w-[700px] w-full mx-auto mt-10 border-transparent bg-gradient-to-b from-[#232323] to-[#464646] rounded-[16px]">
+            <div className="flex flex-col gap-5 items-center justify-center bg-transparent brightness-75 bg-gradient-to-b from-[#28120a] to-[#1f1814] rounded-[16px] p-6 w-full h-full">
+            <div></div>
+
+           <CardDemo />
+
+            <div className="flex flex-col gap-1 items-center">
+              <h2 className="text-[#FFF3ef] font-spacegrotesk font-semibold lg:text-[56px] md:text-[46px] text-[36px]  whitespace-nowrap">
+                For Merchants
+              </h2>
+              <p className="text-[#FFF3ef] font-onest lg:text-[20px] md:text-[16px] text-center text-[14px]">
+               Merchants are done with clunky wallets and confusing crypto UX. Obverse brings payments + business insights together, in one simple Telegram-based AI Agent.
+              </p>
+            </div>
+            </div>
+          </div>
+        </div>
+        <div className="w-[96%] mx-auto flex sm:flex-row flex-col sm:justify-between sm:items-center sm:gap-0 gap-1 mt-32 pb-5">
+        <p className="text-[#FFF3EF] sm:text-[18px] text-[14px] font-onest">©2025 Obverse LTD. RC: 7810789</p>
+        <p className="text-[#FFF3EF] sm:text-[18px] text-[14px] font-onest">All rights reserved</p>
         </div>
       </section>
     </BackgroundLines>

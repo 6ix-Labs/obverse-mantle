@@ -18,8 +18,9 @@ const MainNavbar = () => {
   }
 
   return (
-    <header className="w-full cursor-pointer bg-transparent px-3 sm:px-5">
-      <nav className="px-4 sm:px-6 md:px-10 w-[85%] md:w-[50%] mx-auto flex justify-between py-2.5 sm:py-3 md:py-3.5 items-center rounded-[40px] sm:rounded-[50px] md:rounded-[64px] bg-[#22201D] border border-[#2d2b29]">
+    <header className="w-full cursor-pointer bg-transparent sm:px-5">
+     
+         <nav className="px-2 sm:px-5 w-[85%] md:w-[60%] mx-auto flex justify-between py-2.5 sm:py-3 md:py-3.5 items-center rounded-[64px] bg-[#22201D] border border-[#2d2b29]">
 
         <Link to="/" onClick={closeMenu}>
           <div className="flex gap-2 sm:gap-3 md:gap-4 items-center">
@@ -28,7 +29,7 @@ const MainNavbar = () => {
           </div>
         </Link>
         <Button
-          className="flex bg-[#FF7849] text-[#131313] rounded-[25px] sm:rounded-[35px] md:rounded-[50px] border-[#FFBAA2] text-[10px] sm:text-[11px] md:text-[12px] font-medium px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 hover:bg-[#ff8c63] transition-colors whitespace-nowrap"
+          className="flex bg-[#FF7849] text-[#131313] rounded-[40px] border-[#FFBAA2] text-[10px] sm:text-[11px] md:text-[12px] font-medium px-7 sm:px-5 md:px-6 py-2.5 sm:py-3 hover:bg-[#ff8c63] transition-colors whitespace-nowrap"
           variant="normal"
           size="normal"
           onClick={() => popUp()}
