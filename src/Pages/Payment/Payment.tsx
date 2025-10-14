@@ -26,6 +26,7 @@ import { baseSepolia } from "viem/chains";
 import { useChainManager } from "../../hooks/useChainManager";
 import WalletSheet from "../Wallet/WalletSheet";
 
+
 interface PaymentData {
   title?: string;
   amount?: string;
@@ -153,6 +154,7 @@ const Payment = () => {
         )}`,
       };
     }
+    console.log("Form data:", formData);
 
     // Validate payment configuration
     if (
