@@ -10,6 +10,7 @@ import { BackgroundLines } from "../../components/ui/background-lines";
 import MainNavbar from "./MainNavbar.tsx";
 import CardDemo from "@/Components/cards-demo-3.tsx";
 
+
 const Main = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,8 +46,8 @@ const Main = () => {
     setIsSubmitting(false);
   };
   return (
-   <BackgroundLines className="w-full min-h-screen flex flex-col items-center justify-start px-3 bg-[#070707]">
-       <section className="sm:w-full min-h-screen flex flex-col items-center justify-start pt-5 sm:px-4 relative">
+    <BackgroundLines className="w-full min-h-screen flex flex-col items-center justify-start px-3 bg-[#070707]">
+      <section className="sm:w-full min-h-screen flex flex-col items-center justify-start pt-5 sm:px-4 relative">
 
         <MainNavbar />
 
@@ -99,22 +100,22 @@ const Main = () => {
 
           <div className="border lg:min-w-[700px] w-full mx-auto mt-10 border-transparent bg-gradient-to-b from-[#232323] to-[#464646] rounded-[16px]">
             <div className="flex flex-col gap-5 items-center justify-center bg-transparent brightness-75 bg-gradient-to-b from-[#28120a] to-[#1f1814] rounded-[16px] p-6 w-full h-full">
-            <div></div>
-           <CardDemo />
-            <div className="flex flex-col gap-1 items-center">
-              <h2 className="text-[#FFF3ef] font-spacegrotesk font-semibold lg:text-[50px] md:text-[40px] text-[36px] whitespace-nowrap">
-                 <span className="inline-block transition-all duration-500 ease-in-out">{texts[currentTextIndex]}</span>
-              </h2>
-              <p className="text-[#FFF3ef] font-onest lg:text-[20px] md:text-[16px] text-center text-[14px]">
-               Stablecoin payments, invoicing, and business insights in one AI Agent. Leave the clunky wallets and confusing crypto UX behind.
-              </p>
-            </div>
+              <div></div>
+              <CardDemo />
+              <div className="flex flex-col gap-1 items-center">
+                <h2 className="text-[#FFF3ef] font-spacegrotesk font-semibold lg:text-[50px] md:text-[40px] text-[36px] whitespace-nowrap">
+                  <span className="inline-block transition-all duration-500 ease-in-out">{texts[currentTextIndex]}</span>
+                </h2>
+                <p className="text-[#FFF3ef] font-onest lg:text-[20px] md:text-[16px] text-center text-[14px]">
+                  Stablecoin payments, invoicing, and business insights in one AI Agent. Leave the clunky wallets and confusing crypto UX behind.
+                </p>
+              </div>
             </div>
           </div>
         </div>
         <div className="w-[96%] mx-auto flex sm:flex-row flex-col sm:justify-between sm:items-center sm:gap-0 gap-1 mt-32 pb-5">
-        <p className="text-[#FFF3EF] sm:text-[14px] text-[14px] font-onest">©2025 Obverse LTD. </p>
-        <p className="text-[#FFF3EF] sm:text-[14px] text-[14px] font-onest">All rights reserved</p>
+          <p className="text-[#FFF3EF] sm:text-[14px] text-[14px] font-onest">©2025 Obverse LTD. </p>
+          <p className="text-[#FFF3EF] sm:text-[14px] text-[14px] font-onest">All rights reserved</p>
         </div>
       </section>
     </BackgroundLines>

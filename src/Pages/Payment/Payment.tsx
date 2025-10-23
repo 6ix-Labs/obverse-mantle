@@ -93,9 +93,6 @@ const Payment = () => {
     }
   }, [id]);
 
-  const handleTransaction = () => {
-
-  }
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
