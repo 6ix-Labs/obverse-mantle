@@ -3,7 +3,7 @@ import lImg from "./lImg.png"
 
 import bitcoinImg from "./bitcoinImg.png"
 import usdImg from "./usdImg.png"
-import handPhone from "./handphone.png"
+
 import handePhoneSm from "./handphonesm.png"
 
 import BuiltForImg from "./People Sitting at Table 1.png"
@@ -23,6 +23,10 @@ import Ellipse from "./Ellipse.png"
 import paymentDarkBg from "./paymentDark.png"
 import paymentLightBg from "./paymentLight.png"
 import { m } from "framer-motion"
+import HomeImg from "./home.svg"
+import CreateLinkImg from "./Create new link.svg"
+import handPhone from './Button.svg'
+import WT from "./Button (1).svg"
 
 export {
 rImg,
@@ -48,5 +52,9 @@ obverse,
 
 paymentLightBg,
 paymentDarkBg,
-Ellipse
+Ellipse,
+HomeImg,
+CreateLinkImg,
+
+WT,
 }

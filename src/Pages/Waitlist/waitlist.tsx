@@ -6,9 +6,10 @@ import { Button } from "../../Components/Button/Button.tsx";
 
 import { sendEmailToTelegram } from "../../helper/telegram.ts";
 import { toast } from "sonner";
-import { BackgroundLines } from "../../components/ui/background-lines";
+
 import MainNavbar from "./MainNavbar.tsx";
 import CardDemo from "@/Components/cards-demo-3.tsx";
+import { BackgroundLines } from "@/Components/ui/background-lines.tsx";
 
 
 const Main = () => {

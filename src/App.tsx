@@ -18,14 +18,14 @@ const AppRoutes = () => {
 
   return (
     <main className="max-container">
-      {!shouldHide && <Navbar />}
+      {/* {!shouldHide && <Navbar />} */}
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Main />} />
         <Route path="about" element={<About />} />
         <Route path="transactions/:linkId" element={<Wallet />} />
         <Route path="pay/:id" element={<Payment />} />
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={<Error />} /> */}
       </Routes>
       {/* Footer */}
       {!shouldHide && <Footer />}
