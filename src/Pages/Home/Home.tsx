@@ -9,9 +9,10 @@
 // import Testimonials from '../../sections/Testimonials/Testimonials'
 // import Main from '../Waitlist/waitlist'
 
-import Footer from "@/Components/Footer/Footer"
+
 import Built from "@/sections/newSections/Built"
 import Faq from "@/sections/newSections/Faq"
+import Footer from "@/sections/newSections/Footer"
 import Hero from "@/sections/newSections/Hero"
 import Navbar from "@/sections/newSections/Navbar"
 import { TimelineDemo } from "@/sections/newSections/TimeLineDemo"

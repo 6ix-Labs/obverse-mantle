@@ -18,6 +18,13 @@ import SG from "./SG.svg"
 import SB from "./SB.svg"
 import N from "./N.svg"
 import D from "./D.svg"
+import TimeLineButton from "./timelineButton.svg"
+import Icon1 from "./Icon (1).svg"
+import icon3 from "./Icon (3).svg"
+import icon4 from "./Icon (5).svg"
+import icon5 from "./Icon (4).svg"
+import icon6 from "./Icon (6).svg"
+import icon7 from "./Icon (7).svg"
 
 
 export { 
@@ -46,4 +53,13 @@ export {
      SB,
      N,
      D,
+
+     TimeLineButton,
+     
+     Icon1,
+     icon3,
+     icon4,
+     icon5,
+     icon6,
+     icon7,
 };

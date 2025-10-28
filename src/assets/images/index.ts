@@ -27,6 +27,8 @@ import HomeImg from "./home.svg"
 import CreateLinkImg from "./Create new link.svg"
 import handPhone from './Button.svg'
 import WT from "./Button (1).svg"
+import community from "./Community.svg"
+
 
 export {
 rImg,
@@ -57,4 +59,7 @@ HomeImg,
 CreateLinkImg,
 
 WT,
+
+community
+
 }
