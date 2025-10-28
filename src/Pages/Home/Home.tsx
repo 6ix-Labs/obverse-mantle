@@ -17,8 +17,6 @@ import Hero from "@/sections/newSections/Hero"
 import Navbar from "@/sections/newSections/Navbar"
 import { TimelineDemo } from "@/sections/newSections/TimeLineDemo"
 
-
-
 const Home = () => {
   return (
     <section className='flex flex-col space-y-14'>
