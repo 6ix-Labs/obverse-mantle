@@ -29,11 +29,12 @@ import handPhone from './Button.svg'
 import WT from "./Button (1).svg"
 import community from "./Community.svg"
 
+// import community from "./Community.png"
 
 export {
 rImg,
 lImg,
-
+community,
 bitcoinImg,
 usdImg,
 handPhone,
@@ -60,6 +61,6 @@ CreateLinkImg,
 
 WT,
 
-community
+// community
 
 }
