@@ -21,6 +21,7 @@ const AppRoutes = () => {
       {/* {!shouldHide && <Navbar />} */}
       <Routes>
         <Route path="/" element={<Home />} />
+         <Route path="pay/:id" element={<Payment />} />
         {/* <Route path="/" element={<Main />} />
         <Route path="about" element={<About />} />
         <Route path="transactions/:linkId" element={<Wallet />} />
