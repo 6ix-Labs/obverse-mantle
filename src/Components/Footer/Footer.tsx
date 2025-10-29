@@ -38,7 +38,7 @@ const Footer = () => {
           transition={{ ease: "easeInOut", duration: 0.75, delay: 0.7 }}
           viewport={{ once: true }}
           className='w-full flex items-center justify-between mt-5'>
-          <h4 className='sm:text-[16px] text-[14px] font-calsans text-[#561908]'>©2025 Obverse LTD. RC: 7810789</h4>
+          <h4 className='sm:text-[16px] text-[14px] font-calsans text-[#561908]'>©2025 Obverse LTD.</h4>
           <h4 className='sm:text-[16px] text-[14px] font-calsans text-[#561908]'>All rights reserved</h4>
         </motion.div>
       </div>

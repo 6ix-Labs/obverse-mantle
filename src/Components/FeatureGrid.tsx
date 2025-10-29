@@ -40,13 +40,13 @@ const FeatureGrid: React.FC = () => {
     <div className="bg-[#070707] border border-[#464646] rounded-[32px] flex items-center justify-center px-4 py-5 shadow-inner">
       <div className="grid md:grid-cols-2 gap-6 max-w-5xl w-full">
         
-        <div className="flex flex-col gap-4  px-4 py-5 rounded-[32px] border border-[#464646] shadow-inner">
+        <div className="flex cursor-pointer flex-col gap-4  px-4 py-5 rounded-[32px] border border-[#464646] shadow-inner">
           {features.slice(0, 3).map((feature, i) => (
             <FeatureCard key={i} feature={feature} />
           ))}
         </div>
 
-        <div className="flex flex-col gap-4  px-4 py-5 rounded-[32px] border border-[#464646] shadow-inner">
+        <div className="flex cursor-pointer flex-col gap-4  px-4 py-5 rounded-[32px] border border-[#464646] shadow-inner">
           {features.slice(3).map((feature, i) => (
             <FeatureCard key={i} feature={feature} />
           ))}
