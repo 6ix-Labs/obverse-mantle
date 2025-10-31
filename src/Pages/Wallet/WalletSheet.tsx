@@ -8,9 +8,10 @@ import {
 } from "../../Components/ui/sheet";
 import { Button } from "../../Components/Button/Button";
 import { cn } from "../../lib/utils";
-import { IoCopyOutline, IoWalletOutline } from "react-icons/io5";
+import { IoCopyOutline, IoWalletOutline, IoLogOutOutline } from "react-icons/io5";
 import { usePrivy } from "@privy-io/react-auth";
 import { useAccount, useBalance, useReadContract } from "wagmi";
+import { useAppKitAccount, useDisconnect } from '@reown/appkit/react';
 import { handleUSDCAddress } from "../../helper";
 import { baseSepolia } from "viem/chains";
 import { toast } from "react-toastify";
@@ -54,9 +55,39 @@ export const WalletSheet: React.FC = () => {
         : "text-gray-500 hover:text-gray-700"
     );
 
-  const { user } = usePrivy();
+  const { user, logout, authenticated } = usePrivy();
   const { address } = useAccount();
-  const userAddress = address || user?.wallet?.address;
+
+  // Reown AppKit for Solana
+  const { address: solanaAddress, isConnected: isSolanaConnected } = useAppKitAccount({ namespace: 'solana' });
+  const { disconnect: disconnectAppKit } = useDisconnect();
+
+  const userAddress = address || user?.wallet?.address || solanaAddress;
+
+  // Handle logout/disconnect for both Privy and Reown
+  const handleLogout = async () => {
+    try {
+      // Disconnect Reown AppKit (Solana) if connected
+      if (isSolanaConnected) {
+        await disconnectAppKit();
+        toast.success("Solana wallet disconnected", { position: "top-right" });
+      }
+
+      // Logout from Privy (EVM) if authenticated
+      if (authenticated) {
+        await logout();
+        toast.success("EVM wallet disconnected", { position: "top-right" });
+      }
+
+      // If neither was connected (shouldn't happen, but handle it)
+      if (!isSolanaConnected && !authenticated) {
+        toast.info("No wallet connected", { position: "top-right" });
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to disconnect wallet", { position: "top-right" });
+    }
+  };
 
   // Get native ETH balance
   const { data: ethBalance } = useBalance({
@@ -279,6 +310,22 @@ export const WalletSheet: React.FC = () => {
                   ))
                 )}
               </div>
+            </div>
+
+            {/* Logout button */}
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <button
+                onClick={handleLogout}
+                className="group w-full flex items-center justify-center gap-2 px-4 py-3
+                  text-sm font-medium text-gray-600 hover:text-red-600
+                  bg-white hover:bg-red-50
+                  border border-gray-200 hover:border-red-300
+                  rounded-xl transition-all duration-200
+                  shadow-sm hover:shadow-md"
+              >
+                <IoLogOutOutline className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                <span>Disconnect Wallet</span>
+              </button>
             </div>
           </div>
         </SheetContent>

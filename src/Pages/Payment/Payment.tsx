@@ -5,8 +5,10 @@ import { Button } from "../../Components/Button/Button";
 import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
-import { useConnectOrCreateWallet, usePrivy, useWallets } from "@privy-io/react-auth";
+import { useConnectOrCreateWallet, usePrivy, useWallets, useSolanaWallets, useCreateWallet } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";
+import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+import type { Provider } from '@reown/appkit-adapter-solana/react';
 import {
   Navbar,
   NavBody,
@@ -17,7 +19,7 @@ import {
 import axios from "axios";
 import { logo } from "../../assets/icons";
 import WalletConnect from "../Wallet/WalletConnect";
-import { useERC20Transfer } from "../../hooks";
+import { useERC20Transfer, useSolanaTransfer } from "../../hooks";
 import { type Address } from "viem";
 import { toast } from "react-toastify";
 import { handleUSDCAddress } from "../../helper";
@@ -48,25 +50,52 @@ const Payment = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const { connectOrCreateWallet } = useConnectOrCreateWallet();
+  const { createWallet } = useCreateWallet();
   const { ready, authenticated, user } = usePrivy();
   const { wallets } = useWallets();
+  const { wallets: solanaWallets } = useSolanaWallets();
+
+  // AppKit Solana integration
+  const { address: appKitSolanaAddress, isConnected: isAppKitConnected } = useAppKitAccount({ namespace: 'solana' });
+  const { walletProvider: appKitSolanaProvider } = useAppKitProvider<Provider>('solana');
+
   const activeWallet = wallets?.[0];
+  const activeSolanaWallet = solanaWallets?.[0];
   const chainId = activeWallet ? Number(activeWallet.chainId) : undefined;
   const { address } = useAccount();
-  const userAddress = address || user?.wallet?.address;
+
   const { id } = useParams();
 
   const { chain } = useChainManager();
 
   const {
-    transferToken,
-    isLoading: isTransferring,
-    isSuccess: transferSuccess,
-    isError: transferError,
-    error: transferErrorMessage,
-    transactionHash,
-    reset: resetTransfer,
+    transferToken: transferERC20,
+    isLoading: isTransferringERC20,
+    isSuccess: transferSuccessERC20,
+    isError: transferErrorERC20,
+    error: transferErrorMessageERC20,
+    transactionHash: transactionHashERC20,
+    reset: resetTransferERC20,
   } = useERC20Transfer();
+
+  const {
+    transferToken: transferSolana,
+    isLoading: isTransferringSolana,
+    isSuccess: transferSuccessSolana,
+    isError: transferErrorSolana,
+    error: transferErrorMessageSolana,
+    transactionHash: transactionHashSolana,
+    reset: resetTransferSolana,
+  } = useSolanaTransfer();
+
+  // Determine which transfer method to use based on network
+  const isSolanaNetwork = paymentData?.network?.toLowerCase().includes('solana');
+  const isTransferring = isSolanaNetwork ? isTransferringSolana : isTransferringERC20;
+  const transferSuccess = isSolanaNetwork ? transferSuccessSolana : transferSuccessERC20;
+  const transferError = isSolanaNetwork ? transferErrorSolana : transferErrorERC20;
+  const transferErrorMessage = isSolanaNetwork ? transferErrorMessageSolana : transferErrorMessageERC20;
+  const transactionHash = isSolanaNetwork ? transactionHashSolana : transactionHashERC20;
+  const resetTransfer = isSolanaNetwork ? resetTransferSolana : resetTransferERC20;
 
   // useEffect(() => {
   //   console.log("Privy state:", { ready, authenticated, user });
@@ -105,24 +134,100 @@ const Payment = () => {
 
   const handleProceedToPay = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log({ ready, authenticated, user });
 
-    if (!ready) {
-      console.log("Privy not ready yet");
-      return;
-    }
+    const isSolana = paymentData?.network?.toLowerCase().includes('solana');
+
+    console.log("Payment debug:", {
+      paymentNetwork: paymentData?.network,
+      isSolana,
+      ready,
+      authenticated,
+      user,
+      isAppKitConnected,
+      appKitSolanaAddress,
+      evmAddress: address,
+      privyWallet: user?.wallet?.address,
+    });
 
     setIsConnecting(true);
     try {
-      if (!authenticated) {
-        console.log("User not authenticated, connecting wallet...");
-        connectOrCreateWallet();
-      } else {
-        console.log("User is authenticated, proceeding with payment...", user?.wallet?.address);
+      // For Solana payments, use AppKit
+      if (isSolana) {
+        // TEMPORARILY DISABLED FOR DEMO
+        // // First, make sure Privy is logged out if connected
+        // if (authenticated) {
+        //   console.log("Privy is connected but this is a Solana payment. Please use Reown AppKit.");
+        //   toast.warning("Please disconnect your EVM wallet first and connect a Solana wallet.", { position: "top-right" });
+        //   setIsConnecting(false);
+        //   return;
+        // }
+
+        if (!isAppKitConnected) {
+          console.log("Opening AppKit to connect Solana wallet...");
+          toast.info("Opening Solana wallet selector...", { position: "top-right", autoClose: 2000 });
+
+          // Import and use AppKit
+          const { appKit } = await import('../../config/appkit');
+
+          // const state = appKit.getState();
+          // console.log("AppKit full state:", {
+          //   state,
+          //   adapters: state.adapters,
+          //   networks: state.networks,
+          //   activeNamespace: state.activeNamespace,
+          // });
+
+          // Open AppKit modal - it should default to Solana since that's the only adapter configured
+          await appKit.open({ view: 'Connect' });
+
+          setIsConnecting(false);
+          return;
+        }
+        // Debug: Check what's actually connected
+        console.log("Checking connected wallet details:", {
+          appKitSolanaAddress,
+          isAppKitConnected,
+          providerPublicKey: appKitSolanaProvider?.publicKey?.toString(),
+          providerDetails: appKitSolanaProvider,
+        });
+
+        // TEMPORARILY DISABLED FOR DEMO
+        // if (!appKitSolanaAddress) {
+        //   toast.error("No Solana address detected. Please make sure you're connecting a Solana wallet.", { position: "top-right" });
+        //   setIsConnecting(false);
+        //   return;
+        // }
+
         await handlePayment();
+      }
+      // For EVM payments, use Privy
+      else {
+        if (!ready) {
+          console.log("Privy not ready yet");
+          setIsConnecting(false);
+          return;
+        }
+
+        if (!authenticated) {
+          console.log("User not authenticated, connecting wallet...");
+          connectOrCreateWallet();
+        } else {
+          // Check if we need an EVM wallet but don't have one
+          if (!activeWallet) {
+            console.log("Creating EVM wallet for payment...");
+            toast.info("Creating wallet...", { position: "top-right" });
+            await createWallet();
+            // Wait a moment for the wallet to be created
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+
+          console.log("User is authenticated, proceeding with payment...");
+          await handlePayment();
+        }
       }
     } catch (error) {
       console.error("Error connecting wallet:", error);
+      toast.error("Failed to connect wallet", { position: "top-right" });
     } finally {
       setIsConnecting(false);
     }
@@ -132,11 +237,32 @@ const Payment = () => {
     isValid: boolean;
     errorMessage?: string;
   } => {
-    if (!paymentData || !userAddress) {
+    const isSolana = paymentData?.network?.toLowerCase().includes('solana');
+
+    if (!paymentData) {
       return {
         isValid: false,
-        errorMessage: "Missing payment data or wallet not connected",
+        errorMessage: "Missing payment data",
       };
+    }
+
+    // Check wallet connection based on network type
+    if (isSolana) {
+      const solanaAddress = appKitSolanaAddress || activeSolanaWallet?.address;
+      if (!solanaAddress) {
+        return {
+          isValid: false,
+          errorMessage: "Please connect a Solana wallet",
+        };
+      }
+    } else {
+      const evmAddress = address || user?.wallet?.address;
+      if (!evmAddress) {
+        return {
+          isValid: false,
+          errorMessage: "Please connect your EVM wallet",
+        };
+      }
     }
 
     // Validate required form fields
@@ -154,15 +280,19 @@ const Payment = () => {
     console.log("Form data:", formData);
 
     // Validate payment configuration
-    if (
-      !paymentData.tokenAddress ||
-      !paymentData.address ||
-      !paymentData.amount
-    ) {
+    if (!paymentData.address || !paymentData.amount) {
       return {
         isValid: false,
         errorMessage:
           "Missing payment configuration. Please contact the merchant.",
+      };
+    }
+
+    // For EVM networks, token address is required
+    if (!isSolana && !paymentData.tokenAddress) {
+      return {
+        isValid: false,
+        errorMessage: "Token address is required for this payment.",
       };
     }
 
@@ -179,20 +309,47 @@ const Payment = () => {
       toast.error(validation.errorMessage, { position: "top-right" });
       return;
     }
-    console.log("Transfer params:", {
-      tokenAddress: tokenAddress,
-      toAddress: paymentData!.address as Address,
-      amount: paymentData!.amount,
-      decimals: paymentData!.decimals || 6,
-    });
 
     try {
-      await transferToken({
-        tokenAddress: tokenAddress as Address,
-        toAddress: paymentData!.address as Address,
-        amount: "1",
-        decimals: paymentData!.decimals || 6,
-      });
+      if (isSolanaNetwork) {
+        // Solana transfer
+        const recipientAddress = paymentData!.address?.trim(); // Trim whitespace
+
+        console.log("Solana transfer params:", {
+          tokenMintAddress: paymentData!.tokenAddress,
+          toAddress: recipientAddress,
+          toAddressLength: recipientAddress?.length,
+          amount: paymentData!.amount,
+          decimals: paymentData!.decimals || 6,
+        });
+
+        if (!recipientAddress) {
+          throw new Error("Recipient address is missing");
+        }
+
+        await transferSolana({
+          tokenMintAddress: paymentData!.tokenAddress, // For SPL tokens. Leave undefined for SOL
+          toAddress: recipientAddress,
+          amount: paymentData!.amount!,
+          decimals: paymentData!.decimals || 6,
+        });
+      } else {
+        // EVM/ERC20 transfer
+        console.log("ERC20 transfer params:", {
+          tokenAddress: tokenAddress,
+          toAddress: paymentData!.address as Address,
+          amount: paymentData!.amount,
+          decimals: paymentData!.decimals || 6,
+        });
+
+        await transferERC20({
+          tokenAddress: tokenAddress as Address,
+          toAddress: paymentData!.address as Address,
+          amount: paymentData!.amount!,
+          decimals: paymentData!.decimals || 6,
+        });
+      }
+
       if (transferSuccess) {
         // handle success endpoint call here
         toast.success('Transaction completed successfully!', { position: "top-right" });
@@ -369,12 +526,21 @@ const Payment = () => {
                   <p className="text-xs text-green-600 dark:text-green-400 mt-1 break-all">
                     Transaction:
                     <a
-                      href={`${chain?.blockExplorers?.default.url ?? ''}/tx/${transactionHash}`}
+                      href={
+                        isSolanaNetwork
+                          ? `https://explorer.solana.com/tx/${transactionHash}${paymentData?.network?.toLowerCase().includes('devnet')
+                            ? '?cluster=devnet'
+                            : paymentData?.network?.toLowerCase().includes('testnet')
+                              ? '?cluster=testnet'
+                              : ''
+                          }`
+                          : `${chain?.blockExplorers?.default.url ?? ''}/tx/${transactionHash}`
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-green-600 dark:text-green-400 hover:underline"
                     >
-                      View on {chain?.blockExplorers?.default.name ?? 'Explorer'}
+                      View on {isSolanaNetwork ? 'Solana Explorer' : chain?.blockExplorers?.default.name ?? 'Explorer'}
                     </a>
                   </p>
                   <button
@@ -412,9 +578,14 @@ const Payment = () => {
                     ? "Connecting..."
                     : transferSuccess
                       ? "Payment Completed ✅"
-                      : authenticated
-                        ? "Proceed to Pay"
-                        : "Connect Wallet to Pay"}
+                      : (() => {
+                          const isSolana = paymentData?.network?.toLowerCase().includes('solana');
+                          if (isSolana) {
+                            return isAppKitConnected ? "Proceed to Pay" : "Connect Solana Wallet";
+                          } else {
+                            return authenticated ? "Proceed to Pay" : "Connect Wallet to Pay";
+                          }
+                        })()}
               </button>
             </form>
           </>

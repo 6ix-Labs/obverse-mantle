@@ -2,15 +2,26 @@
 
 import { useState } from "react";
 import { useLogin, usePrivy } from "@privy-io/react-auth";
+import { useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react';
 import { Button } from "../../Components/Button/Button";
-// import { UserPill } from "@privy-io/react-auth/ui";
-// import { RiWallet2Line } from "react-icons/ri";
 import { ChainDropdown } from "../../Components/Dropdown/ChainDropdown";
 import WalletSheet from "./WalletSheet";
+import { useChainManager } from "../../hooks/useChainManager";
 
 function WalletConnect() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user, ready, authenticated } = usePrivy();
+
+  // Reown AppKit for Solana
+  const { address: solanaAddress, isConnected: isSolanaConnected } = useAppKitAccount({ namespace: 'solana' });
+  const { caipNetwork } = useAppKitNetwork();
+
+  // Check current chain/network
+  const { chain } = useChainManager();
+
+  // Determine if we're on Solana or EVM based on the current network
+  const isSolanaNetwork = caipNetwork?.name?.toLowerCase().includes('solana') ||
+                          chain?.name?.toLowerCase().includes('solana');
 
   const { login } = useLogin({
     onComplete: () => setIsLoading(false),
@@ -27,20 +38,35 @@ function WalletConnect() {
     }
   };
 
+  const handleConnectSolana = async () => {
+    setIsLoading(true);
+    try {
+      const { appKit } = await import('../../config/appkit');
+      await appKit.open({ view: 'Connect' });
+    } catch (error) {
+      console.error("Solana connection error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Check if either Privy (EVM) or Reown (Solana) is connected
+  const isConnected = (authenticated && user && user.wallet?.address) || isSolanaConnected;
+
   return (
     <div>
-      {authenticated && user && user.wallet?.address ? (
+      {isConnected ? (
         <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-3">
           <WalletSheet />
-          <ChainDropdown />
+          {authenticated && <ChainDropdown />}
         </div>
       ) : (
         <>
-          <div className="flex flex-row items-center space-x-3">
+          <div className="flex flex-row items-center space-x-2">
             {ready ? (
               <button
                 disabled={isLoading}
-                onClick={handleLogin}
+                onClick={isSolanaNetwork ? handleConnectSolana : handleLogin}
                 className={`w-full lg:w-fit rounded-xl px-2 sm:px-4 py-2 bg-white text-xs sm:text-base text-[#E85e38] border border-[#E85e38] hover:bg-[#E85e38] hover:text-white ${isLoading ? "cursor-not-allowed opacity-50" : ""
                   }`}
               >

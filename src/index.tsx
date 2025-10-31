@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { wagmiConfig } from './wagmiConfig';
 import { base, baseSepolia, lisk, liskSepolia } from 'viem/chains';
 import { ChainProvider } from './hooks/useChainManager';
+import './config/appkit'; // Initialize AppKit
 
 const queryClient = new QueryClient();
 
@@ -29,15 +30,15 @@ root.render(
           priceDisplay: {
             primary: "fiat-currency",
             secondary: "native-token",
-           },
+          },
         },
         appearance: {
           showWalletLoginFirst: false,
           accentColor: "#E85e38",
         },
-        loginMethods: ["wallet","email"],
+        loginMethods: ["wallet", "email"],
         defaultChain: baseSepolia,
-        supportedChains: [baseSepolia, base, lisk, liskSepolia]
+        supportedChains: [baseSepolia, base, lisk, liskSepolia],
       }}
     >
       <QueryClientProvider client={queryClient}>
