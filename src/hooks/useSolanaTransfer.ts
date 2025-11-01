@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react';
-import { useSolanaWallets } from '@privy-io/react-auth';
+import { useWallets, useSignAndSendTransaction } from '@privy-io/react-auth/solana';
 import { useAppKitProvider, useAppKitAccount } from '@reown/appkit/react';
 import type { Provider } from '@reown/appkit-adapter-solana/react';
 import { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import bs58 from 'bs58';
 import {
   getAssociatedTokenAddress,
   createTransferInstruction,
@@ -28,7 +29,8 @@ export interface UseSolanaTransferReturn {
 }
 
 export const useSolanaTransfer = (): UseSolanaTransferReturn => {
-  const { wallets } = useSolanaWallets();
+  const { wallets } = useWallets();
+  const { signAndSendTransaction } = useSignAndSendTransaction();
   const privySolanaWallet = wallets?.[0];
 
   // AppKit integration
@@ -197,12 +199,17 @@ export const useSolanaTransfer = (): UseSolanaTransferReturn => {
         // AppKit provider method
         signature = await appKitProvider.signAndSendTransaction(transaction);
       } else {
-        // Privy wallet method
-        const signedTransaction = await privySolanaWallet!.signTransaction(transaction);
-        signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: false,
-          preflightCommitment: 'confirmed',
+        // Privy wallet method - serialize transaction to Uint8Array for v3 API
+        const serializedTransaction = transaction.serialize({
+          requireAllSignatures: false,
+          verifySignatures: false,
         });
+        const result = await signAndSendTransaction({
+          transaction: serializedTransaction,
+          wallet: privySolanaWallet!,
+        });
+        // Convert Uint8Array signature to base58 string
+        signature = bs58.encode(result.signature);
       }
 
       // Wait for confirmation with better error handling

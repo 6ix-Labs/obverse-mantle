@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLogin, usePrivy } from "@privy-io/react-auth";
-import { useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react';
+import { useWallets } from "@privy-io/react-auth/solana";
 import { Button } from "../../Components/Button/Button";
 import { ChainDropdown } from "../../Components/Dropdown/ChainDropdown";
 import WalletSheet from "./WalletSheet";
@@ -12,16 +12,17 @@ function WalletConnect() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user, ready, authenticated } = usePrivy();
 
-  // Reown AppKit for Solana
-  const { address: solanaAddress, isConnected: isSolanaConnected } = useAppKitAccount({ namespace: 'solana' });
-  const { caipNetwork } = useAppKitNetwork();
+  // Privy Solana wallets
+  const { wallets: solanaWallets } = useWallets();
+  const solanaWallet = solanaWallets?.[0];
+  const isSolanaConnected = !!solanaWallet && !!solanaWallet.address;
 
   // Check current chain/network
   const { chain } = useChainManager();
 
   // Determine if we're on Solana or EVM based on the current network
-  const isSolanaNetwork = caipNetwork?.name?.toLowerCase().includes('solana') ||
-                          chain?.name?.toLowerCase().includes('solana');
+  const isSolanaNetwork =
+    isSolanaConnected || chain?.name?.toLowerCase().includes("solana");
 
   const { login } = useLogin({
     onComplete: () => setIsLoading(false),
@@ -39,26 +40,26 @@ function WalletConnect() {
   };
 
   const handleConnectSolana = async () => {
+    // For Solana, Privy handles the connection through the same login flow
     setIsLoading(true);
     try {
-      const { appKit } = await import('../../config/appkit');
-      await appKit.open({ view: 'Connect' });
+      await login();
     } catch (error) {
       console.error("Solana connection error:", error);
-    } finally {
       setIsLoading(false);
     }
   };
 
   // Check if either Privy (EVM) or Reown (Solana) is connected
-  const isConnected = (authenticated && user && user.wallet?.address) || isSolanaConnected;
+  const isConnected =
+    (authenticated && user && user.wallet?.address) || isSolanaConnected;
 
   return (
     <div>
       {isConnected ? (
         <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-3">
           <WalletSheet />
-          {authenticated && <ChainDropdown />}
+          {(authenticated || isSolanaConnected) && <ChainDropdown />}
         </div>
       ) : (
         <>
@@ -67,8 +68,9 @@ function WalletConnect() {
               <button
                 disabled={isLoading}
                 onClick={isSolanaNetwork ? handleConnectSolana : handleLogin}
-                className={`w-full lg:w-fit rounded-xl px-2 sm:px-4 py-2 bg-white text-xs sm:text-base text-[#E85e38] border border-[#E85e38] hover:bg-[#E85e38] hover:text-white ${isLoading ? "cursor-not-allowed opacity-50" : ""
-                  }`}
+                className={`w-full lg:w-fit rounded-xl px-2 sm:px-4 py-2 bg-white text-xs sm:text-base text-[#E85e38] border border-[#E85e38] hover:bg-[#E85e38] hover:text-white ${
+                  isLoading ? "cursor-not-allowed opacity-50" : ""
+                }`}
               >
                 {isLoading ? "Connecting..." : "Connect Wallet"}
               </button>

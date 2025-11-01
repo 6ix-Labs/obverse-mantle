@@ -10,8 +10,9 @@ import { Button } from "../../Components/Button/Button";
 import { cn } from "../../lib/utils";
 import { IoCopyOutline, IoWalletOutline, IoLogOutOutline } from "react-icons/io5";
 import { usePrivy } from "@privy-io/react-auth";
+import { useWallets } from "@privy-io/react-auth/solana";
 import { useAccount, useBalance, useReadContract } from "wagmi";
-import { useAppKitAccount, useDisconnect } from '@reown/appkit/react';
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { handleUSDCAddress } from "../../helper";
 import { baseSepolia } from "viem/chains";
 import { toast } from "react-toastify";
@@ -19,6 +20,7 @@ import { formatUnits, erc20Abi } from "viem";
 import { ArrowRightToLineIcon } from "lucide-react";
 import TransferModal from "../../Components/Transfer/TransferModal";
 import { UserPill } from "@privy-io/react-auth/ui";
+import { useActiveChain } from "../../contexts/ActiveChainContext";
 
 // Asset imports
 import AvatarIcon from "../../assets/icons/AvatarIcon.svg";
@@ -33,12 +35,22 @@ interface TokenBalance {
   decimals?: number;
 }
 
-const tokenConfigs = [
+const evmTokenConfigs = [
   {
     symbol: "USDC",
     icon: "https://assets.kraken.com/marketing/web/icons-uni-webp/s_usdc.webp?i=kds",
     address: handleUSDCAddress(baseSepolia.id),
     decimals: 6,
+    chain: 'evm'
+  },
+];
+
+const solanaTokenConfigs = [
+  {
+    symbol: "SOL",
+    icon: "https://cryptologos.cc/logos/solana-sol-logo.png",
+    decimals: 9,
+    chain: 'solana'
   },
 ];
 
@@ -46,6 +58,7 @@ export const WalletSheet: React.FC = () => {
   const [balances, setBalances] = useState<TokenBalance[]>([]);
   const [totalValue, setTotalValue] = useState("0.00");
   const [isLoading, setIsLoading] = useState(false);
+  const { activeChainType } = useActiveChain();
 
   const tabClasses = (active: boolean) =>
     cn(
@@ -58,29 +71,24 @@ export const WalletSheet: React.FC = () => {
   const { user, logout, authenticated } = usePrivy();
   const { address } = useAccount();
 
-  // Reown AppKit for Solana
-  const { address: solanaAddress, isConnected: isSolanaConnected } = useAppKitAccount({ namespace: 'solana' });
-  const { disconnect: disconnectAppKit } = useDisconnect();
+  // Privy Solana wallets
+  const { wallets: solanaWallets } = useWallets();
+  const solanaWallet = solanaWallets?.[0];
+  const solanaAddress = solanaWallet?.address;
+  const isSolanaConnected = !!solanaWallet && !!solanaAddress;
 
-  const userAddress = address || user?.wallet?.address || solanaAddress;
+  // Determine which wallet address to show based on active chain type
+  const userAddress = activeChainType === 'solana'
+    ? solanaAddress
+    : address || user?.wallet?.address;
 
-  // Handle logout/disconnect for both Privy and Reown
+  // Handle logout/disconnect for Privy (handles both EVM and Solana)
   const handleLogout = async () => {
     try {
-      // Disconnect Reown AppKit (Solana) if connected
-      if (isSolanaConnected) {
-        await disconnectAppKit();
-        toast.success("Solana wallet disconnected", { position: "top-right" });
-      }
-
-      // Logout from Privy (EVM) if authenticated
-      if (authenticated) {
+      if (authenticated || isSolanaConnected) {
         await logout();
-        toast.success("EVM wallet disconnected", { position: "top-right" });
-      }
-
-      // If neither was connected (shouldn't happen, but handle it)
-      if (!isSolanaConnected && !authenticated) {
+        toast.success("Wallet disconnected", { position: "top-right" });
+      } else {
         toast.info("No wallet connected", { position: "top-right" });
       }
     } catch (error) {
@@ -126,29 +134,76 @@ export const WalletSheet: React.FC = () => {
 
       setIsLoading(true);
       try {
-        const updatedBalances = await Promise.all(
-          tokenConfigs.map(async (token) => {
-            let amount = "0.00";
-            let value = "$0.00";
+        let updatedBalances: TokenBalance[] = [];
 
-            if (token.symbol === "USDC") {
-              if (usdcBalance) {
-                const usdcAmount = parseFloat(formatUnits(usdcBalance, 6));
-                amount = usdcAmount.toFixed(6);
-                value = `$${usdcAmount.toFixed(2)}`; // USDC is 1:1 with USD
+        // Fetch Solana balances if active chain is Solana
+        if (activeChainType === 'solana' && isSolanaConnected && solanaAddress && solanaWallet) {
+          const solBalances = await Promise.all(
+            solanaTokenConfigs.map(async (token) => {
+              let amount = "0.00";
+              let value = "$0.00";
+
+              if (token.symbol === "SOL") {
+                try {
+                  // Get SOL balance from Solana network
+                  // Detect network from wallet chainId
+                  const walletChainId = (solanaWallet as any)?.chainId || 'solana:devnet';
+                  const isMainnet = walletChainId.includes('mainnet');
+                  const rpcUrl = isMainnet
+                    ? "https://api.mainnet-beta.solana.com"
+                    : "https://api.devnet.solana.com";
+                  
+                  const connection = new Connection(rpcUrl, 'confirmed');
+                  const publicKey = new PublicKey(solanaAddress);
+                  const balance = await connection.getBalance(publicKey);
+                  const solAmount = balance / LAMPORTS_PER_SOL;
+                  amount = solAmount.toFixed(4);
+                  // Approximate SOL price (you may want to fetch this from an API)
+                  const solPrice = 150; // Placeholder
+                  value = `$${(solAmount * solPrice).toFixed(2)}`;
+                } catch (error) {
+                  console.error("Error fetching SOL balance:", error);
+                }
               }
-            }
 
-            return {
-              symbol: token.symbol,
-              amount,
-              value,
-              icon: token.icon,
-              address: token.address,
-              decimals: token.decimals,
-            };
-          })
-        );
+              return {
+                symbol: token.symbol,
+                amount,
+                value,
+                icon: token.icon,
+                decimals: token.decimals,
+              };
+            })
+          );
+          updatedBalances = solBalances;
+        } 
+        // Fetch EVM balances if active chain is EVM
+        else if (activeChainType === 'evm' && authenticated) {
+          const evmBalances = await Promise.all(
+            evmTokenConfigs.map(async (token) => {
+              let amount = "0.00";
+              let value = "$0.00";
+
+              if (token.symbol === "USDC") {
+                if (usdcBalance) {
+                  const usdcAmount = parseFloat(formatUnits(usdcBalance, 6));
+                  amount = usdcAmount.toFixed(6);
+                  value = `$${usdcAmount.toFixed(2)}`; // USDC is 1:1 with USD
+                }
+              }
+
+              return {
+                symbol: token.symbol,
+                amount,
+                value,
+                icon: token.icon,
+                address: token.address,
+                decimals: token.decimals,
+              };
+            })
+          );
+          updatedBalances = evmBalances;
+        }
 
         setBalances(updatedBalances);
 
@@ -167,7 +222,7 @@ export const WalletSheet: React.FC = () => {
     };
 
     fetchBalances();
-  }, [userAddress, ethBalance, usdcBalance]);
+  }, [userAddress, ethBalance, usdcBalance, isSolanaConnected, solanaAddress, authenticated, solanaWallet, activeChainType]);
 
   return (
     <>
@@ -237,9 +292,11 @@ export const WalletSheet: React.FC = () => {
               <div className="flex items-center gap-3">
                 <TransferModal
                   userBalance={
-                    balances.find((b) => b.symbol === "USDC")?.amount || "0"
+                    activeChainType === 'solana' 
+                      ? balances.find((b) => b.symbol === "SOL")?.amount || "0"
+                      : balances.find((b) => b.symbol === "USDC")?.amount || "0"
                   }
-                  tokenSymbol="USDC"
+                  tokenSymbol={activeChainType === 'solana' ? "SOL" : "USDC"}
                 >
                   <Button className="px-3 py-2 flex-1 font-sans text-sm bg-neutral-200 rounded-lg hover:bg-neutral-300 border border-neutral-200">
                     Transfer
