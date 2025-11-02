@@ -6,13 +6,13 @@ import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
 // import { useConnectOrCreateWallet, usePrivy, useWallets as useEthereumWallets, useCreateWallet } from "@privy-io/react-auth";
+
 import { useConnectOrCreateWallet, usePrivy, useWallets as useEthereumWallets, useCreateWallet } from "@privy-io/react-auth";
-// import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
-import { useWallets } from "@privy-io/react-auth";
+import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
 // import { useWallets } from "@privy-io/react-auth/solana";
 import { useAccount } from "wagmi";
-import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
-import type { Provider } from '@reown/appkit-adapter-solana/react';
+// import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+// import type { Provider } from '@reown/appkit-adapter-solana/react';
 import {
   Navbar,
   NavBody,
@@ -25,7 +25,7 @@ import { logo } from "../../assets/icons";
 import WalletConnect from "../Wallet/WalletConnect";
 import { useERC20Transfer, useSolanaTransfer } from "../../hooks";
 import { type Address } from "viem";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { handleUSDCAddress } from "../../helper";
 import { baseSepolia } from "viem/chains";
 
@@ -46,6 +46,7 @@ interface PaymentData {
   status?: string;
   type?: string;
 }
+// console
 
 const Payment = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -61,8 +62,8 @@ const Payment = () => {
 
 
   // AppKit Solana integration
-  const { address: appKitSolanaAddress, isConnected: isAppKitConnected } = useAppKitAccount({ namespace: 'solana' });
-  const { walletProvider: appKitSolanaProvider } = useAppKitProvider<Provider>('solana');
+  // const { address: appKitSolanaAddress, isConnected: isAppKitConnected } = useAppKitAccount({ namespace: 'solana' });
+  // const { walletProvider: appKitSolanaProvider } = useAppKitProvider<Provider>('solana');
 
   const activeWallet = wallets?.[0];
   const activeSolanaWallet = solanaWallets?.[0];
@@ -148,76 +149,36 @@ const Payment = () => {
       ready,
       authenticated,
       user,
-      isAppKitConnected,
-      appKitSolanaAddress,
       evmAddress: address,
+      solanaAddress: activeSolanaWallet?.address,
       privyWallet: user?.wallet?.address,
     });
 
     setIsConnecting(true);
     try {
-      // For Solana payments, use AppKit
-      if (isSolana) {
-        // TEMPORARILY DISABLED FOR DEMO
-        // // First, make sure Privy is logged out if connected
-        // if (authenticated) {
-        //   console.log("Privy is connected but this is a Solana payment. Please use Reown AppKit.");
-        //   toast.warning("Please disconnect your EVM wallet first and connect a Solana wallet.", { position: "top-right" });
-        //   setIsConnecting(false);
-        //   return;
-        // }
-
-        if (!isAppKitConnected) {
-          console.log("Opening AppKit to connect Solana wallet...");
-          toast.info("Opening Solana wallet selector...", { position: "top-right", autoClose: 2000 });
-
-          // Import and use AppKit
-          const { appKit } = await import('../../config/appkit');
-
-          // const state = appKit.getState();
-          // console.log("AppKit full state:", {
-          //   state,
-          //   adapters: state.adapters,
-          //   networks: state.networks,
-          //   activeNamespace: state.activeNamespace,
-          // });
-
-          // Open AppKit modal - it should default to Solana since that's the only adapter configured
-          await appKit.open({ view: 'Connect' });
-
-          setIsConnecting(false);
-          return;
-        }
-        // Debug: Check what's actually connected
-        console.log("Checking connected wallet details:", {
-          appKitSolanaAddress,
-          isAppKitConnected,
-          providerPublicKey: appKitSolanaProvider?.publicKey?.toString(),
-          providerDetails: appKitSolanaProvider,
-        });
-
-        // TEMPORARILY DISABLED FOR DEMO
-        // if (!appKitSolanaAddress) {
-        //   toast.error("No Solana address detected. Please make sure you're connecting a Solana wallet.", { position: "top-right" });
-        //   setIsConnecting(false);
-        //   return;
-        // }
-
-        await handlePayment();
+      // Use Privy for both Solana and EVM
+      if (!ready) {
+        console.log("Privy not ready yet");
+        setIsConnecting(false);
+        return;
       }
-      // For EVM payments, use Privy
-      else {
-        if (!ready) {
-          console.log("Privy not ready yet");
-          setIsConnecting(false);
-          return;
-        }
 
-        if (!authenticated) {
-          console.log("User not authenticated, connecting wallet...");
-          connectOrCreateWallet();
+      if (!authenticated) {
+        console.log("User not authenticated, connecting wallet...");
+        connectOrCreateWallet();
+      } else {
+        // Check if we need the appropriate wallet type
+        if (isSolana) {
+          // Check for Solana wallet
+          if (!activeSolanaWallet) {
+            console.log("Creating Solana wallet for payment...");
+            toast.info("Creating Solana wallet...", { position: "top-right" });
+            await createWallet();
+            // Wait a moment for the wallet to be created
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
         } else {
-          // Check if we need an EVM wallet but don't have one
+          // Check for EVM wallet
           if (!activeWallet) {
             console.log("Creating EVM wallet for payment...");
             toast.info("Creating wallet...", { position: "top-right" });
@@ -225,10 +186,10 @@ const Payment = () => {
             // Wait a moment for the wallet to be created
             await new Promise(resolve => setTimeout(resolve, 1000));
           }
-
-          console.log("User is authenticated, proceeding with payment...");
-          await handlePayment();
         }
+
+        console.log("User is authenticated, proceeding with payment...");
+        await handlePayment();
       }
     } catch (error) {
       console.error("Error connecting wallet:", error);
@@ -253,7 +214,7 @@ const Payment = () => {
 
     // Check wallet connection based on network type
     if (isSolana) {
-      const solanaAddress = appKitSolanaAddress || activeSolanaWallet?.address;
+      const solanaAddress = activeSolanaWallet?.address;
       if (!solanaAddress) {
         return {
           isValid: false,
@@ -270,19 +231,62 @@ const Payment = () => {
       }
     }
 
-    // Validate required form fields
+    // Validate required form fields - check if they exist and are not empty
     const requiredFields = Object.keys(paymentData.payerDetails || {});
-    const missingFields = requiredFields.filter((field) => !formData[field]);
+    const emptyFields = requiredFields.filter((field) => {
+      const value = formData[field];
+      // Check if field is missing, empty string, or only whitespace
+      return !value || value.trim() === '';
+    });
 
-    if (missingFields.length > 0) {
+    if (emptyFields.length > 0) {
       return {
         isValid: false,
-        errorMessage: `Please fill in all required fields: ${missingFields.join(
-          ", "
-        )}`,
+        errorMessage: `Please fill in all required fields: ${emptyFields
+          .map(field => field.charAt(0).toUpperCase() + field.slice(1))
+          .join(", ")}`,
       };
     }
-    console.log("Form data:", formData);
+
+    // Additional validation for specific field types
+    for (const field of requiredFields) {
+      const value = formData[field]?.trim();
+
+      // Email validation
+      if (field === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          return {
+            isValid: false,
+            errorMessage: "Please enter a valid email address",
+          };
+        }
+      }
+
+      // Phone validation (basic check for digits)
+      if (field === 'phone' && value) {
+        const phoneRegex = /^\+?[\d\s-()]+$/;
+        if (!phoneRegex.test(value) || value.replace(/\D/g, '').length < 10) {
+          return {
+            isValid: false,
+            errorMessage: "Please enter a valid phone number (at least 10 digits)",
+          };
+        }
+      }
+
+      // Age validation
+      if (field === 'age' && value) {
+        const age = parseInt(value);
+        if (isNaN(age) || age < 1 || age > 150) {
+          return {
+            isValid: false,
+            errorMessage: "Please enter a valid age (1-150)",
+          };
+        }
+      }
+    }
+
+    console.log("Form data validation passed:", formData);
 
     // Validate payment configuration
     if (!paymentData.address || !paymentData.amount) {
@@ -585,11 +589,7 @@ const Payment = () => {
                       ? "Payment Completed ✅"
                       : (() => {
                         const isSolana = paymentData?.network?.toLowerCase().includes('solana');
-                        if (isSolana) {
-                          return isAppKitConnected ? "Proceed to Pay" : "Connect Solana Wallet";
-                        } else {
-                          return authenticated ? "Proceed to Pay" : "Connect Wallet to Pay";
-                        }
+                        return authenticated ? "Proceed to Pay" : "Connect Wallet to Pay";
                       })()}
               </button>
             </form>
