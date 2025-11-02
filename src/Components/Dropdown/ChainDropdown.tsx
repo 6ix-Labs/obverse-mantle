@@ -20,11 +20,11 @@ interface ChainConfig {
 
 const CHAINS: ChainConfig[] = [
   // EVM Chains
-  { id: Number(baseSepolia.id), name: "Base Sepolia", type: 'evm' },
-  { id: Number(liskSepolia.id), name: "Lisk Sepolia", type: 'evm' },
-  { id: Number(arbitrumSepolia.id), name: "Arbitrum Sepolia", type: 'evm' },
-  { id: Number(optimismSepolia.id), name: "Optimism Sepolia", type: 'evm' },
-  { id: 'solana:mainnet', name: "Solana Mainnet", type: 'solana', chainId: 'solana:mainnet' },
+  // { id: Number(baseSepolia.id), name: "Base Sepolia", type: 'evm' },
+  // { id: Number(liskSepolia.id), name: "Lisk Sepolia", type: 'evm' },
+  // { id: Number(arbitrumSepolia.id), name: "Arbitrum Sepolia", type: 'evm' },
+  // { id: Number(optimismSepolia.id), name: "Optimism Sepolia", type: 'evm' },
+  // { id: 'solana:mainnet', name: "Solana Mainnet", type: 'solana', chainId: 'solana:mainnet' },
   { id: 'solana:devnet', name: "Solana Devnet", type: 'solana', chainId: 'solana:devnet' },
 ];
 
@@ -77,7 +77,7 @@ export const ChainDropdown: React.FC = () => {
     try {
       // Update active chain type
       setActiveChainType(chain.type);
-      
+
       if (chain.type === 'solana') {
         if (!isSolanaConnected || !solanaWallet) {
           toast.warning("Please connect a Solana wallet first", { position: "top-right" });
@@ -86,7 +86,7 @@ export const ChainDropdown: React.FC = () => {
           setIsOpen(false);
           return;
         }
-        
+
         if (chain.chainId) {
           await (solanaWallet as any).switchChain(chain.chainId);
           toast.success(`Switched to ${chain.name}`, { position: "top-right" });
@@ -99,7 +99,7 @@ export const ChainDropdown: React.FC = () => {
           setIsOpen(false);
           return;
         }
-        
+
         await switchChain(chain.id as number);
         toast.success(`Switched to ${chain.name}`, { position: "top-right" });
       }
@@ -139,7 +139,7 @@ export const ChainDropdown: React.FC = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </Button>
-      
+
       {isOpen && (
         <div className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 p-1 min-w-[170px] z-50">
           {/* EVM Chains Section */}
@@ -151,16 +151,15 @@ export const ChainDropdown: React.FC = () => {
               key={chain.id}
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
-              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                chain.id === chainId && activeChainType === 'evm'
+              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.id === chainId && activeChainType === 'evm'
                   ? 'bg-gray-100 text-gray-900 font-medium'
                   : 'text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               {chain.name}
             </button>
           ))}
-          
+
           {/* Solana Chains Section */}
           <div className="px-3 py-1.5 mt-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-t border-gray-100">
             Solana Chains
@@ -170,11 +169,10 @@ export const ChainDropdown: React.FC = () => {
               key={chain.id}
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
-              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                chain.chainId === currentChain.chainId && activeChainType === 'solana'
+              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.chainId === currentChain.chainId && activeChainType === 'solana'
                   ? 'bg-gray-100 text-gray-900 font-medium'
                   : 'text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               {chain.name}
             </button>
