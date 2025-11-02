@@ -29,7 +29,7 @@ import { baseSepolia } from "viem/chains";
 import { useChainManager } from "../../hooks/useChainManager";
 import WalletSheet from "../Wallet/WalletSheet";
 
-
+// grace123@
 interface PaymentData {
   title?: string;
   amount?: string;
@@ -580,13 +580,13 @@ const Payment = () => {
                     : transferSuccess
                       ? "Payment Completed ✅"
                       : (() => {
-                          const isSolana = paymentData?.network?.toLowerCase().includes('solana');
-                          if (isSolana) {
-                            return isAppKitConnected ? "Proceed to Pay" : "Connect Solana Wallet";
-                          } else {
-                            return authenticated ? "Proceed to Pay" : "Connect Wallet to Pay";
-                          }
-                        })()}
+                        const isSolana = paymentData?.network?.toLowerCase().includes('solana');
+                        if (isSolana) {
+                          return isAppKitConnected ? "Proceed to Pay" : "Connect Solana Wallet";
+                        } else {
+                          return authenticated ? "Proceed to Pay" : "Connect Wallet to Pay";
+                        }
+                      })()}
               </button>
             </form>
           </>
