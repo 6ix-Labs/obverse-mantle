@@ -43,6 +43,7 @@ interface PaymentData {
   status?: string;
   type?: string;
 }
+// console
 
 const Payment = () => {
   const [darkMode, setDarkMode] = useState(false);
