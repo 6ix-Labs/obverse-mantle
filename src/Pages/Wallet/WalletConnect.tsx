@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLogin, usePrivy } from "@privy-io/react-auth";
-import { useWallets } from "@privy-io/react-auth/solana";
+import { useAppKitAccount, useAppKitNetwork } from '@reown/appkit/react';
 import { Button } from "../../Components/Button/Button";
 import { ChainDropdown } from "../../Components/Dropdown/ChainDropdown";
 import WalletSheet from "./WalletSheet";
@@ -12,13 +12,14 @@ function WalletConnect() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user, ready, authenticated } = usePrivy();
 
-  // Privy Solana wallets
-  const { wallets: solanaWallets } = useWallets();
-  const solanaWallet = solanaWallets?.[0];
-  const isSolanaConnected = !!solanaWallet && !!solanaWallet.address;
+  // Reown AppKit for Solana
+  const { address: solanaAddress, isConnected: isSolanaConnected } = useAppKitAccount({ namespace: 'solana' });
+  const { caipNetwork } = useAppKitNetwork();
+
 
   // Check current chain/network
   const { chain } = useChainManager();
+
 
   // Determine if we're on Solana or EVM based on the current network
   const isSolanaNetwork =
@@ -68,9 +69,8 @@ function WalletConnect() {
               <button
                 disabled={isLoading}
                 onClick={isSolanaNetwork ? handleConnectSolana : handleLogin}
-                className={`w-full lg:w-fit rounded-xl px-2 sm:px-4 py-2 bg-white text-xs sm:text-base text-[#E85e38] border border-[#E85e38] hover:bg-[#E85e38] hover:text-white ${
-                  isLoading ? "cursor-not-allowed opacity-50" : ""
-                }`}
+                className={`w-full lg:w-fit rounded-xl px-2 sm:px-4 py-2 bg-white text-xs sm:text-base text-[#E85e38] border border-[#E85e38] hover:bg-[#E85e38] hover:text-white ${isLoading ? "cursor-not-allowed opacity-50" : ""
+                  }`}
               >
                 {isLoading ? "Connecting..." : "Connect Wallet"}
               </button>

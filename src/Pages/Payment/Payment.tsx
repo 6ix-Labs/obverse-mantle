@@ -5,8 +5,11 @@ import { Button } from "../../Components/Button/Button";
 import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
+// import { useConnectOrCreateWallet, usePrivy, useWallets as useEthereumWallets, useCreateWallet } from "@privy-io/react-auth";
 import { useConnectOrCreateWallet, usePrivy, useWallets as useEthereumWallets, useCreateWallet } from "@privy-io/react-auth";
-import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
+// import { useWallets as useSolanaWallets } from "@privy-io/react-auth/solana";
+import { useWallets } from "@privy-io/react-auth";
+// import { useWallets } from "@privy-io/react-auth/solana";
 import { useAccount } from "wagmi";
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import type { Provider } from '@reown/appkit-adapter-solana/react';
@@ -55,6 +58,7 @@ const Payment = () => {
   const { ready, authenticated, user } = usePrivy();
   const { wallets } = useEthereumWallets();
   const { wallets: solanaWallets } = useSolanaWallets();
+
 
   // AppKit Solana integration
   const { address: appKitSolanaAddress, isConnected: isAppKitConnected } = useAppKitAccount({ namespace: 'solana' });
