@@ -32,7 +32,7 @@ const Footer = () => {
             </div>
             <div className="w-full flex sm:flex-row flex-col justify-between">
               <p className="text-[#FFF3EF] sm:text-[14px] text-[14px] font-onest mt-5">
-                ©2025 Obverse LTD. RC: 7810789
+                ©2025 Obverse LTD. 
               </p>
               <p className="text-[#FFF3EF] sm:text-[14px] text-[14px] font-onest">
                 All rights reserved
