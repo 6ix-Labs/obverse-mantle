@@ -143,7 +143,7 @@ export const ChainDropdown: React.FC = () => {
       {isOpen && (
         <div className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 p-1 min-w-[170px] z-50">
           {/* EVM Chains Section */}
-          {/* <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
             EVM Chains
           </div>
           {CHAINS.filter(c => c.type === 'evm').map((chain) => (
@@ -158,7 +158,7 @@ export const ChainDropdown: React.FC = () => {
             >
               {chain.name}
             </button>
-          ))} */}
+          ))}
 
           {/* Solana Chains Section */}
           <div className="px-3 py-1.5 mt-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-t border-gray-100">

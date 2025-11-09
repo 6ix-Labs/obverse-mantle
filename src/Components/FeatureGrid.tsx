@@ -18,12 +18,12 @@ const features: Feature[] = [
   },
   {
     icon: icon4,
-    title: "Works seamlessly across Base, Arbitrum, and Lisk.",
+    title: "Works seamlessly on Solana",
   },
   {
     icon: icon6,
     title: "Every payment comes with details you require — organized automatically.",
-    
+
   },
   {
     icon: icon5,
@@ -39,7 +39,7 @@ const FeatureGrid: React.FC = () => {
   return (
     <div className="bg-[#070707] border border-[#464646] rounded-[32px] flex items-center justify-center px-4 py-5 shadow-inner">
       <div className="grid md:grid-cols-2 gap-6 max-w-5xl w-full">
-        
+
         <div className="flex cursor-pointer flex-col gap-4  px-4 py-5 rounded-[32px] border border-[#464646] shadow-inner">
           {features.slice(0, 3).map((feature, i) => (
             <FeatureCard key={i} feature={feature} />
@@ -68,8 +68,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ feature }) => {
       <div className="flex flex-col gap-2">
         <div
           className=""
-        > 
-        <img src={feature.icon} />
+        >
+          <img src={feature.icon} />
 
         </div>
         <p className="text-[16px] font-onest leading-[25px]">{feature.title}</p>
