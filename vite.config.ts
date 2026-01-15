@@ -38,7 +38,16 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'build'
+    outDir: 'build',
+    rollupOptions: {
+      plugins: [
+        // @ts-ignore
+        NodeGlobalsPolyfillPlugin({
+          process: true,
+          buffer: true,
+        }),
+      ],
+    },
   },
   css: {
     postcss: './postcss.config.js'
