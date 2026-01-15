@@ -8,6 +8,7 @@ import Wallet from "./Pages/Wallet/Wallet";
 import Payment from "./Pages/Payment/Payment";
 import { Toaster } from "./Components/ui/sonner";
 import Main from "./Pages/Waitlist/waitlist";
+import Payments from "./Pages/Payment/Payments";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -21,7 +22,7 @@ const AppRoutes = () => {
       {/* {!shouldHide && <Navbar />} */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="pay/:id" element={<Payment />} />
+        <Route path="pay/:id" element={<Payments />} />
         {/* <Route path="/" element={<Main />} />
         <Route path="about" element={<About />} />
         <Route path="transactions/:linkId" element={<Wallet />} />

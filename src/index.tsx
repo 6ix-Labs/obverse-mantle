@@ -12,6 +12,7 @@ import { wagmiConfig } from "./wagmiConfig";
 import { base, baseSepolia, lisk, liskSepolia } from "viem/chains";
 import { ChainProvider } from "./hooks/useChainManager";
 import { ActiveChainProvider } from "./contexts/ActiveChainContext";
+import ObversePrivyProvider from "./providers/PrivyProvider";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <PrivyProvider
+    {/* <PrivyProvider
       appId={import.meta.env.VITE_APP_ID}
       clientId={import.meta.env.VITE_CLIENT_ID}
       config={{
@@ -70,13 +71,16 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
           <ChainProvider>
-            <ActiveChainProvider>
-              <App />
-            </ActiveChainProvider>
+            <ActiveChainProvider> */}
+    <ObversePrivyProvider>
+      <App />
+    </ObversePrivyProvider>
+
+    {/* </ActiveChainProvider>
           </ChainProvider>
         </WagmiProvider>
       </QueryClientProvider>
-    </PrivyProvider>
+    </PrivyProvider> */}
   </React.StrictMode>
 );
 

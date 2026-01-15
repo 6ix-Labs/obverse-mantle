@@ -16,7 +16,7 @@ import { useAccount } from "wagmi";
 import {
   Navbar,
   NavBody,
-  MobileNav,
+  MobileNav, 
   MobileNavHeader,
   NavbarLogo,
 } from "../../Components/Navbar/ResizableNavbar";

@@ -15,12 +15,25 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    watch: {
+      // Reduce file watchers by ignoring these directories
+      ignored: [
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/dist/**',
+        '**/build/**',
+        '**/.vscode/**',
+        '**/.idea/**',
+        '**/coverage/**',
+        '**/*.md',
+      ],
+    },
     proxy: {
-      '/api': 'http://localhost:4000',
-      '/payment-link': {
-        target: 'https://obverse-server.onrender.com',
+      '/api': {
+        target: 'https://obverse.onrender.com',
         changeOrigin: true,
-        secure: true
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   },
