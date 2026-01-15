@@ -25,7 +25,7 @@ export const USDC_DECIMALS = 6;
 
 // RPC URLs - using multiple fallbacks for reliability
 const DEFAULT_RPC_URLS = [
-    "https://api.mainnet-beta.solana.com",
+    "https://mainnet.helius-rpc.com/?api-key=1ecf6d0f-bd66-4e41-9e97-c424fe872828",
 ];
 
 export const RPC_URLS = {
@@ -105,8 +105,7 @@ export async function getUsdcBalance(
 ): Promise<number> {
     const mintAddress = USDC_MINT_ADDRESSES[network];
     const rpcUrls = network === "mainnet" ? [
-        import.meta.env.VITE_SOLANA_RPC_URL,
-        "https://api.mainnet-beta.solana.com",
+        import.meta.env.VITE_SOLANA_RPC_URL || "https://mainnet.helius-rpc.com/?api-key=1ecf6d0f-bd66-4e41-9e97-c424fe872828",
     ].filter(Boolean) : [RPC_URLS[network]];
 
     console.log("=== getUsdcBalance Debug ===");
@@ -172,7 +171,7 @@ export async function createUsdcTransferTransaction({
 }: TransferUsdcParams): Promise<TransferResult> {
     // Use the first working RPC URL (same as getUsdcBalance for consistency)
     const rpcUrl = network === "mainnet"
-        ? (import.meta.env.VITE_SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com")
+        ? (import.meta.env.VITE_SOLANA_RPC_URL || "https://mainnet.helius-rpc.com/?api-key=1ecf6d0f-bd66-4e41-9e97-c424fe872828")
         : RPC_URLS[network];
 
     const connection = new Connection(rpcUrl as string, "confirmed");
