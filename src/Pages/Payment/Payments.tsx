@@ -201,7 +201,7 @@ const Payments = () => {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [showPaymentFlow, setShowPaymentFlow] = useState(false);
     const { id } = useParams();
-    const url = `/api/payment-links/`;
+    const url = `https://obverse.onrender.com/payment-links/`;
 
     // Privy payment hook
     const {
@@ -355,7 +355,7 @@ const Payments = () => {
 
                     console.log("Sending payment notification to backend:", paymentPayload);
 
-                    await axios.post(`/api/payments`, paymentPayload);
+                    await axios.post(`https://obverse.onrender.com/payments`, paymentPayload);
 
                     console.log("Backend notification successful");
                 } catch (error) {
