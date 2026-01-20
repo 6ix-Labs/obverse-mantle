@@ -192,29 +192,30 @@ export const topT2: topTItems[] = [
 
 
 export const testimonials: testimonialsItems[] = [
-        {
-            text: "I started with just one bundle of DeCharge Mini, mostly out of curiosity. We installed them near a college campus where there’s always EV traffic.",
-            name: "Cornel Isakiss",
-            avatar: avatar1
-        },
-        {
-            text: "It’s an amazing experience with reliable EV charging support everywhere.",
-            name: "Cornel Isakiss",
-            avatar: avatar2,
-        },
-        {
-            text: "Our sales increased by 40% after installing DeCharge stations.",
-            name: "Cornel Isakiss",
-            avatar: avatar3,
-        },
-        {
-            text: "The best EV charging solution we’ve ever tried!",
-            name: "Cornel Isakiss",
-            avatar: avatar4,
-        },
-        {
-            text: "Compact, reliable, and easy to use. Perfect for city locations.",
-            name: "Cornel Isakiss",
-            avatar: avatar5,
-        },
-    ];
+  {
+    text: "I started using Obverse to explore better ways of managing digital assets. The platform felt intuitive from day one, and it made cross-border access seamless.",
+    name: "Amina Bello",
+    avatar: avatar1,
+  },
+  {
+    text: "With Obverse, sending and receiving value across regions became simple. It’s empowering to have a solution that actually works globally, especially for Africa.",
+    name: "Lerato Mokoena",
+    avatar: avatar2,
+  },
+  {
+    text: "Obverse helped me streamline transactions without worrying about borders. The speed and reliability made it an easy choice for everyday use.",
+    name: "Kwame Mensah",
+    avatar: avatar3,
+  },
+  {
+    text: "The experience with Obverse has been smooth and dependable. It’s built for real-world usage and scales well beyond local markets.",
+    name: "David Okafor",
+    avatar: avatar4,
+  },
+  {
+    text: "What stood out with Obverse is how accessible it feels. Whether locally or globally, it bridges the gap in modern digital finance.",
+    name: "Samuel Adeyemi",
+    avatar: avatar5,
+  },
+];
+
