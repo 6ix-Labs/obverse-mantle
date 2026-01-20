@@ -16,8 +16,8 @@ const Navbar: React.FC = () => {
 
 
   return (
-    <header className="sm:pt-0 pt-0 w-full bg-background-main">
-      <nav className="sm:px-20 px-8 flex justify-between py-6 items-center w-full">
+    <header className="pt-0 w-full sm:pt-0 bg-background-main">
+      <nav className="flex justify-between items-center px-8 py-6 w-full sm:px-20">
         <Link to="/" onClick={closeMenu}>
           <div className="flex gap-2">
             <img src={logo} alt="logo" />
@@ -26,10 +26,10 @@ const Navbar: React.FC = () => {
         </Link>
 
 
-        <ul className="lg:flex flex-1 justify-center items-center gap-10 hidden">
+        <ul className="hidden flex-1 gap-10 justify-center items-center lg:flex">
           {navLinks.map((item) => (
             <li key={item.label} className="relative">
-              <Link to={`/${item.link}`} className="font-figtree text-sm text-gray-600">
+              <Link to={`/${item.link}`} className="text-sm text-gray-600 font-figtree">
                 {item.label}
               </Link>
             </li>
@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
               <li key={item.label} className="w-full">
                 <Link
                   to={`/${item.link}`}
-                  className="block font-babas text-lg text-gray-600 py-2"
+                  className="block py-2 text-lg text-gray-600 font-babas"
                   onClick={closeMenu}
                 >
                   {item.label}
@@ -65,17 +65,20 @@ const Navbar: React.FC = () => {
           {/* MpbileButton */}
 
           <Button
-            className="flex lg:hidden bg-background-sub text-white mt-10 ml-5"
-
+            className="flex mt-10 ml-5 text-white lg:hidden bg-background-sub"
             size="normal"
+            href="https://t.me/ObverseBot"
           >Get started</Button>
         </div>
 
-        <Button
-          className="hidden lg:flex"
-          variant="normal"
-          size="normal"
-        >Get started</Button>
+          <Button 
+            className="hidden lg:flex"
+            variant="normal"
+            size="normal"
+            href="https://t.me/ObverseBot"
+          >
+            Get started
+          </Button>
       </nav>
     </header>
   )
