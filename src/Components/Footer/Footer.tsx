@@ -1,5 +1,3 @@
-import React from 'react'
-import { Button } from '../Button/Button'
 import { Link } from 'react-router'
 import { logo, logoText, teleGram, Twitter } from '../../assets/icons'
 import { obverse } from '../../assets/images'

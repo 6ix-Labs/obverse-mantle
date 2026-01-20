@@ -6,26 +6,31 @@ import Error from "./Pages/Error/Error";
 import Footer from "./Components/Footer/Footer";
 import Wallet from "./Pages/Wallet/Wallet";
 import Payment from "./Pages/Payment/Payment";
+import { Toaster } from "./Components/ui/sonner";
+import Main from "./Pages/Waitlist/waitlist";
+import Payments from "./Pages/Payment/Payments";
 
 const AppRoutes = () => {
   const location = useLocation();
-  const hideNavbar = ["/wallet", "/pay"];
-  const shouldHide = hideNavbar.some(path => location.pathname.startsWith(path));
+  const hideNavbar = ["/transaction", "/pay", "/"];
+  const shouldHide = hideNavbar.some((path) =>
+    location.pathname.startsWith(path)
+  );
 
   return (
     <main className="max-container">
-
-      {!shouldHide && <Navbar />}
+      {/* {!shouldHide && <Navbar />} */}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="pay/:id" element={<Payments />} />
+        {/* <Route path="/" element={<Main />} />
         <Route path="about" element={<About />} />
-        <Route path="wallet" element={<Wallet />} />
+        <Route path="transactions/:linkId" element={<Wallet />} />
         <Route path="pay/:id" element={<Payment />} />
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={<Error />} /> */}
       </Routes>
       {/* Footer */}
       {!shouldHide && <Footer />}
-
     </main>
   );
 };
@@ -33,6 +38,7 @@ const AppRoutes = () => {
 const App = () => (
   <BrowserRouter>
     <AppRoutes />
+    <Toaster />
   </BrowserRouter>
 );
 

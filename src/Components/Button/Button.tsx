@@ -1,6 +1,6 @@
-import { VariantProps, cva } from "class-variance-authority"
-import { ComponentProps } from "react"
-import { twMerge } from "tailwind-merge"
+import { VariantProps, cva } from "class-variance-authority";
+import { ComponentProps } from "react";
+import { twMerge } from "tailwind-merge";
 
 export const buttonStyles = cva(["transition-colors"], {
     variants: {

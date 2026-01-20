@@ -32,7 +32,41 @@ export interface Normal {
 
 export interface Transaction {
   id: string;
+  walletId: string;
+  userId: string;
+  type: string;
+  hash?: string;
   amount: string;
+  token: string;
+  tokenAddress: string;
+  network: string;
+  fromAddress: string;
+  toAddress: string;
+  status: string;
+  gasFee?: string;
+  gasPrice?: string;
+  gasUsed?: string;
+  blockNumber?: number;
+  blockHash?: string;
+  confirmations?: number;
+  paymentLinkId?: string;
+  telegramChatId?: string;
+  memo?: string;
+  isInternal: boolean;
+  metadata?: {
+    userAgent?: string;
+    ipAddress?: string;
+    deviceInfo?: string;
+    initiatedBy?: 'user' | 'agent' | 'system';
+    [key: string]: any;
+  };
+  payerDetails?: { [key: string]: any };
+  errorCode?: string;
+  errorMessage?: string;
+  confirmedAt?: Date;
+  failedAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   date: string;
   description: string;
   liquidity: string;
@@ -137,40 +171,126 @@ export const PaymentAppItesm: Normal[] = [
 
 export const transactions: Transaction[] = [
   {
-    id: "Zxx2d7xyPfg1h...",
-    amount: "$2,045",
-    date: "14/05/2024",
-    description: "4D2E34F34DF34DF34DF23F3...",
-    liquidity: "$13.2",
+    id: 'trx-12345',
+    walletId: 'wallet-123',
+    userId: 'user-123',
+    type: 'DEPOSIT',
+    hash: '0x1234567890abcdef',
+    amount: '10.00',
+    token: 'USDC',
+    tokenAddress: '0x1234567890abcdef',
+    network: 'Ethereum',
+    fromAddress: '0x1234567890abcdef',
+    toAddress: '0x9876543210fedcba',
+    status: 'CONFIRMED',
+    gasFee: '0.01',
+    gasPrice: '20',
+    gasUsed: '10000',
+    blockNumber: 12345,
+    blockHash: '0x1234567890abcdef',
+    confirmations: 10,
+    paymentLinkId: 'payment-link-123',
+    telegramChatId: '1234567890',
+    memo: 'Test deposit',
+    isInternal: false,
+    metadata: {
+      userAgent: 'Mozilla/5.0',
+      ipAddress: '192.168.1.100',
+      deviceInfo: 'Desktop',
+      initiatedBy: 'user',
+    },
+    payerDetails: {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    },
+    confirmedAt: new Date('2022-01-01T12:00:00.000Z'),
+    createdAt: new Date('2022-01-01T11:00:00.000Z'),
+    updatedAt: new Date('2022-01-01T12:00:00.000Z'),
+    date: "",
+    description: "",
+    liquidity: ""
   },
   {
-    id: "Zxx2d7xyPfg1h...",
-    amount: "$2,045",
-    date: "14/05/2024",
-    description: "4D2E34F34DF34DF34DF23F3...",
-    liquidity: "$13.2",
+    id: 'trx-12345',
+    walletId: 'wallet-123',
+    userId: 'user-123',
+    type: 'DEPOSIT',
+    hash: '0x1234567890abcdef',
+    amount: '10.00',
+    token: 'USDC',
+    tokenAddress: '0x1234567890abcdef',
+    network: 'Ethereum',
+    fromAddress: '0x1234567890abcdef',
+    toAddress: '0x9876543210fedcba',
+    status: 'CONFIRMED',
+    gasFee: '0.01',
+    gasPrice: '20',
+    gasUsed: '10000',
+    blockNumber: 12345,
+    blockHash: '0x1234567890abcdef',
+    confirmations: 10,
+    paymentLinkId: 'payment-link-123',
+    telegramChatId: '1234567890',
+    memo: 'Test deposit',
+    isInternal: false,
+    metadata: {
+      userAgent: 'Mozilla/5.0',
+      ipAddress: '192.168.1.100',
+      deviceInfo: 'Desktop',
+      initiatedBy: 'user',
+    },
+    payerDetails: {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    },
+    confirmedAt: new Date('2022-01-01T12:00:00.000Z'),
+    createdAt: new Date('2022-01-01T11:00:00.000Z'),
+    updatedAt: new Date('2022-01-01T12:00:00.000Z'),
+    date: "",
+    description: "",
+    liquidity: ""
   },
   {
-    id: "Zxx2d7xyPfg1h...",
-    amount: "$2,045",
-    date: "14/05/2024",
-    description: "4D2E34F34DF34DF34DF23F3...",
-    liquidity: "$13.2",
+    id: 'trx-12345',
+    walletId: 'wallet-123',
+    userId: 'user-123',
+    type: 'DEPOSIT',
+    hash: '0x1234567890abcdef',
+    amount: '10.00',
+    token: 'USDC',
+    tokenAddress: '0x1234567890abcdef',
+    network: 'Ethereum',
+    fromAddress: '0x1234567890abcdef',
+    toAddress: '0x9876543210fedcba',
+    status: 'CONFIRMED',
+    gasFee: '0.01',
+    gasPrice: '20',
+    gasUsed: '10000',
+    blockNumber: 12345,
+    blockHash: '0x1234567890abcdef',
+    confirmations: 10,
+    paymentLinkId: 'payment-link-123',
+    telegramChatId: '1234567890',
+    memo: 'Test deposit',
+    isInternal: false,
+    metadata: {
+      userAgent: 'Mozilla/5.0',
+      ipAddress: '192.168.1.100',
+      deviceInfo: 'Desktop',
+      initiatedBy: 'user',
+    },
+    payerDetails: {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    },
+    confirmedAt: new Date('2022-01-01T12:00:00.000Z'),
+    createdAt: new Date('2022-01-01T11:00:00.000Z'),
+    updatedAt: new Date('2022-01-01T12:00:00.000Z'),
+    date: "",
+    description: "",
+    liquidity: ""
   },
-  {
-    id: "Zxx2d7xyPfg1h...",
-    amount: "$2,045",
-    date: "14/05/2024",
-    description: "4D2E34F34DF34DF34DF23F3...",
-    liquidity: "$13.2",
-  },
-  {
-    id: "Zxx2d7xyPfg1h...",
-    amount: "$2,045",
-    date: "14/05/2024",
-    description: "4D2E34F34DF34DF34DF23F3...",
-    liquidity: "$13.2",
-  },
+
 ];
 
 export const topT: topTItems[] = [
