@@ -18,7 +18,7 @@ const ReadyToAccept = () => {
     };
     return (
         <section className='flex justify-center items-center w-full bg-background-main padding-x padding-y max-container'>
-            <div className='w-full overflow-hidden relative flex items-center justify-center flex-col bg-background-sub max-w-screen-xl mx-auto lg:min-h-screen md:min-h-[70vh] sm:min-h-[70vh] max-412:min-h-[95vh] min-h-[80vh] max-se:min-h-[100vh] max-s8:min-h-[93vh] rounded-2xl px-7 sm:mb-24 mb-20'>
+            <div className='w-full overflow-hidden relative flex items-center justify-center flex-col bg-background-sub max-w-screen-xl mx-auto lg:min-h-screen md:min-h-[70vh] sm:min-h-[70vh] max-412:min-h-[95vh] min-h-[80vh] max-se:min-h-[100vh] max-s8:min-h-[93vh] rounded-2xl px-7 sm:my-24 my-20'>
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
