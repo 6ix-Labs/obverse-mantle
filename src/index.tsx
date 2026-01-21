@@ -1,7 +1,4 @@
-// Buffer polyfill for browser - MUST be first import
-import { Buffer } from 'buffer';
-(window as any).Buffer = Buffer;
-(window as any).global = window;
+
 
 import React from "react";
 import ReactDOM from "react-dom/client";
