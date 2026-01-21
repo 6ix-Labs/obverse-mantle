@@ -101,7 +101,7 @@ const Hero = () => {
                     custom={1.2}
                     src={handPhone}
                     alt="Holding Phone"
-                    className="absolute sm:flex hidden bottom-[0%] xl:left-[450px] 1024:left-[320px] 980:left-[300px] left-[230px]   w-[590px] max-iPadAir:w-[480px] max-xl:w-[550px] max-sm:w-[500px] h-auto"
+                    className="absolute sm:flex hidden bottom-[0%] xl:left-[450px] 1024:left-[320px] 980:left-[300px] left-[230px]  w-[590px] max-iPadAir:w-[480px] max-xl:w-[550px] max-sm:w-[500px] h-auto"
                 />
 
                 <motion.img

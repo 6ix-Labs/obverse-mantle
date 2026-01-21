@@ -15,13 +15,14 @@
 html,
 body,
 #root {
-  height: 100%;
-  background-color: #070707;
-}
+  /* height: 100%; */
+  background-color: #FFEDE8;
+  
+} 
 
 @layer components {
   .max-container {
-    max-width: 1400px;
+    max-width: 1700px;
     margin: 0 auto;
   }
 

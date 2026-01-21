@@ -25,7 +25,7 @@ import paymentLightBg from "./paymentLight.png"
 import { m } from "framer-motion"
 import HomeImg from "./home.svg"
 import CreateLinkImg from "./Create new link.svg"
-import handPhone from './Button.svg'
+import handPhone from './handphone.png'
 import WT from "./Button (1).svg"
 import community from "./Community.png"
 
