@@ -108,7 +108,7 @@ const BuiltFor = () => {
 
     return (
         <section className="flex overflow-x-hidden flex-col gap-5 justify-center items-center w-full padding-t padding-x padding-y padding-b max-container bg-background-main">
-            <div className="flex max-lg:flex-col justify-center items-start gap-4 max-lg:gap-4 lg:gap-10 px-6 py-10 bg-background-sub rounded-[40px] w-full lg:px-10">
+            <div className="flex max-lg:flex-col justify-center items-start gap-4 max-lg:gap-4 lg:gap-10 px-6 py-10 bg-background-sub rounded-[40px] w-full max-w-screen-xl mx-auto lg:px-10">
 
                 <div className="flex flex-col flex-1 gap-7 w-full lg:w-1/2 max-lg:justify-center max-lg:gap-4">
                     <motion.h1
@@ -154,7 +154,7 @@ const BuiltFor = () => {
                 </div>
 
                 {/* Image Section */}
-                <div className="flex relative items-start w-full lg:w-1/2 max-lg:justify-center">
+                <div className="flex relative items-start pt-7 w-full lg:w-1/2 max-lg:justify-center lg:pt-0">
                     {/* Always show an image - crossfade effect */}
                     <div className="relative w-full h-[550px] max-lg:h-[300px] rounded-[24px] overflow-hidden">
                         {images.map((img, index) => {
