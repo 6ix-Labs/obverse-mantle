@@ -115,7 +115,7 @@ export const SSD: SSDItems[] = [
   {
     label: "Track",
     icon: Track,
-    text: "Once your customer completes the payment, the funds are delivered directly to your non-custodial wallet, like Phantom on Solana.",
+    text: "Once your customer completes the payment, the funds are tracked directly to your non-custodial wallet, like Phantom on Solana.",
     deg: -3,
     id: 4
   },

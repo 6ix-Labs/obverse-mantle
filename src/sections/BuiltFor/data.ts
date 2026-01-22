@@ -15,19 +15,19 @@ const data: DataItem[] = [
     id: "2",
     question: "Brick-and-Mortar Merchants",
     answer:
-      "Green cleaning solutions that are safe for your space and the planet. Great results.",
+      "Accept in-store payments via QR codes instantly. Customers scan and pay with stablecoins, no complex setup required.",
   },
   {
     id: "3",
     question: "SaaS & Digital Businesses",
     answer:
-      "Transforming spaces with meticulous deep cleaning, leaving no corner untouched. Perfectly transformed every time.",
+      "Streamline subscription payments and one-time purchases. Automated billing with crypto, seamless integration for platforms.",
   },
   {
     id: "4",
     question: "DAOs & GameFi Projects",
     answer:
-      "Transforming spaces with meticulous deep cleaning, leaving no corner untouched. Perfectly transformed every time.",
+      "Enable community payments and in-game transactions effortlessly. Distribute funds, collect dues, process rewards instantly.",
   },
 
 ];
