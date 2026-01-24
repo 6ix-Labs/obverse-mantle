@@ -163,8 +163,8 @@ export const PaymentAppItesm: Normal[] = [
     icon: Payment1,
   },
   {
-    label: "A Payment App Built for the Platforms You Already Use",
-    text: "Obverse doesn’t require customers to understand blockchain. It wraps powerful DeFi tools in a friendly social interface that works on",
+    label: "Send Crypto Payments Instantly With a Simple Link",
+    text: "Obverse lets you create secure payment links in seconds. Share them in chats or apps your customers already use and get paid instantly.",
     icon: Get1,
   },
 ];
