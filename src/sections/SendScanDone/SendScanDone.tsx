@@ -1,5 +1,5 @@
 import React from 'react'
-import { SSD } from '../../contants'
+import { SSD } from '../../constants'
 import SSDCard from '../../Components/SSDcard/SSDCard'
 import { motion } from 'framer-motion'
 

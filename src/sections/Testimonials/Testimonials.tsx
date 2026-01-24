@@ -1,5 +1,5 @@
 import React from "react";
-import { testimonials } from "../../contants";
+import { testimonials } from "../../constants";
 import { motion } from "framer-motion";
 
 const Testimonials = () => {

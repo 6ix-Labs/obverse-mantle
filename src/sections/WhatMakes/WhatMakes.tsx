@@ -1,4 +1,4 @@
-import { WhatMakes1, WhatMakes2 } from '../../contants'
+import { WhatMakes1, WhatMakes2 } from '../../constants'
 import { motion } from "framer-motion"
 
 const WhatMakes = () => {
