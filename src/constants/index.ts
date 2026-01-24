@@ -150,7 +150,7 @@ export const WhatMakes2: Normal[] = [
   },
   {
     label: "Seamless Integration",
-    text: "Plug-and-play for websites, SaaS platforms, or social storefronts",
+    text: "Plug-and-play for websites, SaaS platforms, Peer to Peer Merchants, DAO & GameFi Projects or social storefronts",
     icon: Stack,
     id: 3
   },
