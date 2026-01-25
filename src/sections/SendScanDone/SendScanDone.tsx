@@ -3,7 +3,6 @@ import SSDCard from '../../Components/SSDcard/SSDCard'
 import { motion } from 'framer-motion'
 
 const SendScanDone = () => {
-  // Duplicate cards for seamless infinite scroll on desktop
   const duplicatedCards = [...SSD, ...SSD, ...SSD, ...SSD]
 
   return (
