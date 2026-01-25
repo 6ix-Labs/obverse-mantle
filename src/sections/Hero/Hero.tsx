@@ -54,7 +54,7 @@ const subtleFloat: Variants = {
 
 const Hero = () => {
     return (
-        <section className="flex justify-center items-center w-full bg-background-main padding-x padding-y max-container">
+        <section id="hero" className="flex justify-center items-center w-full bg-background-main padding-x padding-y max-container">
             <div className="w-full relative flex flex-col bg-background-sub max-w-screen-xl mx-auto lg:min-h-screen md:min-h-[70vh] sm:min-h-[70vh] max-412:min-h-[97vh] max-414:min-h-[80vh] 430:min-h-[80vh]  min-h-[95vh] max-se:min-h-[100vh] max-s8:min-h-[93vh] max-pro:min-h-[85vh] rounded-2xl px-7 sm:pt-14 pt-10 overflow-hidden">
 
                 {/* TextContent */}

@@ -6,7 +6,7 @@
 
 **Stablecoin Payments That Feel Like Chat**
 
-[![React](https://img.shields.io/badge/React-19.1.0-61DAFB?logo=react)](https://react.dev/)
+<!-- [![React](https://img.shields.io/badge/React-19.1.0-61DAFB?logo=react)](https://react.dev/) -->
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?logo=vite)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](LICENSE)
@@ -143,7 +143,7 @@
 | `npm run serve` | Preview production build locally |
 | `npm test` | Run test suite with Vitest |
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 obverse-mantle-ui/
@@ -253,7 +253,7 @@ The optimized build will be in the `build/` directory, ready for deployment to:
 
 Ensure all production environment variables are configured in your hosting platform.
 
-## 🔒 Security
+## Security
 
 - **Non-Custodial Wallets**: Users maintain full control of their funds
 - **Secure Authentication**: Privy-powered authentication with multiple login methods
@@ -279,8 +279,8 @@ This project is **private and proprietary**. All rights reserved.
 - **Obverse Bot**: [@ObverseBot](https://t.me/ObverseBot)
 - **Documentation**: See `/docs` directory for detailed guides
 
-<div align="center" style="margin-top: 90px">
+<!-- <div align="center" style="margin-top: 90px">
 
 *Simplifying crypto payments, one message at a time.*
 
-</div>
+</div> -->

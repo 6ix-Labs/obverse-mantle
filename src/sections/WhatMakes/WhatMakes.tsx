@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 
 const WhatMakes = () => {
     return (
-        <section className='flex overflow-x-hidden flex-col gap-5 justify-center items-center w-full padding-t padding-x padding-y padding-b max-container bg-background-main'>
+        <section id="features" className='flex overflow-x-hidden flex-col gap-5 justify-center items-center w-full padding-t padding-x padding-y padding-b max-container bg-background-main'>
             <div className='flex items-center'>
                 <motion.h1
                     initial={{ opacity: 0 }}
