@@ -9,7 +9,7 @@ const WhatMakes = () => {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ ease: "easeInOut", duration: 0.75, delay: 0.3 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false }}
                     className='sm:text-[55px] text-[36px] leading-text tracking-text font-calsans text-[#2e1109] text-center'>What Makes Obverse <br /> Different?</motion.h1>
             </div>
             <div className="grid gap-6 w-full lg:px-10">
@@ -20,7 +20,7 @@ const WhatMakes = () => {
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.5, delay: 0.2 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: false }}
                                 key={item.label} className="bg-background-card rounded-[40px] flex flex-col lg:gap-5 p-4 lg:p-8">
                                 <img src={item.icon} alt={item.label} className='flex h-[280px] w-[280px] lg:h-[320px] lg:w-[320px] items-center justify-center self-center object-contain object-center' />
                                 <div className='flex flex-col gap-2 items-start px-2 pb-2'>
@@ -41,7 +41,7 @@ const WhatMakes = () => {
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.5, delay: 0.2 }}
-                                viewport={{ once: true }}
+                                viewport={{ once: false }}
                                 key={item.label} className="bg-background-card rounded-[40px] flex flex-col lg:gap-5 p-6 lg:p-8">
                                 <img src={item.icon} alt={item.label} className='flex h-[280px] w-[280px] lg:h-[320px] lg:w-[320px] items-center justify-center self-center object-contain object-center' />
                                 <div className='flex flex-col gap-2 items-start'>
