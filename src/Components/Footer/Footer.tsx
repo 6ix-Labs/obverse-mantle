@@ -13,7 +13,7 @@ const Footer = () => {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ ease: "easeInOut", duration: 0.75, delay: 0.5 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className='flex justify-between items-center w-full'
         >
           <Link to="/">
@@ -46,7 +46,7 @@ const Footer = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ ease: "easeInOut", duration: 0.75, delay: 0.6 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           src={obverse}
           alt='Obverse'
           className='object-contain object-center w-full'
@@ -56,7 +56,7 @@ const Footer = () => {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ ease: "easeInOut", duration: 0.75, delay: 0.7 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className='flex justify-between items-center mt-5 w-full'
         >
           <h4 className='sm:text-[16px] text-[14px] font-calsans text-[#561908]'>
