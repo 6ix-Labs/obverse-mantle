@@ -115,7 +115,7 @@ const BuiltFor = () => {
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ ease: "easeInOut", duration: 0.75, delay: 0.3 }}
-                        viewport={{ once: true }}
+                        viewport={{ once: false }}
                         className="text-background-card font-calsans sm:text-[50px] text-[36px] max-lg:text-center leading-text tracking-text max-s8:text-left max-s8:whitespace-nowrap">
                         Built for Real-World <br /> Use Cases
                     </motion.h1>
@@ -138,7 +138,7 @@ const BuiltFor = () => {
                                     variants={shouldBeOnRight ? textRight(0.4 + index * 0.1) : textLeft(0.4 + index * 0.1)}
                                     initial="hidden"
                                     whileInView="visible"
-                                    viewport={{ once: true }}
+                                    viewport={{ once: false }}
                                     onClick={() => handleAddSelection(dataItem.id)}
                                     className={`${
                                         isActive 
