@@ -10,7 +10,7 @@ type SSdProps = {
     id: number
 };
 
-const SSDCard = ({ label, text, icon, deg, className, id }: SSdProps) => {
+const SSDCard = ({ label, text, icon, className }: SSdProps) => {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -22,18 +22,19 @@ const SSDCard = ({ label, text, icon, deg, className, id }: SSdProps) => {
         return () => mediaQuery.removeEventListener("change", checkScreen);
     }, []);
 
-    const baseClasses = `flex flex-col gap-6 bg-background-card sm:p-5 px-7 py-12 rounded-[24px] shadow-md min-w-[280px] flex-shrink-0 ${className ?? ""}`;
-    const rotation = !isMobile ? { transform: `rotate(${deg}deg)` } : {};
+    const baseClasses = `flex flex-col gap-6 bg-background-card sm:p-5 px-7 py-12 rounded-[24px] shadow-md flex-shrink-0 ${className ?? ""}`;
+    const rotation = {};
 
     if (isMobile) {
-        // NO ANIMATION on small screens
         return (
             <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                className={baseClasses} style={rotation}>
+                viewport={{ once: false }}
+                className={baseClasses} 
+                style={rotation}
+            >
                 <img src={icon} alt={label} className="object-center object-contain w-[56px] h-[56px] rounded-[9.5px]" />
                 <h3 className="text-[24px] font-figtree font-semibold leading-text tracking-text text-pale-brown">{label}</h3>
                 <p className="sm:text-[16px] text-[13px] md:max-w-lg font-figtree text-slate-gray">{text}</p>
@@ -41,18 +42,15 @@ const SSDCard = ({ label, text, icon, deg, className, id }: SSdProps) => {
         );
     }
 
-    // Animated for larger screens
+    // Desktop: Straight cards with fixed width (no rotation)
     return (
-        <motion.div
-            animate={{ x: ["0%", "-100%"] }}
-            transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-            className={baseClasses}
-            style={rotation}
+        <div
+            className={`${baseClasses} w-[320px] max-w-[320px]`}
         >
             <img src={icon} alt={label} className="object-center object-contain w-[56px] h-[56px] rounded-[9.5px]" />
             <h3 className="text-[24px] font-figtree font-semibold leading-text tracking-text text-pale-brown">{label}</h3>
-            <p className="sm:text-[16px] text-[13px] md:max-w-lg font-figtree text-slate-gray">{text}</p>
-        </motion.div>
+            <p className="sm:text-[16px] text-[13px] font-figtree text-slate-gray">{text}</p>
+        </div>
     );
 };
 
