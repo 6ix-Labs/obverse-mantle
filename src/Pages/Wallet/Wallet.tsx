@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { topT, topT2 } from "../../contants";
+import { topT, topT2 } from "../../constants";
 import { Link, useParams } from "react-router";
 import axios from "axios";
 import { logo, logoText, walletIcon, walletIconDark } from "../../assets/icons";

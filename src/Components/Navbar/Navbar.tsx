@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router"
-import { navLinks } from "../../contants"
+import { navLinks } from "../../constants"
 import { logo, logoText } from "../../assets/icons"
 import { Button } from "../Button/Button"
 import { FiMenu, FiX } from "react-icons/fi";

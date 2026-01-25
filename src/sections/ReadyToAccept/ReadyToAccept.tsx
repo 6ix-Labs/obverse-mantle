@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '../../Components/Button/Button'
 import { Link } from 'react-router'
 import { bitcoinImg, lImg, rImg, usdImg } from '../../assets/images'
@@ -18,12 +17,12 @@ const ReadyToAccept = () => {
     };
     return (
         <section className='flex justify-center items-center w-full bg-background-main padding-x padding-y max-container'>
-            <div className='w-full overflow-hidden relative flex items-center justify-center flex-col bg-background-sub max-w-screen-xl mx-auto lg:min-h-screen md:min-h-[70vh] sm:min-h-[70vh] max-412:min-h-[95vh] min-h-[80vh] max-se:min-h-[100vh] max-s8:min-h-[93vh] rounded-2xl px-7 sm:my-24 my-20'>
+            <div className='w-full overflow-hidden relative flex items-center justify-center flex-col bg-background-sub max-w-screen-xl mx-auto lg:min-h-[65vh] md:min-h-[70vh] sm:min-h-[70vh] max-412:min-h-[95vh] min-h-[80vh] max-se:min-h-[100vh] max-s8:min-h-[93vh] rounded-2xl px-7 sm:py-20 py-10 sm:my-24 my-20'>
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
-                    className="flex flex-col gap-4 items-center w-full sm:gap-7 max-xl:mt-14 max-lg:mt-0">
+                    className="flex flex-col gap-4 items-center w-full sm:gap-7">
                     <motion.h1
                         custom={0.3}
                         variants={fadeIn}

@@ -1,5 +1,5 @@
 import React from "react";
-import { PaymentAppItesm } from "../../contants";
+import { PaymentAppItesm } from "../../constants";
 import { motion } from "framer-motion";
 import { Variants } from "framer-motion";
 
