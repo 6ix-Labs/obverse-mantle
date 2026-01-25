@@ -15,6 +15,29 @@ const ReadyToAccept = () => {
             },
         }),
     };
+
+    const slowBounce: Variants = {
+        animate: {
+            y: [0, -15, 0],
+            transition: {
+                duration: 7,
+                repeat: Infinity,
+                ease: "easeInOut",
+            },
+        },
+    };
+
+    const subtleFloat: Variants = {
+        animate: {
+            y: [0, -8, 0],
+            x: [0, 5, 0],
+            transition: {
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+            },
+        },
+    };
     return (
         <section className='flex justify-center items-center w-full bg-background-main padding-x padding-y max-container'>
             <div className='w-full overflow-hidden relative flex items-center justify-center flex-col bg-background-sub max-w-screen-xl mx-auto lg:min-h-[65vh] md:min-h-[70vh] sm:min-h-[70vh] max-412:min-h-[95vh] min-h-[80vh] max-se:min-h-[100vh] max-s8:min-h-[93vh] rounded-2xl px-7 sm:py-20 py-10 sm:my-24 my-20'>
@@ -44,10 +67,34 @@ const ReadyToAccept = () => {
                         </motion.div>
                     </Link>
                 </motion.div>
-                <img className="absolute -bottom-24 max-sm:-bottom-36 -left-6 max-sm:left-14 w-[250px] max-lg:w-[250px] h-[250px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex" src={bitcoinImg} alt="BitCoin Img" />
-                <img className="absolute -bottom-10 max-lg:w-[300px] -right-20 max-sm:hidden flex" src={rImg} alt="BitCoin Img" />
-                <img className="absolute -top-12 max-sm:-top-32 -right-10 max-sm:-right-8 w-[200px] max-lg:w-[250px] h-[200px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex" src={usdImg} alt="BitCoin Img" />
-                <img className="absolute -top-20 max-sm:-top-28 -left-14 max-sm:-left-14 w-[250px] max-lg:w-[250px] h-[220px]  max-lg:h-[270px] max-sm:h-[200px] max-sm:w-[200px] max-se:h-[180px] flex" src={lImg} alt="BitCoin Img" />
+                <motion.img 
+                    className="absolute -bottom-24 max-sm:-bottom-36 -left-6 max-sm:left-14 w-[250px] max-lg:w-[250px] h-[250px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex" 
+                    src={bitcoinImg} 
+                    alt="BitCoin Img"
+                    variants={slowBounce}
+                    animate="animate"
+                />
+                <motion.img 
+                    className="absolute -bottom-10 max-lg:w-[300px] -right-20 max-sm:hidden flex" 
+                    src={rImg} 
+                    alt="BitCoin Img"
+                    variants={subtleFloat}
+                    animate="animate"
+                />
+                <motion.img 
+                    className="absolute -top-12 max-sm:-top-32 -right-10 max-sm:-right-8 w-[200px] max-lg:w-[250px] h-[200px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex" 
+                    src={usdImg} 
+                    alt="BitCoin Img"
+                    variants={slowBounce}
+                    animate="animate"
+                />
+                <motion.img 
+                    className="absolute -top-20 max-sm:-top-28 -left-14 max-sm:-left-14 w-[250px] max-lg:w-[250px] h-[220px]  max-lg:h-[270px] max-sm:h-[200px] max-sm:w-[200px] max-se:h-[180px] flex" 
+                    src={lImg} 
+                    alt="BitCoin Img"
+                    variants={subtleFloat}
+                    animate="animate"
+                />
             </div>
         </section>
     )
