@@ -107,7 +107,7 @@ const BuiltFor = () => {
     const currentImageIndex = data.findIndex(item => item.id === selection);
 
     return (
-        <section className="flex overflow-x-hidden flex-col gap-5 justify-center items-center w-full padding-t padding-x padding-y padding-b max-container bg-background-main">
+        <section id="why-us" className="flex overflow-x-hidden flex-col gap-5 justify-center items-center w-full padding-t padding-x padding-y padding-b max-container bg-background-main">
             <div className="flex max-lg:flex-col justify-center items-start gap-4 max-lg:gap-4 lg:gap-10 px-6 py-10 bg-background-sub rounded-[40px] w-full max-w-screen-xl mx-auto lg:px-10">
 
                 <div className="flex flex-col flex-1 gap-7 w-full lg:w-1/2 max-lg:justify-center max-lg:gap-4">
