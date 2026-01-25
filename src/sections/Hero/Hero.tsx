@@ -60,7 +60,8 @@ const Hero = () => {
                 {/* TextContent */}
                 <motion.div
                     initial="hidden"
-                    animate="visible"
+                    whileInView="visible"
+                    viewport={{ once: false }}
                     className="flex flex-col gap-2 items-center w-full sm:gap-7 max-xl:mt-14 max-lg:mt-0"
                 >
                     <motion.h1
@@ -130,7 +131,8 @@ const Hero = () => {
                 <motion.img
                     variants={handMotion}
                     initial="hidden"
-                    animate="visible"
+                    whileInView="visible"
+                    viewport={{ once: false }}
                     custom={1.2}
                     src={handPhone}
                     alt="Holding Phone"
@@ -140,7 +142,8 @@ const Hero = () => {
                 <motion.img
                     variants={handMotion}
                     initial="hidden"
-                    animate="visible"
+                    whileInView="visible"
+                    viewport={{ once: false }}
                     custom={1.5}
                     src={handePhoneSm}
                     alt="Holding Phone Mobile"
