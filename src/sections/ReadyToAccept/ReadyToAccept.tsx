@@ -44,7 +44,7 @@ const ReadyToAccept = () => {
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true }}
+                    viewport={{ once: false }}
                     className="flex flex-col gap-4 items-center w-full sm:gap-7">
                     <motion.h1
                         custom={0.3}
