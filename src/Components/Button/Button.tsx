@@ -1,6 +1,6 @@
-import { VariantProps, cva } from "class-variance-authority"
-import { ComponentProps } from "react"
-import { twMerge } from "tailwind-merge"
+import { VariantProps, cva } from "class-variance-authority";
+import { ComponentProps } from "react";
+import { twMerge } from "tailwind-merge";
 
 export const buttonStyles = cva(["transition-colors"], {
     variants: {
@@ -25,36 +25,48 @@ export const buttonStyles = cva(["transition-colors"], {
                 "justify-center",
                 "p-2.5",
             ],
-         normal: [
-            "rounded-[12px]",
-            "items-center",
-            "justify-center",
-            "flex",
-            "px-6",
-            "py-3",
-            "font-figtree",
-            "font-normal",
-            "border",
-            "text-gray-600"
-
-         ]
+            normal: [
+                "rounded-[12px]",
+                "items-center",
+                "justify-center",
+                "flex",
+                "px-6",
+                "py-3",
+                "font-figtree",
+                "font-normal",
+                "border",
+                "text-gray-600"
+            ]
         },
-
     },
     defaultVariants: {
         variant: "default",
         size: "default",
     }
+})
+
+type ButtonProps = VariantProps<typeof buttonStyles> & ComponentProps<"button"> & {
+    href?: string
 }
 
-
-)
-type ButtonProps = VariantProps<typeof buttonStyles> & ComponentProps<"button">
-export function Button({variant, size, className, ...props}: ButtonProps) {
+export function Button({variant, size, className, href, ...props}: ButtonProps) {
+    if (href) {
+        return (
+            <a 
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={twMerge(buttonStyles({ variant, size }), className)}
+            >
+                {props.children}
+            </a>
+        )
+    }
+    
     return (
         <button 
-        {...props}
-         className={twMerge(buttonStyles({ variant, size }), className)}
+            {...props}
+            className={twMerge(buttonStyles({ variant, size }), className)}
         />
     )
 }

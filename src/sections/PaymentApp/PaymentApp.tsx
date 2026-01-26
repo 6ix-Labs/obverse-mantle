@@ -1,5 +1,5 @@
 import React from "react";
-import { PaymentAppItesm } from "../../contants";
+import { PaymentAppItesm } from "../../constants";
 import { motion } from "framer-motion";
 import { Variants } from "framer-motion";
 
@@ -66,7 +66,7 @@ const PaymentApp = () => {
                 variants={isReversed ? textRight(0.4) : textLeft(0.4)}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 className="flex flex-col flex-1 gap-5 lg:w-1/2"
               >
                 <h2 className="xl:text-[66px] lg:text-[50px] leading-text text-[34px] text-pale-brown tracking-text font-calsans max-sm:text-center">
@@ -82,7 +82,7 @@ const PaymentApp = () => {
                 variants={isReversed ? imgRight : imgLeft}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 src={item.icon}
                 alt={item.label}
                 className="lg:w-1/2 md:w-[500px] w-full object-contain object-center"
