@@ -60,37 +60,37 @@ const ReadyToAccept = () => {
                     </motion.p>
                     <Link to="/" className="mt-10">
                         <motion.div custom={0.9} variants={fadeIn}>
-                            <Button variant="normal" size="normal" 
+                            <Button variant="normal" size="normal"
                                 href="https://t.me/ObverseBot">
                                 Get started
                             </Button>
                         </motion.div>
                     </Link>
                 </motion.div>
-                <motion.img 
-                    className="absolute -bottom-24 max-sm:-bottom-36 -left-6 max-sm:left-14 w-[250px] max-lg:w-[250px] h-[250px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex" 
-                    src={bitcoinImg} 
+                <motion.img
+                    className="absolute -bottom-24 max-sm:-bottom-36 -left-6 max-sm:left-14 w-[250px] max-lg:w-[250px] h-[250px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex"
+                    src={bitcoinImg}
                     alt="BitCoin Img"
                     variants={slowBounce}
                     animate="animate"
                 />
-                <motion.img 
-                    className="absolute -bottom-10 max-lg:w-[300px] -right-20 max-sm:hidden flex" 
-                    src={rImg} 
+                <motion.img
+                    className="absolute -bottom-10 max-lg:w-[300px] -right-20 max-sm:hidden flex"
+                    src={rImg}
                     alt="BitCoin Img"
                     variants={subtleFloat}
                     animate="animate"
                 />
-                <motion.img 
-                    className="absolute -top-12 max-sm:-top-32 -right-10 max-sm:-right-8 w-[200px] max-lg:w-[250px] h-[200px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex" 
-                    src={usdImg} 
+                <motion.img
+                    className="absolute -top-12 max-sm:-top-32 -right-10 max-sm:-right-8 w-[200px] max-lg:w-[250px] h-[200px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex"
+                    src={usdImg}
                     alt="BitCoin Img"
                     variants={slowBounce}
                     animate="animate"
                 />
-                <motion.img 
-                    className="absolute -top-20 max-sm:-top-28 -left-14 max-sm:-left-14 w-[250px] max-lg:w-[250px] h-[220px]  max-lg:h-[270px] max-sm:h-[200px] max-sm:w-[200px] max-se:h-[180px] flex" 
-                    src={lImg} 
+                <motion.img
+                    className="absolute -top-20 max-sm:-top-28 -left-14 max-sm:-left-14 w-[250px] max-lg:w-[250px] h-[220px]  max-lg:h-[270px] max-sm:h-[200px] max-sm:w-[200px] max-se:h-[180px] flex"
+                    src={lImg}
                     alt="BitCoin Img"
                     variants={subtleFloat}
                     animate="animate"
