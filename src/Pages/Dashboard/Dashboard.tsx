@@ -1,8 +1,8 @@
-import Sidebar from "../../components/Dashboard/Sidebar";
-import Header from "../../components/Dashboard/Header";
-import Overview from "../../components/Dashboard/Overview";
-import Transactions from "../../components/Dashboard/Transactions";
-import MobileNav from "../../components/Dashboard/MobileNav";
+import Sidebar from "../../Components/Dashboard/Sidebar";
+import Header from "../../Components/Dashboard/Header";
+import Overview from "../../Components/Dashboard/Overview";
+import Transactions from "../../Components/Dashboard/Transactions";
+import MobileNav from "../../Components/Dashboard/MobileNav";
 
 const Dashboard = () => {
   return (
