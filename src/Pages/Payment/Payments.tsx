@@ -10,7 +10,7 @@ import axios from "axios";
 import { logo } from "../../assets/icons";
 import { useUsdcPayment, PaymentStatus } from "../../hooks/useUsdcPayment";
 import { Wallet } from "lucide-react";
-import { MobileNav, MobileNavHeader, Navbar, NavbarLogo, NavBody } from "@/components/Navbar/ResizableNavbar";
+import { MobileNav, MobileNavHeader, Navbar, NavbarLogo, NavBody } from "@/components/Navbar/ResizableNavbar.tsx";
 import { Skeleton } from "@/components/Skeleton/Skeleton";
 
 // Types
