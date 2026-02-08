@@ -5,19 +5,22 @@ import WithdrawalIcon from "../../assets/icons/withdrawal.svg";
 const Overview = () => {
   return (
     <div className="flex w-full flex-col gap-6 font-figtree">
-      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-        <div className="flex flex-col gap-1.5">
-          <h1 className="text-[32px] font-medium text-[#131313]">Overview</h1>
-          <p className="text-sm text-[#131313]">Overview of your activities</p>
+      <div className="flex flex-row items-center justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-medium text-[#131313] md:text-[32px]">Overview</h1>
+          <p className="text-xs text-[#131313] md:text-sm">Overview of your activities</p>
         </div>
-        <button className="flex h-[60px] items-center justify-center gap-2 rounded-[96px] bg-[#ff7849] px-6 transition-colors hover:bg-[#e0693e]">
+        <button
+          onClick={() => window.open("https://t.me/ObverseBot", "_blank")}
+          className="flex h-10 items-center justify-center gap-2 rounded-[96px] bg-[#ff7849] px-4 transition-colors hover:bg-[#e0693e] md:h-[60px] md:px-6"
+        >
           <svg
             width="24"
             height="24"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-5 w-5 md:h-6 md:w-6"
           >
             <path
               d="M12 5V19M5 12H19"
@@ -27,11 +30,11 @@ const Overview = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="text-sm font-medium text-[#131313]">Create Payment Link</span>
+          <span className="text-xs font-medium text-[#131313] md:text-sm">Create Payment Link</span>
         </button>
       </div>
 
-      <div className="flex flex-col gap-4 rounded-xl bg-[#f7f7f7] p-4">
+      <div className="flex flex-col gap-4 rounded-xl bg-transparent p-0 md:bg-[#f7f7f7] md:p-4">
         <h2 className="text-base text-[#131313]">Summary</h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {/* Total Payments Received */}

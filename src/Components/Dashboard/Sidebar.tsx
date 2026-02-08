@@ -17,8 +17,8 @@ const Sidebar = () => {
     const active = isActive(path);
     return `flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
       active
-        ? "bg-[#FFEED9] text-gray-900 shadow-sm"
-        : "text-gray-700 hover:bg-[#FFEED9] hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
+        ? "bg-white text-gray-900 shadow-sm"
+        : "text-gray-700 hover:bg-white hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
     }`;
   };
 
@@ -48,13 +48,13 @@ const Sidebar = () => {
         <div className="mt-4 px-2 py-4">
           <h3 className="px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">System</h3>
           <nav className="mt-2 space-y-1">
-            <a
-              href="#"
-              className="flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#FFEED9] hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
+            <Link
+              to="/dashboard/settings"
+              className={getLinkClass("/dashboard/settings")}
             >
               <Settings className="mr-3 h-5 w-5" />
               Settings
-            </a>
+            </Link>
           </nav>
         </div>
         <div className="p-4">
