@@ -8,6 +8,10 @@ import { Toaster } from "./Components/ui/sonner";
 import Payments from "./Pages/Payment/Payments";
 import Login from "./Pages/Dashboard/Login";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import OverviewPage from "./Pages/Dashboard/OverviewPage";
+import Invoices from "./Pages/Dashboard/Invoices";
+import PaymentLinks from "./Pages/Dashboard/PaymentLinks";
+import Settings from "./Pages/Dashboard/Settings";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -23,7 +27,12 @@ const AppRoutes = () => {
         <Route path="pay/:id" element={<Payments />} />
         <Route path="about" element={<About />} />
         <Route path="login" element={<Login />} />
-        <Route path="dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}>
+          <Route index element={<OverviewPage />} />
+          <Route path="invoices" element={<Invoices />} />
+          <Route path="payment-links" element={<PaymentLinks />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
         <Route path="*" element={<Error />} />
         {/* <Route path="/" element={<Main />} />
         <Route path="transactions/:linkId" element={<Wallet />} />
