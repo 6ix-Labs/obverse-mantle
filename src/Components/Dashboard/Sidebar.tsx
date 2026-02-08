@@ -1,43 +1,56 @@
-import { logo } from "../../assets/icons";
-import { LayoutDashboard, FileText, ArrowLeftRight, Settings, LogOut } from "lucide-react";
+import { NavbarLogo } from "../Navbar/ResizableNavbar";
+import { LayoutDashboard, FileText, Link as LinkIcon, Settings, LogOut } from "lucide-react";
+import { Link, useLocation } from "react-router";
 
 const Sidebar = () => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // Helper to determine if link is active
+  const isActive = (path: string) => {
+    if (path === "/dashboard" && currentPath === "/dashboard") return true;
+    if (path !== "/dashboard" && currentPath.startsWith(path)) return true;
+    return false;
+  };
+
+  const getLinkClass = (path: string) => {
+    const active = isActive(path);
+    return `flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+      active
+        ? "bg-[#FFEED9] text-gray-900 shadow-sm"
+        : "text-gray-700 hover:bg-[#FFEED9] hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
+    }`;
+  };
+
   return (
     <div className="hidden w-64 flex-col md:flex">
       <div className="flex h-16 items-center justify-center">
-        <img src={logo} alt="logo" className="h-8 w-8" />
-        <span className="ml-2 text-lg font-bold text-gray-800 dark:text-white">Obverse</span>
+        <div className="scale-90">
+          <NavbarLogo />
+        </div>
       </div>
       <div className="flex flex-1 flex-col overflow-y-auto">
+        <h3 className="mt-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Main Menu</h3>
         <nav className="flex-1 space-y-1 px-2 py-4">
-          <a
-            href="#"
-            className="flex items-center rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm dark:bg-gray-900 dark:text-gray-200"
-          >
+          <Link to="/dashboard" className={getLinkClass("/dashboard")}>
             <LayoutDashboard className="mr-3 h-5 w-5" />
             Overview
-          </a>
-          <a
-            href="#"
-            className="flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
-          >
+          </Link>
+          <Link to="/dashboard/invoices" className={getLinkClass("/dashboard/invoices")}>
             <FileText className="mr-3 h-5 w-5" />
             Invoices
-          </a>
-          <a
-            href="#"
-            className="flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
-          >
-            <ArrowLeftRight className="mr-3 h-5 w-5" />
-            Transactions
-          </a>
+          </Link>
+          <Link to="/dashboard/payment-links" className={getLinkClass("/dashboard/payment-links")}>
+            <LinkIcon className="mr-3 h-5 w-5" />
+            Payment Links
+          </Link>
         </nav>
         <div className="mt-4 px-2 py-4">
           <h3 className="px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">System</h3>
           <nav className="mt-2 space-y-1">
             <a
               href="#"
-              className="flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-white hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
+              className="flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#FFEED9] hover:shadow-sm dark:text-gray-200 dark:hover:bg-gray-900"
             >
               <Settings className="mr-3 h-5 w-5" />
               Settings
