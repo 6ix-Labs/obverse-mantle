@@ -42,6 +42,7 @@ export default {
           card: "#FADDD5",
           payment: "#E25E00",
           paymentDark: "#140800",
+          dashboard: "#F8F8F8",
         },
         primary: "#ECEEFF",
         "coral-red": "#FFa28a",

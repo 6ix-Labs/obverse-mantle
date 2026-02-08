@@ -1,12 +1,24 @@
-import { Search, Bell, ChevronDown, Menu } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 
 const Header = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-white px-6 dark:border-gray-700 dark:bg-gray-800">
+    <header className="flex h-16 items-center justify-between border-b-[0.5px] border-gray-200 px-6 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-center">
-        <button className="mr-4 md:hidden">
-          <Menu className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-        </button>
         <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">Hello, Jendol Stores</h1>
       </div>
       <div className="flex items-center">
@@ -16,19 +28,31 @@ const Header = () => {
           </span>
           <input
             type="text"
-            className="w-full rounded-lg border bg-white py-2 pl-10 pr-4 text-gray-700 focus:border-orange-500 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-orange-500"
+            className="w-full rounded-3xl border bg-white py-2 pl-10 pr-4 text-gray-700 focus:border-orange-500 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-orange-500"
             placeholder="Search"
           />
         </div>
-        <button className="ml-4 rounded-full bg-white p-2 text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-          <Bell className="h-6 w-6" />
-        </button>
-        <div className="ml-4 flex items-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white">JS</div>
-          <span className="ml-2 hidden text-sm font-medium text-gray-700 dark:text-gray-200 md:inline">
-            Jendol Stores
-          </span>
-          <ChevronDown className="ml-1 hidden h-5 w-5 text-gray-500 dark:text-gray-400 md:inline" />
+        <div className="relative ml-4" ref={dropdownRef}>
+          <div
+            className="flex cursor-pointer items-center rounded-3xl p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white">JS</div>
+
+            <ChevronDown className="ml-1 hidden h-5 w-5 text-gray-500 dark:text-gray-400 md:inline" />
+          </div>
+
+          {/* Dropdown */}
+          {isDropdownOpen && (
+            <div className="absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
+              <button
+                className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                onClick={() => console.log("Logout clicked")}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>
