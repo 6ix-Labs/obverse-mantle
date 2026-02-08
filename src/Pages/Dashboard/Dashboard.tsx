@@ -1,16 +1,16 @@
 import { Outlet } from "react-router";
-import Sidebar from "../../components/Dashboard/Sidebar";
-import Header from "../../components/Dashboard/Header";
-import MobileNav from "../../components/Dashboard/MobileNav";
+import Sidebar from "../../Components/Dashboard/Sidebar";
+import Header from "../../Components/Dashboard/Header";
+import MobileNav from "../../Components/Dashboard/MobileNav";
 
 const Dashboard = () => {
   return (
-    <div className="bg-background-dashboard flex h-screen font-figtree dark:bg-gray-900">
+    <div className="flex h-screen bg-background-dashboard font-figtree dark:bg-gray-900">
       <Sidebar />
-      <div className="mb-16 flex flex-1 flex-col overflow-hidden p-2 md:mb-0 md:p-6">
-        <div className="flex flex-1 flex-col overflow-hidden rounded-2xl bg-white shadow-sm dark:bg-gray-800">
+      <div className="flex overflow-hidden flex-col flex-1 p-2 mb-16 md:mb-0 md:p-6">
+        <div className="flex overflow-hidden flex-col flex-1 bg-white rounded-2xl shadow-sm dark:bg-gray-800">
           <Header />
-          <main className="flex-1 overflow-y-auto overflow-x-hidden">
+          <main className="overflow-y-auto overflow-x-hidden flex-1">
             <Outlet />
           </main>
         </div>
