@@ -1,25 +1,23 @@
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { PrivyProvider } from "@privy-io/react-auth";
-import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
-import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
-import { WagmiProvider } from "@privy-io/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { wagmiConfig } from "./wagmiConfig";
-import { base, baseSepolia, lisk, liskSepolia } from "viem/chains";
-import { ChainProvider } from "./hooks/useChainManager";
-import { ActiveChainProvider } from "./contexts/ActiveChainContext";
 import ObversePrivyProvider from "./providers/PrivyProvider";
+
+// import { PrivyProvider } from "@privy-io/react-auth";
+// import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+// import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
+// import { WagmiProvider } from "@privy-io/wagmi";
+// import { wagmiConfig } from "./wagmiConfig";
+// import { base, baseSepolia, lisk, liskSepolia } from "viem/chains";
+// import { ChainProvider } from "./hooks/useChainManager";
+// import { ActiveChainProvider } from "./contexts/ActiveChainContext";
 
 const queryClient = new QueryClient();
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
   <React.StrictMode>
@@ -82,7 +80,7 @@ root.render(
         </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider> */}
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

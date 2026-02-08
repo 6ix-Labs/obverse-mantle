@@ -1,4 +1,3 @@
-import React from "react";
 import { PaymentAppItesm } from "../../constants";
 import { motion } from "framer-motion";
 import { Variants } from "framer-motion";
@@ -29,7 +28,6 @@ const imgRight: Variants = {
   },
 };
 
-
 const textLeft = (delay = 0.6) => ({
   hidden: { opacity: 0, x: -50 },
   visible: {
@@ -50,7 +48,7 @@ const textRight = (delay = 0.6) => ({
 
 const PaymentApp = () => {
   return (
-    <section className="flex flex-col justify-center items-center gap-5 padding-t padding-x padding-y padding-b w-full max-container bg-background-main overflow-x-hidden">
+    <section className="flex overflow-x-hidden flex-col gap-5 justify-center items-center w-full padding-t padding-x padding-y padding-b max-container bg-background-main">
       <div className="flex flex-col gap-20 lg:p-10">
         {PaymentAppItesm.map((item, index) => {
           const isReversed = index % 2 !== 0;
@@ -58,7 +56,7 @@ const PaymentApp = () => {
             <div
               key={item.label}
               className={`flex items-center gap-10 ${
-                isReversed ? "md:flex-row-reverse flex-col" : "md:flex-row flex-col"
+                isReversed ? "flex-col md:flex-row-reverse" : "flex-col md:flex-row"
               } w-full`}
             >
               {/* Textcontent */}
@@ -77,7 +75,6 @@ const PaymentApp = () => {
                 </p>
               </motion.div>
 
-           
               <motion.img
                 variants={isReversed ? imgRight : imgLeft}
                 initial="hidden"

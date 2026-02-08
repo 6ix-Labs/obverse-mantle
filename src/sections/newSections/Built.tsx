@@ -1,8 +1,6 @@
-import React from "react";
-
 import { FiArrowUpRight } from "react-icons/fi";
 import { community } from "@/assets/images";
-import { Button } from "@/Components/Button/Button";
+import { Button } from "@/components/Button/Button";
 
 const Built = () => {
   return (
@@ -16,10 +14,11 @@ const Built = () => {
             <br className="hidden lg:block" /> Community
           </h1>
           <p className="text-[#FFFFFF] font-onest text-[12px] sm:text-[14px] md:text-[16px] max-w-[342px] sm:max-w-[550px]">
-            Obverse is not another payment app. It’s a movement for crypto-native merchants, creators, and micro-entrepreneurs who live online and transact in real time.
+            Obverse is not another payment app. It’s a movement for crypto-native merchants, creators, and
+            micro-entrepreneurs who live online and transact in real time.
           </p>
 
-          <div className="relative flex justify-center items-center">
+          <div className="flex relative justify-center items-center">
             <a href="https://t.me/ObverseBot" target="_blank" rel="noopener noreferrer">
               <Button
                 size="normal"
@@ -34,7 +33,6 @@ const Built = () => {
         <div className="flex items-start">
           <img src={community} alt="Community" />
         </div>
-
       </div>
     </section>
   );

@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-import { arrowDown } from "@/assets/icons";
-import { PlusIcon } from "lucide-react";
 import { FaPlus } from "react-icons/fa";
 import data from "./data";
 
@@ -49,7 +47,7 @@ const Faq = () => {
   ));
   return (
     <section className="w-[90%] mx-auto">
-      <div className="flex flex-col gap-10 items-center justify-center sm:mt-20 mt-5">
+      <div className="flex flex-col gap-10 justify-center items-center mt-5 sm:mt-20">
         <h3 className="font-spacegrotesk leading-none font-bold text-[25px] sm:text-[25px] md:text-[30px] lg:text-[40px] bg-gradient-to-r from-[#FFF3EF] to-[#99928F] bg-clip-text text-transparent whitespace-nowrap text-center">
           Frequently Asked Questions
         </h3>
