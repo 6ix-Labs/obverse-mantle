@@ -1,17 +1,11 @@
-import {
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-  motion,
-} from "motion/react";
+import { useScroll, useTransform, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../Button/Button";
 import { FiArrowUpRight } from "react-icons/fi";
 
-
 interface TimelineEntry {
   title: string;
-  buttontext: string
+  buttontext: string;
   content: React.ReactNode;
 }
 
@@ -37,20 +31,19 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
   return (
     <div className="w-full bg-[#070707] md:px-10" ref={containerRef}>
-      <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
+      <div ref={ref} className="relative pb-20 mx-auto max-w-7xl">
         {data.map((item, index) => (
-          <div
-            key={index}
-            className="flex justify-start pt-10 md:pt-40 md:gap-10 sm:mb-0 mb-5"
-          >
-            <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
+          <div key={index} className="flex justify-start pt-10 mb-5 md:pt-40 md:gap-10 sm:mb-0">
+            <div className="flex sticky top-40 z-40 flex-col items-center self-start max-w-xs md:flex-row lg:max-w-sm md:w-full">
               <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-[rgba(32,30,31,0.31)] shadow-[inset_1px_11px_8px_-5px_rgba(255,199,225,0.08),inset_1px_-4px_8px_1px_rgba(255,199,225,0.14)] flex items-center justify-center">
                 <div className="h-6 w-6 rounded-full bg-[rgba(32,30,31,0.31)] shadow-[inset_1px_11px_8px_-5px_rgba(255,199,225,0.08),inset_1px_-4px_8px_1px_rgba(255,199,225,0.14)] p-2" />
               </div>
-    
-              <div className="md:flex hidden flex-col gap-5 items-start md:pl-20 pl-10">
-                 <h1 className="font-spacegrotesk leading-none font-bold text-[20px] sm:text-[25px] md:text-[30px] lg:text-[40px] bg-gradient-to-r from-[#FFF3EF] to-[#99928F] bg-clip-text text-transparent whitespace-nowrap px-4">{item.title}</h1>
-                <div className="relative flex justify-center items-center">
+
+              <div className="hidden flex-col gap-5 items-start pl-10 md:flex md:pl-20">
+                <h1 className="font-spacegrotesk leading-none font-bold text-[20px] sm:text-[25px] md:text-[30px] lg:text-[40px] bg-gradient-to-r from-[#FFF3EF] to-[#99928F] bg-clip-text text-transparent whitespace-nowrap px-4">
+                  {item.title}
+                </h1>
+                <div className="flex relative justify-center items-center">
                   <Button
                     size="normal"
                     variant="normal"
@@ -62,7 +55,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               </div>
             </div>
 
-            <div className="relative pl-20 pr-4 md:pl-4 w-full flex flex-col gap-3">
+            <div className="flex relative flex-col gap-3 pr-4 pl-20 w-full md:pl-4">
               <h3 className="md:hidden block font-spacegrotesk leading-none font-bold text-[30px] sm:text-[25px] md:text-[30px] lg:text-[40px] bg-gradient-to-r from-[#FFF3EF] to-[#99928F] bg-clip-text text-transparent whitespace-nowrap">
                 {item.title}
               </h3>

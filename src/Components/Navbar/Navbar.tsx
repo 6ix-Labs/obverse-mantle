@@ -1,48 +1,45 @@
-import React, { useState } from "react"
-import { Link, useLocation } from "react-router"
-import { logo, logoText } from "../../assets/icons"
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router";
+import { logo, logoText } from "../../assets/icons";
 import { Button } from "../Button/Button"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar: React.FC = () => {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const location = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   const handleScrollToSection = (sectionId: string) => {
-    setMenuOpen(false)
+    setMenuOpen(false);
     if (location.pathname !== "/") {
-      window.location.href = `/#${sectionId}`
-      return
+      window.location.href = `/#${sectionId}`;
+      return;
     }
-   
+
     setTimeout(() => {
-      const element = document.getElementById(sectionId)
+      const element = document.getElementById(sectionId);
       if (element) {
-        const offset = 100 
-        const elementPosition = element.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.pageYOffset - offset
+        const offset = 100;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
 
         window.scrollTo({
           top: offsetPosition,
-          behavior: "smooth"
-        })
+          behavior: "smooth",
+        });
       }
-    }, 100)
-  }
+    }, 100);
+  };
 
   const handleHomeClick = () => {
-    setMenuOpen(false)
-    handleScrollToSection("hero")
-  }
+    setMenuOpen(false);
+    handleScrollToSection("hero");
+  };
 
   const menuItems = [
     { label: "Home", action: handleHomeClick },
     { label: "Why Us", action: () => handleScrollToSection("why-us") },
     { label: "Features", action: () => handleScrollToSection("features") },
-  ]
-
-
-
+  ];
 
   return (
     <header className="pt-0 w-full sm:pt-0 bg-background-main">
@@ -53,7 +50,6 @@ const Navbar: React.FC = () => {
             <img src={logoText} alt="logoText" />
           </div>
         </Link>
-
 
         {/* Desktop Navigation */}
         <ul className="hidden flex-1 gap-10 justify-center items-center lg:flex">
@@ -186,18 +182,12 @@ const Navbar: React.FC = () => {
           )}
         </AnimatePresence>
 
-          <Button 
-            className="hidden lg:flex"
-            variant="normal"
-            size="normal"
-            href="https://t.me/ObverseBot"
-          >
-            Get started
-          </Button>
+        <Button className="hidden lg:flex" variant="normal" size="normal" href="https://t.me/ObverseBot">
+          Get started
+        </Button>
       </nav>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
-
+export default Navbar;

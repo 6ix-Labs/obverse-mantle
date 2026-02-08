@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button } from "../Button/Button";
-import { baseSepolia, liskSepolia, arbitrumSepolia, optimismSepolia } from "viem/chains";
+import { Button } from "../../Components/Button/Button";
 import { useChainManager } from "../../hooks/useChainManager";
-// import {  } from "@privy-io/react-auth/solana";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { useActiveChain } from "../../contexts/ActiveChainContext";
 
+// import {  } from "@privy-io/react-auth/solana";
+// import { baseSepolia, liskSepolia, arbitrumSepolia, optimismSepolia } from "viem/chains";
+
 // Define chain types
-type ChainType = 'evm' | 'solana';
+type ChainType = "evm" | "solana";
 
 interface ChainConfig {
   id: number | string;
@@ -25,7 +26,7 @@ const CHAINS: ChainConfig[] = [
   // { id: Number(arbitrumSepolia.id), name: "Arbitrum Sepolia", type: 'evm' },
   // { id: Number(optimismSepolia.id), name: "Optimism Sepolia", type: 'evm' },
   // { id: 'solana:mainnet', name: "Solana Mainnet", type: 'solana', chainId: 'solana:mainnet' },
-  { id: 'solana:devnet', name: "Solana Devnet", type: 'solana', chainId: 'solana:devnet' },
+  { id: "solana:devnet", name: "Solana Devnet", type: "solana", chainId: "solana:devnet" },
 ];
 
 export const ChainDropdown: React.FC = () => {
@@ -39,7 +40,6 @@ export const ChainDropdown: React.FC = () => {
   const [isSwitching, setIsSwitching] = useState(false);
   const { activeChainType, setActiveChainType } = useActiveChain();
   const dropdownRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -56,20 +56,19 @@ export const ChainDropdown: React.FC = () => {
 
   const getCurrentSolanaChain = () => {
     if (!solanaWallet) return CHAINS[5];
-    const walletChainId = (solanaWallet as any).chainId || 'solana:devnet';
+    const walletChainId = (solanaWallet as any).chainId || "solana:devnet";
     const chainMatch = CHAINS.find((c) => c.chainId === walletChainId);
     return chainMatch || CHAINS[5];
   };
 
   // Determine current chain based on active chain type
-  const currentChain = activeChainType === 'solana'
-    ? getCurrentSolanaChain()
-    : CHAINS.find((c) => c.type === 'evm' && c.id === chainId) || CHAINS[0];
+  const currentChain =
+    activeChainType === "solana"
+      ? getCurrentSolanaChain()
+      : CHAINS.find((c) => c.type === "evm" && c.id === chainId) || CHAINS[0];
 
   // Get current wallet address based on active chain type
-  const currentAddress = currentChain.type === 'solana'
-    ? solanaWallet?.address
-    : evmAddress || user?.wallet?.address;
+  const currentAddress = currentChain.type === "solana" ? solanaWallet?.address : evmAddress || user?.wallet?.address;
 
   const handleChainSelect = async (chain: ChainConfig) => {
     const previousChainType = activeChainType;
@@ -78,7 +77,7 @@ export const ChainDropdown: React.FC = () => {
       // Update active chain type
       setActiveChainType(chain.type);
 
-      if (chain.type === 'solana') {
+      if (chain.type === "solana") {
         if (!isSolanaConnected || !solanaWallet) {
           toast.warning("Please connect a Solana wallet first", { position: "top-right" });
           setActiveChainType(previousChainType); // Revert on warning
@@ -120,7 +119,7 @@ export const ChainDropdown: React.FC = () => {
         variant="ghost"
         onClick={() => setIsOpen(!isOpen)}
         disabled={isSwitching}
-        className="px-3 py-2 text-xs rounded-xl bg-gray-50 border border-gray-200 flex items-center gap-2 text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex gap-2 items-center px-3 py-2 text-xs text-gray-800 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <div className="flex flex-col items-start">
           <span className="font-medium">{isSwitching ? "Switching..." : currentChain.name}</span>
@@ -131,7 +130,7 @@ export const ChainDropdown: React.FC = () => {
           )}
         </div>
         <svg
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -143,18 +142,17 @@ export const ChainDropdown: React.FC = () => {
       {isOpen && (
         <div className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-200 p-1 min-w-[170px] z-50">
           {/* EVM Chains Section */}
-          <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            EVM Chains
-          </div>
-          {CHAINS.filter(c => c.type === 'evm').map((chain) => (
+          <div className="px-3 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">EVM Chains</div>
+          {CHAINS.filter((c) => c.type === "evm").map((chain) => (
             <button
               key={chain.id}
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
-              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.id === chainId && activeChainType === 'evm'
-                ? 'bg-gray-100 text-gray-900 font-medium'
-                : 'text-gray-700 hover:bg-gray-50'
-                }`}
+              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                chain.id === chainId && activeChainType === "evm"
+                  ? "bg-gray-100 text-gray-900 font-medium"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
             >
               {chain.name}
             </button>
@@ -164,15 +162,16 @@ export const ChainDropdown: React.FC = () => {
           <div className="px-3 py-1.5 mt-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-t border-gray-100">
             Solana Chains
           </div>
-          {CHAINS.filter(c => c.type === 'solana').map((chain) => (
+          {CHAINS.filter((c) => c.type === "solana").map((chain) => (
             <button
               key={chain.id}
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
-              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.chainId === currentChain.chainId && activeChainType === 'solana'
-                ? 'bg-gray-100 text-gray-900 font-medium'
-                : 'text-gray-700 hover:bg-gray-50'
-                }`}
+              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                chain.chainId === currentChain.chainId && activeChainType === "solana"
+                  ? "bg-gray-100 text-gray-900 font-medium"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
             >
               {chain.name}
             </button>

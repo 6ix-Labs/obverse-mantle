@@ -1,12 +1,13 @@
-import Hero from '../../sections/Hero/Hero'
-import Herotext from '../../sections/Hero/Herotext'
-import SendScanDone from '../../sections/SendScanDone/SendScanDone'
-import BuiltFor from '../../sections/BuiltFor/BuiltFor'
-import WhatMakes from '../../sections/WhatMakes/WhatMakes'
-import PaymentApp from '../../sections/PaymentApp/PaymentApp'
-import ReadyToAccept from '../../sections/ReadyToAccept/ReadyToAccept'
-import Testimonials from '../../sections/Testimonials/Testimonials'
+import Hero from "../../sections/Hero/Hero";
+import Herotext from "../../sections/Hero/Herotext";
+import SendScanDone from "../../sections/SendScanDone/SendScanDone";
+import BuiltFor from "../../sections/BuiltFor/BuiltFor";
+import WhatMakes from "../../sections/WhatMakes/WhatMakes";
+import PaymentApp from "../../sections/PaymentApp/PaymentApp";
+import ReadyToAccept from "../../sections/ReadyToAccept/ReadyToAccept";
+import Testimonials from "../../sections/Testimonials/Testimonials";
 
+// nb: temporary v2
 // import Built from "@/sections/newSections/Built"
 // import Faq from "@/sections/newSections/Faq"
 // import Footer from "@/sections/newSections/Footer"
@@ -25,7 +26,8 @@ const Home = () => {
       <WhatMakes />
       <PaymentApp />
       <Testimonials />
-      <ReadyToAccept /> 
+      <ReadyToAccept />
+      {/* nb: temporary v2 */}
       {/* <Navbar />
       {/* <Hero /> */}
       {/* <Built /> */}
@@ -34,7 +36,7 @@ const Home = () => {
       {/* <Footer /> */}
       {/* <Main/> */}
     </section>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
