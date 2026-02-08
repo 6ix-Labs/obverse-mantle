@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { paymentDarkBg, paymentLightBg } from "../../assets/images";
+import { Navbar, NavBody, MobileNav, MobileNavHeader, NavbarLogo } from "../../Components/Navbar/ResizableNavbar";
 import { Button } from "../../Components/Button/Button";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { logo } from "../../assets/icons";
 import { useNavigate } from "react-router";
 
 const Login = () => {
   const [theme, setTheme] = useState("light");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   useEffect(() => {
@@ -32,27 +39,51 @@ const Login = () => {
   }, [theme]);
 
   const handleLogin = () => {
-    // For now, we'll just navigate to the dashboard
     navigate("/dashboard");
   };
 
+  const SunIcon = GoSun as unknown as React.FC;
+  const MoonIcon = IoMoonOutline as unknown as React.FC;
+
   return (
     <div
-      className="flex h-screen w-full flex-col items-center justify-center bg-cover bg-no-repeat"
+      className="flex min-h-screen flex-col items-center bg-cover bg-top bg-no-repeat px-4 text-gray-800"
       style={{
         backgroundImage: `url(${theme === "light" ? paymentLightBg : paymentDarkBg})`,
       }}
     >
-      <div className="absolute right-4 top-4">
-        <button onClick={toggleTheme} className="rounded-full p-2 text-gray-500 dark:text-gray-400">
-          {theme === "light" ? <IoMoonOutline size={24} /> : <GoSun size={24} />}
-        </button>
-      </div>
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg dark:bg-gray-800">
+      <Navbar className="top-4" scrollThreshold={50}>
+        <NavBody>
+          <NavbarLogo />
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Button size="icon" variant="ghost" onClick={toggleTheme} className="bg-gray-200 dark:bg-gray-700">
+              {theme === "light" ? <MoonIcon /> : <SunIcon />}
+            </Button>
+          </div>
+        </NavBody>
+        <MobileNav>
+          <MobileNavHeader>
+            <NavbarLogo />
+            <div className="flex items-center gap-2">
+              <Button size="icon" variant="ghost" onClick={toggleTheme} className="bg-gray-200 dark:bg-gray-700">
+                {theme === "light" ? <MoonIcon /> : <SunIcon />}
+              </Button>
+            </div>
+          </MobileNavHeader>
+        </MobileNav>
+      </Navbar>
+      <div className="mt-40 w-full max-w-[450px] rounded-xl border border-[#E1E4EA] bg-white p-6 shadow-xl dark:border-[#2B303B] dark:bg-[#0e121b]">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src={logo} alt="logo" className="h-8 w-8" />
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Login</h1>
+            <img src={logo} alt="logo" className="max-s20:w-7" />
+            <div>
+              <h2 className="font-figtree text-[24px] font-semibold tracking-text text-[#0e121b] dark:text-white">
+                Login
+              </h2>
+              <p className="text-[16px] tracking-text text-[#525866] dark:text-[#99A0AE]">
+                Login with details from Agent
+              </p>
+            </div>
           </div>
         </div>
         <form
@@ -60,32 +91,46 @@ const Login = () => {
             e.preventDefault();
             handleLogin();
           }}
+          className="space-y-4"
         >
-          <div className="mb-4">
-            <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300" htmlFor="identifier">
+          <div>
+            <label className="mb-1 block font-figtree text-[16px] text-[#0E121B] dark:text-white" htmlFor="identifier">
               Identifier
             </label>
             <input
               type="text"
               id="identifier"
-              className="w-full rounded-lg border bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700"
+              className="w-full rounded-[10px] border border-gray-300 bg-white px-4 py-2 text-[#99A0AE] placeholder:font-figtree focus:shadow-md focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
               placeholder="Enter your identifier"
             />
           </div>
-          <div className="mb-6">
-            <label className="mb-2 block text-sm font-medium text-gray-600 dark:text-gray-300" htmlFor="password">
+          <div className="relative">
+            <label className="mb-1 block font-figtree text-[16px] text-[#0E121B] dark:text-white" htmlFor="password">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
-              className="w-full rounded-lg border bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-gray-600 dark:bg-gray-700"
+              className="w-full rounded-[10px] border border-gray-300 bg-white px-4 py-2 text-[#99A0AE] placeholder:font-figtree focus:shadow-md focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white"
               placeholder="Enter your password"
             />
+            <div
+              className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 pt-7"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? (
+                <AiOutlineEyeInvisible className="h-5 w-5 text-gray-400" />
+              ) : (
+                <AiOutlineEye className="h-5 w-5 text-gray-400" />
+              )}
+            </div>
           </div>
-          <Button type="submit" className="w-full">
+          <button
+            type="submit"
+            className="w-full rounded-[10px] bg-[#E7562E] py-3 font-semibold text-white transition-colors hover:bg-[#E0793E] disabled:cursor-not-allowed disabled:bg-gray-400"
+          >
             Login
-          </Button>
+          </button>
         </form>
       </div>
     </div>
