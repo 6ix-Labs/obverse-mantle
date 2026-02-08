@@ -6,8 +6,8 @@ import Error from "./Pages/Error/Error";
 import Footer from "./Components/Footer/Footer";
 import { Toaster } from "./Components/ui/sonner";
 import Payments from "./Pages/Payment/Payments";
-import Login from "./pages/Dashboard/Login";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Login from "./Pages/Dashboard/Login";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 
 const AppRoutes = () => {
   const location = useLocation();
