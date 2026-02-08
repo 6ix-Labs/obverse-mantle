@@ -72,7 +72,9 @@ root.render(
           <ChainProvider>
             <ActiveChainProvider> */}
     <ObversePrivyProvider>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </ObversePrivyProvider>
 
     {/* </ActiveChainProvider>

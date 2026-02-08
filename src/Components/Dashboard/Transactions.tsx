@@ -1,0 +1,247 @@
+import { Search, Calendar, Filter, Download, ChevronDown, Coins, Trash2 } from "lucide-react";
+import { useState, useRef, useEffect, forwardRef } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useQuery } from "@tanstack/react-query";
+import { getPayments } from "../../api/services/dashboard";
+import { Skeleton } from "../Skeleton/Skeleton";
+
+const Transactions = () => {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [filter, setFilter] = useState<string>("");
+  const [visibleCount, setVisibleCount] = useState(5);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["payments"],
+    queryFn: getPayments,
+  });
+
+  const payments = data?.payments || [];
+  const currentPayments = payments.slice(0, visibleCount);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setIsFilterOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleViewMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 5, payments.length));
+  };
+
+  const handleFilterSelect = (selectedFilter: string) => {
+    setFilter(selectedFilter);
+    setIsFilterOpen(false);
+  };
+
+  const CustomDateInput = forwardRef(({ value, onClick }: any, ref: any) => (
+    <button
+      onClick={onClick}
+      ref={ref}
+      className="flex justify-between items-center px-4 py-2 w-full text-sm font-medium text-gray-700 bg-white rounded-3xl border hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 lg:w-auto"
+    >
+      <div className="flex items-center">
+        <Calendar className="mr-2 w-5 h-5" />
+        {value || "Date"}
+      </div>
+    </button>
+  ));
+
+  return (
+    <div className="p-6 bg-white rounded-lg shadow-md border-b-[0.5px] border-gray-200 dark:bg-gray-800">
+      <div className="flex flex-col gap-4 justify-between items-start mb-4 lg:flex-row lg:items-center">
+        <div className="relative w-full lg:w-96">
+          <span className="flex absolute inset-y-0 left-0 items-center pl-3">
+            <Search className="w-5 h-5 text-gray-400" />
+          </span>
+          <input
+            type="text"
+            className="py-2 pr-4 pl-10 w-full text-gray-700 bg-white rounded-3xl border focus:border-orange-500 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-orange-500"
+            placeholder="Search by transaction id..."
+          />
+        </div>
+
+        <div className="flex flex-wrap gap-3 items-center w-full lg:w-auto lg:justify-end">
+          <div className="hidden gap-2 items-center w-full lg:flex lg:w-auto">
+            <span className="text-sm font-medium text-gray-500 whitespace-nowrap dark:text-gray-400">Sort by:</span>
+            <div className="w-full lg:w-auto">
+              <DatePicker
+                selected={startDate}
+                onChange={(date: Date | null) => setStartDate(date)}
+                customInput={<CustomDateInput />}
+                dateFormat="yyyy-MM-dd"
+              />
+            </div>
+          </div>
+          <div className="flex gap-3 justify-between items-center w-full lg:w-auto lg:justify-start">
+            <div className="relative flex-1 lg:flex-none" ref={filterRef}>
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className="flex justify-center items-center px-4 py-2 w-full text-sm font-medium text-gray-700 bg-white rounded-3xl border lg:w-auto lg:justify-start hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+              >
+                <Filter className="mr-2 w-5 h-5" />
+                {filter || "Filters"}
+                <ChevronDown className="ml-2 w-4 h-4" />
+              </button>
+
+              {isFilterOpen && (
+                <div className="absolute right-0 top-full z-10 p-2 mt-2 w-56 bg-white rounded-xl border border-gray-200 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+                  <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Filter By</div>
+                  <div className="flex flex-col gap-1">
+                    {["Chains", "Token", "Date Created", "Status"].map((item) => (
+                      <button
+                        key={item}
+                        onClick={() => handleFilterSelect(item)}
+                        className="px-3 py-2 text-sm text-left text-gray-700 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button
+              disabled
+              className="flex flex-1 justify-center items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-3xl border opacity-50 cursor-not-allowed lg:flex-none lg:justify-start dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+            >
+              <Download className="mr-2 w-5 h-5" />
+              Export Data
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 rounded-tl-lg">
+                <span className="hidden md:inline">Transaction ID</span>
+                <span className="md:hidden">ID</span>
+              </th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700">Token</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700">Amount</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700">Chain</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700">
+                Wallet Address
+              </th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700">Status</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 rounded-tr-lg">Date</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <tr key={index}>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-24" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <Skeleton className="h-4 w-16" />
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-16" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-20" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-32" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-24" />
+                  </td>
+                </tr>
+              ))
+            ) : payments.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="py-12 text-center">
+                  <div className="flex flex-col justify-center items-center">
+                    <Trash2 className="mb-4 w-24 h-24 text-gray-300 opacity-50" />
+                    <p className="text-gray-500 dark:text-gray-400">You have not started trading yet</p>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              currentPayments.map((transaction, index) => (
+                <tr key={index}>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {transaction._id.substring(0, 8)}...
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
+                    <div className="flex items-center">
+                      <div className="flex justify-center items-center mr-2 w-8 h-8 bg-orange-100 rounded-full dark:bg-orange-900/20">
+                        <Coins className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                      </div>
+                      {transaction.token}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
+                    ${transaction.amount}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
+                    {transaction.chain}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
+                    {transaction.fromAddress.substring(0, 6)}...{transaction.fromAddress.substring(transaction.fromAddress.length - 4)}
+                  </td>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span
+                      className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
+                        transaction.status === "confirmed"
+                          ? "bg-green-100 text-green-800"
+                          : transaction.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {transaction.status === "confirmed" ? "Completed" : transaction.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
+                    {new Date(transaction.createdAt).toLocaleString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {payments.length > 5 && visibleCount < payments.length && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={handleViewMore}
+            className="text-sm font-medium text-orange-600 hover:underline dark:text-orange-500"
+          >
+            View More Transactions
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Transactions;
