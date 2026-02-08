@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import Navbar from "./Components/Navbar/Navbar";
-import Home from "./pages/Home/Home";
-import About from "./pages/About/About";
-import Error from "./pages/Error/Error";
-import Footer from "./components/Footer/Footer";
-import { Toaster } from "./components/ui/sonner";
-import Payments from "./pages/Payment/Payments";
+import Home from "./Pages/Home/Home";
+import About from "./Pages/About/About";
+import Error from "./Pages/Error/Error";
+import Footer from "./Components/Footer/Footer";
+import { Toaster } from "./Components/ui/sonner";
+import Payments from "./Pages/Payment/Payments";
 
 const AppRoutes = () => {
   const location = useLocation();
