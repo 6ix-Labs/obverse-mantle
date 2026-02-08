@@ -23,43 +23,43 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="hidden w-64 flex-col md:flex">
-      <div className="flex h-16 items-center justify-center">
+    <div className="hidden flex-col w-64 md:flex">
+      <div className="flex justify-center items-center h-16">
         <div className="scale-90">
           <NavbarLogo />
         </div>
       </div>
-      <div className="flex flex-1 flex-col overflow-y-auto">
-        <h3 className="mt-3 px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Main Menu</h3>
-        <nav className="flex-1 space-y-1 px-2 py-4">
+      <div className="flex overflow-y-auto flex-col flex-1">
+        <h3 className="px-4 mt-3 text-xs font-semibold tracking-wider text-gray-500 uppercase">Main Menu</h3>
+        <nav className="flex-1 px-2 py-4 space-y-1">
           <Link to="/dashboard" className={getLinkClass("/dashboard")}>
-            <LayoutDashboard className="mr-3 h-5 w-5" />
+            <LayoutDashboard className="mr-3 w-5 h-5" />
             Overview
           </Link>
           <Link to="/dashboard/invoices" className={getLinkClass("/dashboard/invoices")}>
-            <FileText className="mr-3 h-5 w-5" />
+            <FileText className="mr-3 w-5 h-5" />
             Invoices
           </Link>
           <Link to="/dashboard/payment-links" className={getLinkClass("/dashboard/payment-links")}>
-            <LinkIcon className="mr-3 h-5 w-5" />
+            <LinkIcon className="mr-3 w-5 h-5" />
             Payment Links
           </Link>
         </nav>
-        <div className="mt-4 px-2 py-4">
-          <h3 className="px-4 text-xs font-semibold uppercase tracking-wider text-gray-500">System</h3>
+        <div className="px-2 py-4 mt-4">
+          <h3 className="px-4 text-xs font-semibold tracking-wider text-gray-500 uppercase">System</h3>
           <nav className="mt-2 space-y-1">
             <Link
               to="/dashboard/settings"
               className={getLinkClass("/dashboard/settings")}
             >
-              <Settings className="mr-3 h-5 w-5" />
+              <Settings className="mr-3 w-5 h-5" />
               Settings
             </Link>
           </nav>
         </div>
         <div className="p-4">
-          <button className="flex w-full items-center rounded-lg px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20">
-            <LogOut className="mr-3 h-5 w-5" />
+          <button className="flex items-center px-4 py-2 w-full text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20">
+            <LogOut className="mr-3 w-5 h-5" />
             Logout
           </button>
         </div>
