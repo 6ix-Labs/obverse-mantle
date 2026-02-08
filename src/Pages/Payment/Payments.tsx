@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { paymentDarkBg, paymentLightBg } from "../../assets/images";
 import { useParams } from "react-router";
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../Components/Button/Button";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
 import { FiCheck, FiLoader, FiAlertCircle, FiCopy } from "react-icons/fi";

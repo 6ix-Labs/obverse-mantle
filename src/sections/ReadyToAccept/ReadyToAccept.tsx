@@ -1,4 +1,4 @@
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../Components/Button/Button";
 import { Link } from "react-router";
 import { bitcoinImg, lImg, rImg, usdImg } from "../../assets/images";
 import { motion, Variants } from "framer-motion";

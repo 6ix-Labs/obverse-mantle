@@ -3,7 +3,7 @@ import { useState } from "react";
 // import { logo, logoDark, logoText, logoTextDark } from "@/assets/icons";
 // import { Button } from "./ui/Button";
 import { Link } from "react-router";
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../Components/Button/Button";
 import { logoDark, logoTextDark } from "../../assets/icons";
 import { toast } from "sonner";
 const MainNavbar = () => {
