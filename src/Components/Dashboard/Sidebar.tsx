@@ -1,9 +1,11 @@
 import { NavbarLogo } from "../Navbar/ResizableNavbar";
 import { LayoutDashboard, FileText, Link as LinkIcon, Settings, LogOut } from "lucide-react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import Cookies from "js-cookie";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
 
   // Helper to determine if link is active
@@ -11,6 +13,13 @@ const Sidebar = () => {
     if (path === "/dashboard" && currentPath === "/dashboard") return true;
     if (path !== "/dashboard" && currentPath.startsWith(path)) return true;
     return false;
+  };
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+    Cookies.remove("merchant");
+    Cookies.remove("paymentLinkId");
+    navigate("/login");
   };
 
   const getLinkClass = (path: string) => {
@@ -58,7 +67,10 @@ const Sidebar = () => {
           </nav>
         </div>
         <div className="p-4">
-          <button className="flex items-center px-4 py-2 w-full text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20">
+          <button
+            onClick={handleLogout}
+            className="flex items-center px-4 py-2 w-full text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+          >
             <LogOut className="mr-3 w-5 h-5" />
             Logout
           </button>

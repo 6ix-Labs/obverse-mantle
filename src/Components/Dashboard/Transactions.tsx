@@ -1,8 +1,10 @@
 import { Search, Calendar, Filter, Download, ChevronDown, Coins, Trash2 } from "lucide-react";
-import { transactions } from "./data";
 import { useState, useRef, useEffect, forwardRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useQuery } from "@tanstack/react-query";
+import { getPayments } from "../../api/services/dashboard";
+import { Skeleton } from "../Skeleton/Skeleton";
 
 const Transactions = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -11,7 +13,13 @@ const Transactions = () => {
   const [filter, setFilter] = useState<string>("");
   const [visibleCount, setVisibleCount] = useState(5);
 
-  const currentTransactions = transactions.slice(0, visibleCount);
+  const { data, isLoading } = useQuery({
+    queryKey: ["payments"],
+    queryFn: getPayments,
+  });
+
+  const payments = data?.payments || [];
+  const currentPayments = payments.slice(0, visibleCount);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -25,7 +33,7 @@ const Transactions = () => {
   }, []);
 
   const handleViewMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 5, transactions.length));
+    setVisibleCount((prev) => Math.min(prev + 5, payments.length));
   };
 
   const handleFilterSelect = (selectedFilter: string) => {
@@ -131,7 +139,36 @@ const Transactions = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
-            {transactions.length === 0 ? (
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <tr key={index}>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-24" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <Skeleton className="h-4 w-16" />
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-16" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-20" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-32" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                  </td>
+                  <td className="px-6 py-4">
+                    <Skeleton className="h-4 w-24" />
+                  </td>
+                </tr>
+              ))
+            ) : payments.length === 0 ? (
               <tr>
                 <td colSpan={7} className="py-12 text-center">
                   <div className="flex flex-col justify-center items-center">
@@ -141,17 +178,17 @@ const Transactions = () => {
                 </td>
               </tr>
             ) : (
-              currentTransactions.map((transaction, index) => (
+              currentPayments.map((transaction, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {transaction.id}
+                    {transaction._id.substring(0, 8)}...
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
                     <div className="flex items-center">
                       <div className="flex justify-center items-center mr-2 w-8 h-8 bg-orange-100 rounded-full dark:bg-orange-900/20">
                         <Coins className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                       </div>
-                      {transaction.token.name}
+                      {transaction.token}
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
@@ -161,21 +198,30 @@ const Transactions = () => {
                     {transaction.chain}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
-                    {transaction.walletAddress}
+                    {transaction.fromAddress.substring(0, 6)}...{transaction.fromAddress.substring(transaction.fromAddress.length - 4)}
                   </td>
                   <td className="px-6 py-4 text-sm whitespace-nowrap">
                     <span
                       className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                        transaction.status === "Completed"
+                        transaction.status === "confirmed"
                           ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
+                          : transaction.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-red-100 text-red-800"
                       }`}
                     >
-                      {transaction.status}
+                      {transaction.status === "confirmed" ? "Completed" : transaction.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
-                    {transaction.date}
+                    {new Date(transaction.createdAt).toLocaleString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
                   </td>
                 </tr>
               ))
@@ -184,7 +230,7 @@ const Transactions = () => {
         </table>
       </div>
 
-      {transactions.length > 5 && visibleCount < transactions.length && (
+      {payments.length > 5 && visibleCount < payments.length && (
         <div className="flex justify-center mt-6">
           <button
             onClick={handleViewMore}
