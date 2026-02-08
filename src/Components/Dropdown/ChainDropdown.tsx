@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../Components/Button/Button";
 import { useChainManager } from "../../hooks/useChainManager";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";

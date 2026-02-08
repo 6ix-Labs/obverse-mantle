@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useLogin, usePrivy } from "@privy-io/react-auth";
 import { useAppKitAccount, useAppKitNetwork } from "@reown/appkit/react";
-import { Button } from "../../components/Button/Button";
-import { ChainDropdown } from "../../components/Dropdown/ChainDropdown";
+import { Button } from "../../Components/Button/Button";
+import { ChainDropdown } from "../../Components/Dropdown/ChainDropdown";
 import WalletSheet from "./WalletSheet";
 import { useChainManager } from "../../hooks/useChainManager";
 

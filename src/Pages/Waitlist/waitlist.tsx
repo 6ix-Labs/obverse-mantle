@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 // import { Ellipse, paymentDarkBg } from "../";
 // import { Button } from "./ui/Button";
-import { Button } from "../../components/Button/Button.tsx";
+import { Button } from "../../Components/Button/Button.tsx";
 
 import { sendEmailToTelegram } from "../../helper/telegram.ts";
 import { toast } from "sonner";

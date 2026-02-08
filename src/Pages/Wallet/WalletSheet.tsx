@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetClose } from "../../components/ui/sheet";
-import { Button } from "../../components/Button/Button";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetClose,
+} from "../../Components/ui/sheet";
+import { Button } from "../../Components/Button/Button";
 import { cn } from "../../lib/utils";
 import { IoCopyOutline, IoWalletOutline, IoLogOutOutline } from "react-icons/io5";
 import { usePrivy } from "@privy-io/react-auth";
@@ -12,7 +18,7 @@ import { baseSepolia } from "viem/chains";
 import { toast } from "react-toastify";
 import { formatUnits, erc20Abi } from "viem";
 import { ArrowRightToLineIcon } from "lucide-react";
-import TransferModal from "../../components/Transfer/TransferModal";
+import TransferModal from "../../Components/Transfer/TransferModal";
 import { UserPill } from "@privy-io/react-auth/ui";
 import { useActiveChain } from "../../contexts/ActiveChainContext";
 

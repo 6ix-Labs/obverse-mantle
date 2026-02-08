@@ -1,5 +1,5 @@
 import { motion, Variants } from "framer-motion";
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../Components/Button/Button";
 import { bitcoinImg, handePhoneSm, handPhone, lImg, rImg, usdImg } from "../../assets/images";
 
 const fadeIn: Variants = {

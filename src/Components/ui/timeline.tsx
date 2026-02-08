@@ -1,6 +1,6 @@
 import { useScroll, useTransform, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "../../components/Button/Button";
+import { Button } from "../Button/Button";
 import { FiArrowUpRight } from "react-icons/fi";
 
 interface TimelineEntry {
