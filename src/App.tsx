@@ -13,7 +13,7 @@ const AppRoutes = () => {
   const location = useLocation();
   const hideNavbar = ["/transaction", "/pay", "/login", "/dashboard"];
   const shouldHide = hideNavbar.some((path) => location.pathname.startsWith(path));
-  const isAuthenticated = true; // Dummy auth flag
+  const isAuthenticated = true; // temp auth flag
 
   return (
     <main className="max-container">
