@@ -1,5 +1,5 @@
 import { SSD } from "../../constants";
-import SSDCard from "@/components/SSDcard/SSDCard";
+import SSDCard from '../../Components/SSDcard/SSDCard'
 import { motion } from "framer-motion";
 
 const SendScanDone = () => {

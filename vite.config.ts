@@ -4,8 +4,6 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
-import path from "path";
-
 export default defineConfig({
   plugins: [
     react(),
@@ -18,7 +16,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': '/src',
     },
   },
   server: {

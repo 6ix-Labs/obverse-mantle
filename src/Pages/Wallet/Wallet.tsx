@@ -5,8 +5,8 @@ import axios from "axios";
 import { logo, logoText, walletIcon, walletIconDark } from "../../assets/icons";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
-import { Button } from "../../components/Button/Button";
-import { Skeleton } from "../../components/Skeleton/Skeleton";
+import { Button } from "../../Components/Button/Button";
+import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
 const Wallet = () => {

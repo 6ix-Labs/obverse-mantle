@@ -1,6 +1,6 @@
 import { FiArrowUpRight } from "react-icons/fi";
-import { Button } from "@/components/Button/Button";
-import FeatureGrid from "@/components/FeatureGrid";
+import FeatureGrid from "@/Components/FeatureGrid";
+import { Button } from "@/Components/Button/Button";
 
 const Hero = () => {
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router";
 import { logo, logoText } from "../../assets/icons";
-import { Button } from "../../Components/Button/Button";
+import { Button } from "../Button/Button"
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar: React.FC = () => {

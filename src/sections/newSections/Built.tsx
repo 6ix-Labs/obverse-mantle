@@ -1,6 +1,6 @@
 import { FiArrowUpRight } from "react-icons/fi";
 import { community } from "@/assets/images";
-import { Button } from "@/components/Button/Button";
+import { Button } from "@/Components/Button/Button";
 
 const Built = () => {
   return (

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { paymentDarkBg, paymentLightBg } from "../../assets/images";
 import { useParams } from "react-router";
 import { Button } from "../../Components/Button/Button";
-import { Skeleton } from "@/components/Skeleton/Skeleton";
+import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
 import { Navbar, NavBody, MobileNav, MobileNavHeader, NavbarLogo } from "@/components/Navbar/ResizableNavbar.tsx";

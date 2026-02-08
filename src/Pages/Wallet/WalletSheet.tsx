@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetClose } from "../../Components/ui/sheet";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetTitle,
+  SheetClose,
+} from "../../Components/ui/sheet";
 import { Button } from "../../Components/Button/Button";
 import { cn } from "../../lib/utils";
 import { IoCopyOutline, IoWalletOutline, IoLogOutOutline } from "react-icons/io5";

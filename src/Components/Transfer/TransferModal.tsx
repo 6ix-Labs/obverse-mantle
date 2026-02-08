@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "../../Components/Button/Button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../Components/ui/dialog";
+import { Button } from "../Button/Button";
 import { cn } from "../../lib/utils";
 import { IoClose, IoWalletOutline } from "react-icons/io5";
 import { ChevronDownIcon } from "lucide-react";
