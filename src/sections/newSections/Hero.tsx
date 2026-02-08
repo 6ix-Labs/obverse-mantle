@@ -1,15 +1,12 @@
-import React from "react";
-
 import { FiArrowUpRight } from "react-icons/fi";
-import FeatureGrid from "@/Components/FeatureGrid";
-import { Button } from "@/Components/Button/Button";
-
+import { Button } from "@/components/Button/Button";
+import FeatureGrid from "@/components/FeatureGrid";
 
 const Hero = () => {
   return (
     <section className="sm:w-[90%] mx-auto w-[95%] sm:mt-14 mt-8">
-      <div className="flex flex-col sm:gap-20 gap-14 items-center justify-center w-full">
-        <div className="flex flex-col gap-5 items-center justify-center">
+      <div className="flex flex-col gap-14 justify-center items-center w-full sm:gap-20">
+        <div className="flex flex-col gap-5 justify-center items-center">
           <div>
             <Button
               size="normal"
@@ -20,18 +17,17 @@ const Hero = () => {
             </Button>
           </div>
 
-          <div className="flex gap-3 sm:gap-4 flex-col items-center w-full">
+          <div className="flex flex-col gap-3 items-center w-full sm:gap-4">
             <h1 className="font-onest leading-none font-bold text-[40px] sm:text-[35px] md:text-[38px] lg:text-[50px] max-w-full bg-gradient-to-r from-[#FFFFFF] to-[#FF7849] bg-clip-text text-transparent text-center px-4">
               Accept Stablecoins in chat <br className="hidden sm:block" />
               <span className="sm:hidden"> </span>with built-in invoicing
             </h1>
             <p className="text-[#FFFFFF] font-onest text-[14px] sm:text-[16px] md:text-[18px] max-w-[342px] sm:max-w-[550px] text-center px-4">
-              Payment links, QR codes, and invoicing, all automated right within
-              your communities.
+              Payment links, QR codes, and invoicing, all automated right within your communities.
             </p>
           </div>
 
-          <div className="relative flex justify-center items-center">
+          <div className="flex relative justify-center items-center">
             <a href="https://t.me/ObverseBot" target="_blank" rel="noopener noreferrer">
               <Button
                 size="normal"
@@ -45,13 +41,14 @@ const Hero = () => {
         </div>
 
         <div className="flex flex-col gap-10">
-          <div className="relative flex gap-3 sm:gap-4 flex-col items-center w-full">
+          <div className="flex relative flex-col gap-3 items-center w-full sm:gap-4">
             <div className="absolute w-[405px] h-[405px] rounded-full bg-gradient-to-b from-[#FF7849] to-[#745846] opacity-60 blur-[360px] -top-[96px] pointer-events-none"></div>
             <h1 className="font-spacegrotesk leading-none font-bold text-[30px] sm:text-[32px] md:text-[33px] lg:text-[42px] max-w-full bg-gradient-to-r from-[#FFFFFF] to-[#99928F] bg-clip-text text-transparent text-center px-4">
-              The easiest way to get paid  <br className="hidden sm:block" /> in crypto — anywhere.
+              The easiest way to get paid <br className="hidden sm:block" /> in crypto — anywhere.
             </h1>
             <p className="text-[#FFFFFF] font-onest text-[12px] sm:text-[14px] md:text-[16px] max-w-[342px] sm:max-w-[550px] text-center px-4">
-              Whether you’re a small merchant, creator, or community seller, Obverse lets you collect stablecoins instantly from chat. No complicated wallet setups, no jargon. Just send a link and get paid.
+              Whether you’re a small merchant, creator, or community seller, Obverse lets you collect stablecoins
+              instantly from chat. No complicated wallet setups, no jargon. Just send a link and get paid.
             </p>
           </div>
 
