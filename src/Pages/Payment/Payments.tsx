@@ -11,7 +11,13 @@ import axios from "axios";
 import { logo } from "../../assets/icons";
 import { useUsdcPayment, PaymentStatus } from "../../hooks/useUsdcPayment";
 import { Wallet } from "lucide-react";
-import { MobileNav, MobileNavHeader, Navbar, NavbarLogo, NavBody } from "@/components/Navbar/ResizableNavbar.tsx";
+import {
+    Navbar,
+    NavBody,
+    MobileNav,
+    MobileNavHeader,
+    NavbarLogo,
+} from "../../Components/Navbar/ResizableNavbar";
 
 // Types
 interface CustomField {

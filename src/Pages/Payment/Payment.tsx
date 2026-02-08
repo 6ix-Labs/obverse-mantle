@@ -6,7 +6,13 @@ import { Button } from "../../Components/Button/Button";
 import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
-import { Navbar, NavBody, MobileNav, MobileNavHeader, NavbarLogo } from "@/components/Navbar/ResizableNavbar.tsx";
+import {
+  Navbar,
+  NavBody,
+  MobileNav, 
+  MobileNavHeader,
+  NavbarLogo,
+} from "../../Components/Navbar/ResizableNavbar";
 import { logo } from "../../assets/icons";
 import { toast } from "sonner";
 
