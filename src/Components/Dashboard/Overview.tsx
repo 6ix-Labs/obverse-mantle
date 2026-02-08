@@ -13,6 +13,30 @@ const Overview = () => {
 
   const stats = data?.stats;
 
+  const summaryCards = [
+    {
+      title: "Total Payments Received",
+      value: stats?.totalAmount ?? 0,
+      icon: PaymentReceivedIcon,
+      bgColor: "bg-[#deffd9]",
+      alt: "Payment Received",
+    },
+    {
+      title: "Total Payment Links Created",
+      value: data?.paymentLink ? 1 : 0,
+      icon: PaymentLinkCreatedIcon,
+      bgColor: "bg-[#d9e8ff]",
+      alt: "Payment Link Created",
+    },
+    {
+      title: "Total Withdrawals",
+      value: 0,
+      icon: WithdrawalIcon,
+      bgColor: "bg-[#ffedd9]",
+      alt: "Withdrawal",
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-6 w-full font-figtree">
       <div className="flex flex-row gap-4 justify-between items-center">
@@ -47,49 +71,25 @@ const Overview = () => {
       <div className="flex flex-col gap-4 rounded-xl bg-transparent p-0 md:bg-[#f7f7f7] md:p-4">
         <h2 className="text-base text-[#131313]">Summary</h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {/* Total Payments Received */}
-          {isLoading ? (
-            <Skeleton className="h-[180px] w-full rounded-lg" />
-          ) : (
-            <div className="flex flex-col gap-[15px] rounded-lg border border-[#e0e0e0] bg-white p-4">
-              <div className="flex h-fit w-fit items-center justify-center rounded-[88px] bg-[#deffd9] p-2">
-                <img src={PaymentReceivedIcon} alt="Payment Received" className="w-8 h-8" />
+          {summaryCards.map((card, index) =>
+            isLoading ? (
+              <Skeleton key={index} className="h-[180px] w-full rounded-lg" />
+            ) : (
+              <div
+                key={index}
+                className="flex flex-col gap-[15px] rounded-lg border border-[#e0e0e0] bg-white p-4"
+              >
+                <div
+                  className={`flex h-fit w-fit items-center justify-center rounded-[88px] ${card.bgColor} p-2`}
+                >
+                  <img src={card.icon} alt={card.alt} className="w-8 h-8" />
+                </div>
+                <div>
+                  <p className="mb-1 text-sm font-medium text-[#131313]">{card.title}</p>
+                  <p className="text-[32px] font-medium text-[#131313]">{card.value}</p>
+                </div>
               </div>
-              <div>
-                <p className="mb-1 text-sm font-medium text-[#131313]">Total Payments Received</p>
-                <p className="text-[32px] font-medium text-[#131313]">{stats?.totalAmount ?? 0}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Total Payment Links Created */}
-          {isLoading ? (
-            <Skeleton className="h-[180px] w-full rounded-lg" />
-          ) : (
-            <div className="flex flex-col gap-[15px] rounded-lg border border-[#e0e0e0] bg-white p-4">
-              <div className="flex h-fit w-fit items-center justify-center rounded-[88px] bg-[#d9e8ff] p-2">
-                <img src={PaymentLinkCreatedIcon} alt="Payment Link Created" className="w-8 h-8" />
-              </div>
-              <div>
-                <p className="mb-1 text-sm font-medium text-[#131313]">Total Payment Links Created</p>
-                <p className="text-[32px] font-medium text-[#131313]">{data?.paymentLink ? 1 : 0}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Total Withdrawals */}
-          {isLoading ? (
-            <Skeleton className="h-[180px] w-full rounded-lg" />
-          ) : (
-            <div className="flex flex-col gap-[15px] rounded-lg border border-[#e0e0e0] bg-white p-4">
-              <div className="flex h-fit w-fit items-center justify-center rounded-[88px] bg-[#ffedd9] p-2">
-                <img src={WithdrawalIcon} alt="Withdrawal" className="w-8 h-8" />
-              </div>
-              <div>
-                <p className="mb-1 text-sm font-medium text-[#131313]">Total Withdrawals</p>
-                <p className="text-[32px] font-medium text-[#131313]">0</p>
-              </div>
-            </div>
+            )
           )}
         </div>
       </div>
