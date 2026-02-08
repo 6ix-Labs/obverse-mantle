@@ -1,5 +1,4 @@
-import React from "react";
-import { Timeline } from "@/Components/ui/timeline";
+import { Timeline } from "@/components/ui/timeline";
 import { CreateLinkImg, handPhone, HomeImg, WT } from "@/assets/images";
 
 export function TimelineDemo() {
@@ -8,26 +7,19 @@ export function TimelineDemo() {
       title: "On Farcaster..",
       buttontext: "Launch App",
       content: (
-        <div className="flex flex-col gap-5 overflow-x-hidden">
-                      <div className="absolute w-[605px] h-[605px] rounded-full bg-gradient-to-b from-[#FF7849] to-[#745846] opacity-60 blur-[360px] top-[196px] left-[18px] pointer-events-none"></div>
+        <div className="flex overflow-x-hidden flex-col gap-5">
+          <div className="absolute w-[605px] h-[605px] rounded-full bg-gradient-to-b from-[#FF7849] to-[#745846] opacity-60 blur-[360px] top-[196px] left-[18px] pointer-events-none"></div>
           <p className="font-onest leading-tight font-bold text-[12px] sm:text-[14px] md:text-[16px] lg:text-[20px] bg-gradient-to-r from-[#FFF3EF] to-[#99928F] bg-clip-text text-transparent">
-           Recently, Obverse launched as mini app on Farcaster
+            Recently, Obverse launched as mini app on Farcaster
           </p>
-          <div className="grid grid-cols-2 relative">
-
-            <img
-              src={HomeImg}
-              alt="Home template"
-              width={500}
-              height={500}
-              className="w-full object-cover"
-            />
+          <div className="grid relative grid-cols-2">
+            <img src={HomeImg} alt="Home template" width={500} height={500} className="object-cover w-full" />
             <img
               src={CreateLinkImg}
               alt="Create template"
               width={500}
               height={500}
-              className="w-full object-cover mt-14"
+              className="object-cover mt-14 w-full"
             />
           </div>
         </div>
@@ -39,38 +31,25 @@ export function TimelineDemo() {
       content: (
         <div className="flex flex-col gap-5">
           <p className="font-onest leading-tight font-bold text-[12px] sm:text-[14px] md:text-[16px] lg:text-[20px] bg-gradient-to-r from-[#FFF3EF] to-[#99928F] bg-clip-text text-transparent">
-         Obverse AI agent is live on Telegram!
+            Obverse AI agent is live on Telegram!
           </p>
 
           <div className="grid grid-cols-1">
-            <img
-              src={handPhone}
-              alt="Hand Phone"
-              width={500}
-              height={500}
-              className="w-full object-cover "
-            />
+            <img src={handPhone} alt="Hand Phone" width={500} height={500} className="object-cover w-full" />
           </div>
         </div>
       ),
     },
     {
-       title: "Discord, Whatsapp",
+      title: "Discord, Whatsapp",
       buttontext: "Notify Me",
       content: (
         <div className="flex flex-col gap-5 sm:mt-24">
           <p className="font-onest leading-tight font-bold text-[12px] sm:text-[14px] md:text-[16px] lg:text-[20px] bg-gradient-to-r from-[#FFF3EF] to-[#99928F] bg-clip-text text-transparent">
-          Coming right to you, very soon...
+            Coming right to you, very soon...
           </p>
           <div className="grid grid-cols-1">
-            <img
-              src={WT}
-              alt="Whatsapp Telegram"
-              width={500}
-              height={500}
-              className="w-full object-cover"
-            />
-           
+            <img src={WT} alt="Whatsapp Telegram" width={500} height={500} className="object-cover w-full" />
           </div>
         </div>
       ),
