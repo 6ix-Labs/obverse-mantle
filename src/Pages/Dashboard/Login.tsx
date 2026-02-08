@@ -81,7 +81,7 @@ const Login = () => {
                 Login
               </h2>
               <p className="text-[16px] tracking-text text-[#525866] dark:text-[#99A0AE]">
-                Login with details from Agent
+                Login with one-time details from Agent
               </p>
             </div>
           </div>
