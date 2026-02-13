@@ -1,7 +1,7 @@
 // pages/Payments/Payments.tsx
 import React, { useState, useEffect } from "react";
 import { paymentDarkBg, paymentLightBg } from "../../assets/images";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Button } from "../../Components/Button/Button";
 import { Skeleton } from "../../Components/Skeleton/Skeleton";
 import { GoSun } from "react-icons/go";
@@ -46,6 +46,36 @@ interface PaymentData {
   paymentCount: number;
   createdAt: string;
   updatedAt: string;
+}
+
+interface ReceiptPreview {
+  receiptId: string;
+  paymentId: string;
+  linkCode: string;
+  txSignature: string;
+  amount: number;
+  token: string;
+  chain: string;
+  fromAddress: string;
+  toAddress: string;
+  status: "pending" | "confirmed" | "failed";
+  isConfirmed: boolean;
+  confirmedAt: string | null;
+  createdAt: string;
+  dashboardUrl: string;
+  explorerUrl: string;
+  customerData?: Record<string, string>;
+}
+
+interface PaymentSubmitResponse {
+  _id: string;
+  status: "pending" | "confirmed" | "failed";
+  isConfirmed: boolean;
+  txSignature: string;
+  amount: number;
+  token: string;
+  chain: string;
+  receipt?: ReceiptPreview;
 }
 
 // Payment Step Component
@@ -183,6 +213,7 @@ const Payments = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPaymentFlow, setShowPaymentFlow] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
   const url = `https://obverse.onrender.com/payment-links/`;
 
   // Privy payment hook
@@ -334,9 +365,25 @@ const Payments = () => {
 
         console.log("Sending payment notification to backend:", paymentPayload);
 
-        await axios.post(`https://obverse.onrender.com/payments`, paymentPayload);
+        const response = await axios.post<PaymentSubmitResponse>(`https://obverse.onrender.com/payments`, paymentPayload);
+        const paymentResponse = response.data;
 
-        console.log("Backend notification successful");
+        console.log("Backend notification successful", paymentResponse);
+
+        const resolvedPaymentId =
+          paymentResponse?._id || paymentResponse?.receipt?.paymentId || paymentResponse?.receipt?.receiptId;
+
+        if (resolvedPaymentId) {
+          // Optimistic receipt handoff: render receipt immediately, then receipt page revalidates canonically.
+          navigate(`/receipt/${resolvedPaymentId}`, {
+            state: {
+              payment: paymentResponse,
+              receipt: paymentResponse.receipt,
+            },
+          });
+        } else {
+          console.warn("Payment submitted but paymentId was not returned in response.");
+        }
       } catch (error) {
         console.error("Failed to notify backend:", error);
         // Log error details for debugging
