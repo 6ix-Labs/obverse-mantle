@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router";
 import { GoSun } from "react-icons/go";
 import { IoMoonOutline } from "react-icons/io5";
 import { Button } from "../../Components/Button/Button";
+import { logo } from "../../assets/icons";
 import {
   Navbar,
   NavBody,
@@ -128,8 +129,8 @@ const normalizeReceipt = (payload: unknown): Receipt => {
   const customerData =
     isRecord(source.customerData)
       ? Object.fromEntries(
-          Object.entries(source.customerData).map(([key, value]) => [key, typeof value === "string" ? value : String(value)]),
-        )
+        Object.entries(source.customerData).map(([key, value]) => [key, typeof value === "string" ? value : String(value)]),
+      )
       : undefined;
 
   return {
@@ -206,12 +207,12 @@ const ReceiptPage: React.FC = () => {
   const initialReceipt = isPreviewMode
     ? buildDemoReceipt(paymentId || "demo-payment-id")
     : (() => {
-        try {
-          return normalizeReceipt(state?.receipt || state?.payment?.receipt);
-        } catch {
-          return null;
-        }
-      })();
+      try {
+        return normalizeReceipt(state?.receipt || state?.payment?.receipt);
+      } catch {
+        return null;
+      }
+    })();
 
   const [receipt, setReceipt] = useState<Receipt | null>(initialReceipt ?? null);
   const [isLoading, setIsLoading] = useState(!initialReceipt);
@@ -395,6 +396,10 @@ const ReceiptPage: React.FC = () => {
         </div>
 
         <section className="rounded-3xl border border-slate-200 bg-white/95 p-5 shadow-2xl shadow-slate-300/60 backdrop-blur-sm sm:p-6 print:border-slate-300 print:bg-white">
+          <div className="mb-4 flex items-center gap-2">
+            <img src={logo} alt="Obverse" className="h-6 w-6 object-contain" />
+            <span className="text-sm font-semibold tracking-wide text-slate-700 print:text-slate-900">Obverse</span>
+          </div>
           <div className="mb-5 h-1.5 w-full rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500" />
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-indigo-50 to-white p-4 print:bg-slate-50">
@@ -434,15 +439,6 @@ const ReceiptPage: React.FC = () => {
             >
               <FiExternalLink className="h-4 w-4" />
               Open Explorer
-            </a>
-            <a
-              href={receipt.dashboardUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-indigo-50 sm:w-auto"
-            >
-              <FiExternalLink className="h-4 w-4" />
-              Open Dashboard
             </a>
           </div>
 

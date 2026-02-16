@@ -1,7 +1,11 @@
 import { baseSepolia, liskSepolia, mantleSepoliaTestnet } from "viem/chains";
 import { type Address } from "viem";
+import { monad, MONAD_USDC_ADDRESS } from "../config/monad";
 
 export const handleUSDCAddress = (chainId: number) => {
+  if (chainId === monad.id) {
+    return MONAD_USDC_ADDRESS as Address;
+  }
   if (chainId === baseSepolia.id) {
     return "0x036CbD53842c5426634e7929541eC2318f3dCF7e" as Address;
   }
@@ -14,6 +18,9 @@ export const handleUSDCAddress = (chainId: number) => {
 };
 
 export const handleExplorerUrl = (chainId: number) => {
+  if (chainId === monad.id) {
+    return "https://monadscan.com/tx";
+  }
   if (chainId === baseSepolia.id) {
     return "https://sepolia.basescan.org/tx";
   }
