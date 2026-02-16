@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo } from "react";
 import { useWallets } from "@privy-io/react-auth";
 import type { Chain } from "viem";
 import { baseSepolia, liskSepolia } from "viem/chains";
+import { monad } from "../config/monad";
 
 interface ChainContextValue {
   chainId?: number;
@@ -24,10 +25,21 @@ export const ChainProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const { wallets, ready } = useWallets();
   const activeWallet = wallets?.[0];
 
-  const allChains: Chain[] = [liskSepolia, baseSepolia];
+  const allChains: Chain[] = [monad, liskSepolia, baseSepolia];
+
+  const resolveChainId = (rawChainId?: string): number | undefined => {
+    if (!rawChainId) return undefined;
+
+    // Privy may return values like "eip155:143" or plain numeric strings.
+    const parts = rawChainId.split(":");
+    const candidate = parts.length > 1 ? parts[parts.length - 1] : rawChainId;
+    const parsed = Number(candidate);
+
+    return Number.isFinite(parsed) ? parsed : undefined;
+  };
 
   const value = useMemo<ChainContextValue>(() => {
-    const chainId = activeWallet ? Number(activeWallet.chainId.split(':')[1]) : undefined;
+    const chainId = resolveChainId(activeWallet?.chainId);
     const chain = allChains.find((c) => c.id === chainId);
 
     const switchChain = async (id: number) => {

@@ -5,6 +5,8 @@ import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { useActiveChain } from "../../contexts/ActiveChainContext";
+import { monad } from "../../config/monad";
+import { baseSepolia, liskSepolia } from "viem/chains";
 
 // import {  } from "@privy-io/react-auth/solana";
 // import { baseSepolia, liskSepolia, arbitrumSepolia, optimismSepolia } from "viem/chains";
@@ -20,12 +22,10 @@ interface ChainConfig {
 }
 
 const CHAINS: ChainConfig[] = [
-  // EVM Chains
-  // { id: Number(baseSepolia.id), name: "Base Sepolia", type: 'evm' },
-  // { id: Number(liskSepolia.id), name: "Lisk Sepolia", type: 'evm' },
-  // { id: Number(arbitrumSepolia.id), name: "Arbitrum Sepolia", type: 'evm' },
-  // { id: Number(optimismSepolia.id), name: "Optimism Sepolia", type: 'evm' },
-  // { id: 'solana:mainnet', name: "Solana Mainnet", type: 'solana', chainId: 'solana:mainnet' },
+  { id: Number(monad.id), name: "Monad", type: "evm" },
+  { id: Number(baseSepolia.id), name: "Base Sepolia", type: "evm" },
+  { id: Number(liskSepolia.id), name: "Lisk Sepolia", type: "evm" },
+  { id: "solana:mainnet", name: "Solana Mainnet", type: "solana", chainId: "solana:mainnet" },
   { id: "solana:devnet", name: "Solana Devnet", type: "solana", chainId: "solana:devnet" },
 ];
 
@@ -54,18 +54,21 @@ export const ChainDropdown: React.FC = () => {
 
   if (!ready && !isSolanaConnected) return null;
 
+  const defaultSolanaChain = CHAINS.find((c) => c.type === "solana") || CHAINS[0];
+  const defaultEvmChain = CHAINS.find((c) => c.type === "evm") || CHAINS[0];
+
   const getCurrentSolanaChain = () => {
-    if (!solanaWallet) return CHAINS[5];
+    if (!solanaWallet) return defaultSolanaChain;
     const walletChainId = (solanaWallet as any).chainId || "solana:devnet";
     const chainMatch = CHAINS.find((c) => c.chainId === walletChainId);
-    return chainMatch || CHAINS[5];
+    return chainMatch || defaultSolanaChain;
   };
 
   // Determine current chain based on active chain type
   const currentChain =
     activeChainType === "solana"
       ? getCurrentSolanaChain()
-      : CHAINS.find((c) => c.type === "evm" && c.id === chainId) || CHAINS[0];
+      : CHAINS.find((c) => c.type === "evm" && c.id === chainId) || defaultEvmChain;
 
   // Get current wallet address based on active chain type
   const currentAddress = currentChain.type === "solana" ? solanaWallet?.address : evmAddress || user?.wallet?.address;
@@ -148,11 +151,10 @@ export const ChainDropdown: React.FC = () => {
               key={chain.id}
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
-              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                chain.id === chainId && activeChainType === "evm"
+              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.id === chainId && activeChainType === "evm"
                   ? "bg-gray-100 text-gray-900 font-medium"
                   : "text-gray-700 hover:bg-gray-50"
-              }`}
+                }`}
             >
               {chain.name}
             </button>
@@ -167,11 +169,10 @@ export const ChainDropdown: React.FC = () => {
               key={chain.id}
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
-              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                chain.chainId === currentChain.chainId && activeChainType === "solana"
+              className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.chainId === currentChain.chainId && activeChainType === "solana"
                   ? "bg-gray-100 text-gray-900 font-medium"
                   : "text-gray-700 hover:bg-gray-50"
-              }`}
+                }`}
             >
               {chain.name}
             </button>

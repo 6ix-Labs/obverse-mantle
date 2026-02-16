@@ -55,9 +55,8 @@ const PaymentApp = () => {
           return (
             <div
               key={item.label}
-              className={`flex items-center gap-10 ${
-                isReversed ? "flex-col md:flex-row-reverse" : "flex-col md:flex-row"
-              } w-full`}
+              className={`flex items-center gap-10 ${isReversed ? "flex-col md:flex-row-reverse" : "flex-col md:flex-row"
+                } w-full`}
             >
               {/* Textcontent */}
               <motion.div
