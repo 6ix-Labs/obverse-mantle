@@ -2,9 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { FiCheckCircle, FiClock, FiAlertTriangle, FiCopy, FiExternalLink, FiPrinter, FiDownload } from "react-icons/fi";
 import { useLocation, useParams } from "react-router";
-import { GoSun } from "react-icons/go";
-import { IoMoonOutline } from "react-icons/io5";
-import { Button } from "../../Components/Button/Button";
 import { logo } from "../../assets/icons";
 import {
   Navbar,
@@ -219,7 +216,6 @@ const ReceiptPage: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(Boolean(initialReceipt));
   const [error, setError] = useState<string | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
-  const [darkMode, setDarkMode] = useState(false);
 
   const statusMeta = useMemo(() => {
     const status = receipt?.status;
@@ -313,20 +309,6 @@ const ReceiptPage: React.FC = () => {
     window.print();
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode((prev) => {
-      const next = !prev;
-      if (next) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-      return next;
-    });
-  };
-
-  const SunIcon = GoSun as unknown as React.FC;
-  const MoonIcon = IoMoonOutline as unknown as React.FC;
 
   if (isLoading && !receipt) {
     return (
@@ -364,20 +346,10 @@ const ReceiptPage: React.FC = () => {
       <Navbar className="top-2 sm:top-4 print:hidden" scrollThreshold={50}>
         <NavBody>
           <NavbarLogo />
-          <div className="flex gap-2 items-center sm:gap-4">
-            <Button size="icon" variant="ghost" onClick={toggleDarkMode} className="bg-gray-200 dark:bg-gray-700">
-              {darkMode ? <SunIcon /> : <MoonIcon />}
-            </Button>
-          </div>
         </NavBody>
         <MobileNav>
           <MobileNavHeader>
             <NavbarLogo />
-            <div className="flex gap-2 items-center">
-              <Button size="icon" variant="ghost" onClick={toggleDarkMode} className="bg-gray-200 dark:bg-gray-700">
-                {darkMode ? <SunIcon /> : <MoonIcon />}
-              </Button>
-            </div>
           </MobileNavHeader>
         </MobileNav>
       </Navbar>
@@ -400,7 +372,7 @@ const ReceiptPage: React.FC = () => {
             <img src={logo} alt="Obverse" className="h-6 w-6 object-contain" />
             <span className="text-sm font-semibold tracking-wide text-slate-700 print:text-slate-900">Obverse</span>
           </div>
-          <div className="mb-5 h-1.5 w-full rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500" />
+          <div className="mb-5 h-1.5 w-full rounded-full bg-background-sub" />
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-indigo-50 to-white p-4 print:bg-slate-50">
               <p className="text-xs uppercase tracking-wide text-slate-400 print:text-slate-500">Amount</p>
