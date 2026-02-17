@@ -1,5 +1,4 @@
 import { Button } from "../../Components/Button/Button";
-import { Link } from "react-router";
 import { bitcoinImg, lImg, rImg, usdImg } from "../../assets/images";
 import { motion, Variants } from "framer-motion";
 
@@ -59,13 +58,18 @@ const ReadyToAccept = () => {
             Obverse is a Telegram-based AI Agent that lets you send and receive stablecoin payments with a simple
             message. No friction. No fees. No crypto confusion.
           </motion.p>
-          <Link to="/" className="mt-10">
+          <a
+            href="https://t.me/ObverseBot"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-10"
+          >
             <motion.div custom={0.9} variants={fadeIn}>
-              <Button variant="normal" size="normal" href="https://t.me/ObverseBot">
+              <Button variant="normal" size="normal">
                 Get started
               </Button>
             </motion.div>
-          </Link>
+          </a>
         </motion.div>
         <motion.img
           className="absolute -bottom-24 max-sm:-bottom-36 -left-6 max-sm:left-14 w-[250px] max-lg:w-[250px] h-[250px] max-lg:h-[250px] max-sm:h-[250px] max-sm:w-[250px] max-se:h-[225px] flex"

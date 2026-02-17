@@ -70,7 +70,7 @@ const Hero = () => {
             className="sm:text-5xl text-3xl text-white leading-[1] md:leading-[0.9] tracking-[-0.04em] md:tracking-[-0.04em] font-calsans text-center"
           >
             Stablecoin Payments
-            <br className="hidden sm:flex" /> That <br className="flex sm:hidden" /> feel Like Chat
+            <br className="hidden sm:flex" /> That <br className="flex sm:hidden" /> feels Like Chat
           </motion.h1>
 
           <motion.p custom={0.4} variants={fadeIn} className="text-white info-text">
