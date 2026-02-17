@@ -12,11 +12,12 @@ import OverviewPage from "./Pages/Dashboard/OverviewPage";
 import Invoices from "./Pages/Dashboard/Invoices";
 import PaymentLinks from "./Pages/Dashboard/PaymentLinks";
 import Settings from "./Pages/Dashboard/Settings";
+import ReceiptPage from "./Pages/Receipt/Receipt";
 import Cookies from "js-cookie";
 
 const AppRoutes = () => {
   const location = useLocation();
-  const hideNavbar = ["/transaction", "/pay", "/login", "/dashboard"];
+  const hideNavbar = ["/transaction", "/pay", "/receipt", "/reciept", "/login", "/dashboard"];
   const shouldHide = hideNavbar.some((path) => location.pathname.startsWith(path));
   const isAuthenticated = !!Cookies.get("accessToken");
 
@@ -26,6 +27,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="pay/:id" element={<Payments />} />
+        <Route path="receipt/:paymentId" element={<ReceiptPage />} />
+        <Route path="reciept/:paymentId" element={<ReceiptPage />} />
         <Route path="about" element={<About />} />
         <Route path="login" element={<Login />} />
         <Route path="dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}>

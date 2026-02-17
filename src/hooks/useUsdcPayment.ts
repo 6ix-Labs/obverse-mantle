@@ -276,7 +276,7 @@ export function useUsdcPayment(network: NetworkType = "mainnet"): UseUsdcPayment
                 console.log("=== Payment Complete ===");
 
                 if (onSuccess) {
-                    onSuccess(signature);
+                    await onSuccess(signature);
                 }
 
                 return signature;

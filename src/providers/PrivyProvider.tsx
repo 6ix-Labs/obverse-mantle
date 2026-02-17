@@ -5,6 +5,7 @@ import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
 import { ReactNode } from "react";
 import { logo } from "../assets/icons";
+import { monad } from "../config/monad";
 
 // Solana RPC endpoints - replace with your preferred RPC provider (Helius, QuickNode, etc.)
 const SOLANA_RPC_URL = import.meta.env.VITE_SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com";
@@ -43,9 +44,12 @@ export function ObversePrivyProvider({ children }: ObversePrivyProviderProps) {
                     theme: "dark",
                     accentColor: "#E7562E", // Obverse brand color
                     showWalletLoginFirst: true,
-                    walletChainType: "solana-only", // Since Obverse is Solana-focused
+                    walletChainType: "ethereum-and-solana",
                     logo: logo, // Your logo
                 },
+                // EVM chain configuration
+                defaultChain: monad,
+                supportedChains: [monad],
                 // Login methods - email, social, and wallet
                 loginMethods: ["email", "wallet", "google", "twitter"],
                 // External wallet configuration
@@ -56,6 +60,9 @@ export function ObversePrivyProvider({ children }: ObversePrivyProviderProps) {
                 },
                 // Embedded wallet configuration
                 embeddedWallets: {
+                    ethereum: {
+                        createOnLogin: "all-users",
+                    },
                     solana: {
                         createOnLogin: "all-users", // Auto-create embedded Solana wallet for all users
                     },

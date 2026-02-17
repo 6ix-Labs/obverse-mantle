@@ -1,5 +1,5 @@
 // pages/Payments/Payments.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { paymentDarkBg, paymentLightBg } from "../../assets/images";
 import { useParams } from "react-router";
 import { Button } from "../../Components/Button/Button";
@@ -10,13 +10,14 @@ import { FiCheck, FiLoader, FiAlertCircle, FiCopy } from "react-icons/fi";
 import axios from "axios";
 import { logo } from "../../assets/icons";
 import { useUsdcPayment, PaymentStatus } from "../../hooks/useUsdcPayment";
+import { useMonadPayment } from "../../hooks/useMonadPayment";
 import { Wallet } from "lucide-react";
 import {
-    Navbar,
-    NavBody,
-    MobileNav,
-    MobileNavHeader,
-    NavbarLogo,
+  Navbar,
+  NavBody,
+  MobileNav,
+  MobileNavHeader,
+  NavbarLogo,
 } from "../../Components/Navbar/ResizableNavbar";
 
 // Types
@@ -29,7 +30,7 @@ interface CustomField {
 interface MerchantInfo {
   _id: string;
   walletAddress: string;
-  wallets: any[];
+  wallets: Array<Record<string, any>>;
 }
 
 interface PaymentData {
@@ -46,6 +47,36 @@ interface PaymentData {
   paymentCount: number;
   createdAt: string;
   updatedAt: string;
+}
+
+interface ReceiptPreview {
+  receiptId: string;
+  paymentId: string;
+  linkCode: string;
+  txSignature: string;
+  amount: number;
+  token: string;
+  chain: string;
+  fromAddress: string;
+  toAddress: string;
+  status: "pending" | "confirmed" | "failed";
+  isConfirmed: boolean;
+  confirmedAt: string | null;
+  createdAt: string;
+  dashboardUrl: string;
+  explorerUrl: string;
+  customerData?: Record<string, string>;
+}
+
+interface PaymentSubmitResponse {
+  _id: string;
+  status: "pending" | "confirmed" | "failed";
+  isConfirmed: boolean;
+  txSignature: string;
+  amount: number;
+  token: string;
+  chain: string;
+  receipt?: ReceiptPreview;
 }
 
 // Payment Step Component
@@ -91,9 +122,8 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ step, currentStep, title, des
       </div>
       <div className="flex-1">
         <p
-          className={`font-medium ${
-            status === "active" || status === "completed" ? "text-[#0e121b] dark:text-white" : "text-gray-400"
-          }`}
+          className={`font-medium ${status === "active" || status === "completed" ? "text-[#0e121b] dark:text-white" : "text-gray-400"
+            }`}
         >
           {title}
         </p>
@@ -174,6 +204,64 @@ const WalletButton: React.FC<WalletButtonProps> = ({
   );
 };
 
+// Chain-specific helpers
+const normalizeChain = (chain: string) => chain.toLowerCase().trim();
+
+const isMonadChain = (chain: string) => normalizeChain(chain).includes("monad");
+
+const isSolanaChain = (chain: string) => normalizeChain(chain).includes("solana");
+
+const getChainDisplayName = (chain: string) => {
+  if (isMonadChain(chain)) return "Monad";
+  if (isSolanaChain(chain)) return "Solana";
+  return chain.charAt(0).toUpperCase() + chain.slice(1);
+};
+
+const getNativeCurrencySymbol = (chain: string) => {
+  if (isMonadChain(chain)) return "MON";
+  if (isSolanaChain(chain)) return "SOL";
+  return chain.toUpperCase();
+};
+
+const getExplorerTxUrl = (chain: string, txSignature: string) => {
+  if (isMonadChain(chain)) return `https://monadscan.com/tx/${txSignature}`;
+  if (isSolanaChain(chain)) return `https://solscan.io/tx/${txSignature}`;
+  return `https://solscan.io/tx/${txSignature}`;
+};
+
+const getExplorerName = (chain: string) => {
+  if (isMonadChain(chain)) return "Monadscan";
+  if (isSolanaChain(chain)) return "Solscan";
+  return "Explorer";
+};
+
+const resolveMerchantWalletAddress = (payment: PaymentData): string => {
+  const fallbackAddress = payment.merchantId?.walletAddress;
+  const chain = payment.chain || "";
+  const wallets = payment.merchantId?.wallets || [];
+
+  const chainMatch = wallets.find((wallet) => {
+    const walletChain = String(wallet.chain || wallet.network || wallet.chainType || "").toLowerCase();
+
+    if (isMonadChain(chain)) {
+      return walletChain.includes("monad") || walletChain === "evm" || walletChain.includes("ethereum");
+    }
+
+    if (isSolanaChain(chain)) {
+      return walletChain.includes("solana");
+    }
+
+    return false;
+  });
+
+  return (
+    chainMatch?.walletAddress ||
+    chainMatch?.address ||
+    fallbackAddress ||
+    ""
+  );
+};
+
 // Main Payments Component
 const Payments = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -184,8 +272,19 @@ const Payments = () => {
   const [showPaymentFlow, setShowPaymentFlow] = useState(false);
   const { id } = useParams();
   const url = `https://obverse.onrender.com/payment-links/`;
+  const RECEIPT_BASE_URL = "https://www.obverse.cc/reciept";
 
-  // Privy payment hook
+  const isMonad = isMonadChain(paymentData?.chain || "");
+
+  // Both hooks are always called (React rules), but only the active chain's methods are used
+  const solana = useUsdcPayment("mainnet");
+  const monadHook = useMonadPayment();
+
+  // Select the active payment hook based on chain
+  const activePayment = useMemo(() => {
+    return isMonad ? monadHook : solana;
+  }, [isMonad, monadHook, solana]);
+
   const {
     paymentState,
     isConnected,
@@ -195,7 +294,7 @@ const Payments = () => {
     checkBalance,
     sendPayment,
     resetState,
-  } = useUsdcPayment("mainnet"); // Use "devnet" for testing
+  } = activePayment;
 
   // Fetch balance when wallet connects
   useEffect(() => {
@@ -313,30 +412,49 @@ const Payments = () => {
   };
 
   const handlePayment = async () => {
-    if (!paymentData?.merchantId?.walletAddress || !paymentData?.amount) {
+    if (!paymentData?.amount) {
       return;
     }
 
-    const signature = await sendPayment(paymentData.merchantId.walletAddress, paymentData.amount, async (sig) => {
+    const merchantAddress = resolveMerchantWalletAddress(paymentData);
+    if (!merchantAddress) {
+      console.error("No merchant wallet address found for chain:", paymentData.chain);
+      return;
+    }
+
+    const chainName = paymentData.chain?.toLowerCase() || "solana";
+
+    const signature = await sendPayment(merchantAddress, paymentData.amount, async (sig) => {
       // On success, notify backend with proper data format
       try {
         const paymentPayload = {
           linkCode: id, // Payment link ID
-          txSignature: sig, // Transaction signature in base58 format
-          chain: paymentData.chain.toLowerCase(), // "solana"
+          txSignature: sig, // Transaction signature
+          chain: chainName,
           amount: paymentData.amount,
           token: paymentData.token, // "USDC"
           fromAddress: walletAddress, // Payer's wallet address
-          toAddress: paymentData.merchantId.walletAddress, // Merchant's wallet address
+          toAddress: merchantAddress, // Merchant's wallet address
           customerData: formData, // Dynamic custom fields from the form
           isConfirmed: true, // Transaction is confirmed
         };
 
         console.log("Sending payment notification to backend:", paymentPayload);
 
-        await axios.post(`https://obverse.onrender.com/payments`, paymentPayload);
+        const response = await axios.post<PaymentSubmitResponse>(`https://obverse.onrender.com/payments`, paymentPayload);
+        const paymentResponse = response.data;
 
-        console.log("Backend notification successful");
+        console.log("Backend notification successful", paymentResponse);
+
+        const resolvedPaymentId =
+          paymentResponse?._id || paymentResponse?.receipt?.paymentId || paymentResponse?.receipt?.receiptId;
+
+        if (resolvedPaymentId) {
+          const deployedReceiptUrl = `${RECEIPT_BASE_URL}/${encodeURIComponent(resolvedPaymentId)}`;
+          window.location.assign(deployedReceiptUrl);
+        } else {
+          console.warn("Payment submitted but paymentId was not returned in response.");
+        }
       } catch (error) {
         console.error("Failed to notify backend:", error);
         // Log error details for debugging
@@ -398,9 +516,8 @@ const Payments = () => {
             placeholder={getPlaceholder(field.fieldName, field.fieldType)}
             value={formData[field.fieldName] || ""}
             onChange={(e) => handleInputChange(field.fieldName, e.target.value)}
-            className={`placeholder:font-figtree w-full px-4 py-2 border ${
-              hasError ? "border-red-500 focus:border-red-500" : "border-gray-300 dark:border-gray-700"
-            } bg-white dark:bg-gray-800 dark:text-white text-[#0E121B] placeholder:text-[#99A0AE] focus:outline-none focus:shadow-md rounded-[10px] transition-colors`}
+            className={`placeholder:font-figtree w-full px-4 py-2 border ${hasError ? "border-red-500 focus:border-red-500" : "border-gray-300 dark:border-gray-700"
+              } bg-white dark:bg-gray-800 dark:text-white text-[#0E121B] placeholder:text-[#99A0AE] focus:outline-none focus:shadow-md rounded-[10px] transition-colors`}
             required={field.required}
             disabled={showPaymentFlow}
           />
@@ -409,6 +526,9 @@ const Payments = () => {
       );
     });
   };
+
+  const chainName = paymentData?.chain ? getChainDisplayName(paymentData.chain) : "Solana";
+  const nativeCurrency = paymentData?.chain ? getNativeCurrencySymbol(paymentData.chain) : "SOL";
 
   const renderPaymentFlow = () => {
     const { status, error, txSignature, balance, estimatedFee } = paymentState;
@@ -437,7 +557,7 @@ const Payments = () => {
             {estimatedFee !== null && (
               <div className="flex justify-between items-center mt-2">
                 <span className="text-sm text-gray-600 dark:text-gray-400">Estimated Fee</span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">~{estimatedFee.toFixed(6)} SOL</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">~{estimatedFee.toFixed(6)} {nativeCurrency}</span>
               </div>
             )}
           </div>
@@ -464,7 +584,7 @@ const Payments = () => {
               step={3}
               currentStep={3}
               title="Processing"
-              description="Confirming transaction on Solana"
+              description={`Confirming transaction on ${chainName}`}
               status={getPaymentStepStatus(status, ["confirming-tx"])}
             />
           </div>
@@ -478,19 +598,23 @@ const Payments = () => {
               <div className="flex-1">
                 <p className="font-medium text-red-700 dark:text-red-400">Payment Failed</p>
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
-                {/* Show helpful info for SOL-related errors */}
-                {(error.includes("SOL") || error.includes("simulation failed")) && (
+                {/* Show helpful info for fee-related errors */}
+                {(error.includes(nativeCurrency) || error.includes("simulation failed") || error.includes("insufficient funds")) && (
                   <div className="p-3 mt-3 text-xs text-red-700 bg-red-100 rounded dark:bg-red-900/30 dark:text-red-300">
-                    <p className="mb-1 font-medium">💡 How to fix this:</p>
+                    <p className="mb-1 font-medium">How to fix this:</p>
                     <ol className="ml-4 space-y-1 list-decimal">
-                      <li>Get at least 0.003 SOL (about $0.50 USD)</li>
+                      <li>Get some {nativeCurrency} to cover transaction fees</li>
                       <li>
                         Send it to your wallet:{" "}
                         <span className="px-1 font-mono bg-red-200 rounded dark:bg-red-800">
                           {walletAddress?.slice(0, 8)}...{walletAddress?.slice(-4)}
                         </span>
                       </li>
-                      <li>You can buy SOL on exchanges (Coinbase, Binance) or swap USDC for SOL on Jupiter</li>
+                      <li>
+                        {isMonad
+                          ? "You can get MON from exchanges or bridges that support Monad"
+                          : "You can buy SOL on exchanges (Coinbase, Binance) or swap USDC for SOL on Jupiter"}
+                      </li>
                     </ol>
                   </div>
                 )}
@@ -513,12 +637,12 @@ const Payments = () => {
                   Your payment of {paymentData?.amount} USDC has been sent.
                 </p>
                 <a
-                  href={`https://solscan.io/tx/${txSignature}`}
+                  href={getExplorerTxUrl(paymentData?.chain || "solana", txSignature)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-[#E7562E] hover:underline mt-2 inline-block"
                 >
-                  View on Solscan →
+                  View on {getExplorerName(paymentData?.chain || "solana")} &rarr;
                 </a>
               </div>
             </div>
@@ -682,7 +806,7 @@ const Payments = () => {
             <div className="mt-4 text-center">
               <span className="text-sm text-[#525866] dark:text-[#99A0AE]">
                 Paying on{" "}
-                <span className="capitalize font-medium text-[#0e121b] dark:text-white">{paymentData.chain}</span>
+                <span className="capitalize font-medium text-[#0e121b] dark:text-white">{chainName}</span>
               </span>
             </div>
           </>
