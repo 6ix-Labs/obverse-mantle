@@ -10,6 +10,9 @@ import {
   MobileNavHeader,
   NavbarLogo,
 } from "../../Components/Navbar/ResizableNavbar";
+import PreviewMeta from "../../Components/Seo/PreviewMeta";
+import ShareActions from "../../Components/Share/ShareActions";
+import { getReceiptShareUrl } from "../../utils/shareUrls";
 
 /**
  * Core payment flow contract (frontend expectation):
@@ -42,6 +45,7 @@ interface Receipt {
   dashboardUrl: string;
   explorerUrl: string;
   customerData?: Record<string, string>;
+  previewImageUrl?: string;
 }
 
 interface PaymentSubmitResponse {
@@ -147,6 +151,7 @@ const normalizeReceipt = (payload: unknown): Receipt => {
     dashboardUrl: asString(source.dashboardUrl, "dashboardUrl"),
     explorerUrl: asString(source.explorerUrl, "explorerUrl"),
     customerData,
+    previewImageUrl: typeof source.previewImageUrl === "string" ? source.previewImageUrl : undefined,
   };
 };
 
@@ -341,8 +346,19 @@ const ReceiptPage: React.FC = () => {
 
   if (!receipt) return null;
 
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  const receiptTitle = `Receipt ${receipt.paymentId} | Obverse`;
+  const receiptDescription = `Payment receipt for ${formatAmount(receipt.amount, receipt.token)} on ${receipt.chain}.`;
+  const receiptShareUrl = getReceiptShareUrl(receipt.paymentId);
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#eef4ff_0%,_#f8fafc_40%,_#f1f5f9_100%)] px-4 pb-8 pt-24 text-slate-900 sm:pb-10 sm:pt-28 print:bg-white print:text-black">
+      <PreviewMeta
+        title={receiptTitle}
+        description={receiptDescription}
+        pageUrl={pageUrl}
+        previewImageUrl={receipt.previewImageUrl}
+      />
       <Navbar className="top-2 sm:top-4 print:hidden" scrollThreshold={50}>
         <NavBody>
           <NavbarLogo />
@@ -412,6 +428,7 @@ const ReceiptPage: React.FC = () => {
               <FiExternalLink className="h-4 w-4" />
               Open Explorer
             </a>
+            <ShareActions shareUrl={receiptShareUrl} shareTitle={receiptTitle} className="w-full sm:w-auto" />
           </div>
 
           <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white print:border-slate-300">
