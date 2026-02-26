@@ -3,11 +3,15 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Merchant } from "../../api/types";
 import Cookies from "js-cookie";
+import { useQuery } from "@tanstack/react-query";
+import { getPayments } from "../../api/services/dashboard";
+import type { PaymentsResponse } from "../../api/types";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [merchant, setMerchant] = useState<Merchant | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +24,13 @@ const Header = () => {
       }
     }
   }, []);
+
+  const { data: searchData, isFetching: isSearching } = useQuery<PaymentsResponse>({
+    queryKey: ["payments", { limit: 5, search: searchTerm || undefined }],
+    queryFn: () => getPayments({ limit: 5, search: searchTerm || undefined }),
+    enabled: searchTerm.trim().length > 0,
+  });
+  const suggestions = searchData?.payments || [];
 
   const handleLogout = () => {
     Cookies.remove("accessToken");
@@ -54,9 +65,24 @@ const Header = () => {
           </span>
           <input
             type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full rounded-3xl border bg-white py-2 pl-10 pr-4 text-gray-700 focus:border-orange-500 focus:outline-none focus:ring focus:ring-orange-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:focus:border-orange-500"
             placeholder="Search"
           />
+          {isSearching && (
+            <span className="absolute right-3 top-3 text-xs text-gray-400">Searching...</span>
+          )}
+          {searchTerm && suggestions.length > 0 && (
+            <div className="absolute z-10 mt-2 w-full rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+              {suggestions.slice(0, 5).map((p) => (
+                <div key={p._id} className="flex justify-between items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300">
+                  <span className="font-medium">{p._id.substring(0, 8)}...</span>
+                  <span className="text-gray-500">${p.amount} {p.token}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="relative ml-4" ref={dropdownRef}>
           <div

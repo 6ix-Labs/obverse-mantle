@@ -19,6 +19,9 @@ import {
   MobileNavHeader,
   NavbarLogo,
 } from "../../Components/Navbar/ResizableNavbar";
+import PreviewMeta from "../../Components/Seo/PreviewMeta";
+import ShareActions from "../../Components/Share/ShareActions";
+import { getPaymentShareUrl } from "../../utils/shareUrls";
 
 // Types
 interface CustomField {
@@ -47,6 +50,10 @@ interface PaymentData {
   paymentCount: number;
   createdAt: string;
   updatedAt: string;
+  previewImageUrl?: string;
+  paymentLink?: {
+    previewImageUrl?: string;
+  };
 }
 
 interface ReceiptPreview {
@@ -529,6 +536,11 @@ const Payments = () => {
 
   const chainName = paymentData?.chain ? getChainDisplayName(paymentData.chain) : "Solana";
   const nativeCurrency = paymentData?.chain ? getNativeCurrencySymbol(paymentData.chain) : "SOL";
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  const paymentPreviewImageUrl = paymentData?.previewImageUrl || paymentData?.paymentLink?.previewImageUrl;
+  const paymentTitle = paymentData?.description ? `${paymentData.description} | Obverse` : "Payment Link | Obverse";
+  const paymentDescription = paymentData?.description || "Complete your payment using this secure Obverse payment link.";
+  const paymentShareUrl = id ? getPaymentShareUrl(id) : "";
 
   const renderPaymentFlow = () => {
     const { status, error, txSignature, balance, estimatedFee } = paymentState;
@@ -709,6 +721,12 @@ const Payments = () => {
       }}
       className="flex flex-col items-center px-4 min-h-screen text-gray-800 bg-top bg-no-repeat bg-cover"
     >
+      <PreviewMeta
+        title={paymentTitle}
+        description={paymentDescription}
+        pageUrl={pageUrl}
+        previewImageUrl={paymentPreviewImageUrl}
+      />
       <Navbar className="top-4" scrollThreshold={50}>
         <NavBody>
           <NavbarLogo />
@@ -786,6 +804,10 @@ const Payments = () => {
                 <div className="text-[16px] text-[#525866] dark:text-[#99A0AE]">{paymentData.token || "USDC"}</div>
               </div>
             </div>
+
+            {!!paymentShareUrl && (
+              <ShareActions shareUrl={paymentShareUrl} shareTitle={paymentTitle} className="mb-4" />
+            )}
 
             {showPaymentFlow ? (
               renderPaymentFlow()

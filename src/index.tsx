@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ObversePrivyProvider from "./providers/PrivyProvider";
 import { WagmiProvider } from "@privy-io/wagmi";
 import { wagmiConfig } from "./wagmiConfig";
+import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
 
@@ -14,13 +15,15 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
 root.render(
   <React.StrictMode>
-    <ObversePrivyProvider>
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig}>
-          <App />
-        </WagmiProvider>
-      </QueryClientProvider>
-    </ObversePrivyProvider>
+    <HelmetProvider>
+      <ObversePrivyProvider>
+        <QueryClientProvider client={queryClient}>
+          <WagmiProvider config={wagmiConfig}>
+            <App />
+          </WagmiProvider>
+        </QueryClientProvider>
+      </ObversePrivyProvider>
+    </HelmetProvider>
   </React.StrictMode>,
 );
 

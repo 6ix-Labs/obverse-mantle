@@ -27,6 +27,7 @@ export interface PaymentLink {
   isActive: boolean;
   isReusable: boolean;
   createdAt: string;
+  previewImageUrl?: string;
 }
 
 export interface Stats {
@@ -76,6 +77,9 @@ export interface OverviewResponse {
   stats: Stats;
   recentPayments: Payment[];
   chartData: ChartData[];
+  dashboard?: {
+    previewImageUrl?: string;
+  };
 }
 
 export interface Pagination {
