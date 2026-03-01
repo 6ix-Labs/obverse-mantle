@@ -70,7 +70,7 @@ const ShareActions: React.FC<ShareActionsProps> = ({
     );
   }
 
-  // Compact variant - better aligned with your UI system
+
   return (
     <div
       className={`inline-flex items-center gap-2 ${className || ""}`.trim()}
