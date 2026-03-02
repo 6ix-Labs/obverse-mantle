@@ -80,7 +80,7 @@ const ShareActions: React.FC<ShareActionsProps> = ({
       <button
         type="button"
         onClick={handleShare}
-        className={`w-10 h-10 rounded-lg shadow-sm ${buttonBase} md:h-[44px] md:w-[44px]`}
+        className={`w-10 h-10 rounded-lg ${buttonBase} md:h-[44px] md:w-[44px]`}
         title="Share"
         aria-label="Share"
       >
@@ -89,7 +89,7 @@ const ShareActions: React.FC<ShareActionsProps> = ({
       <button
         type="button"
         onClick={handleCopyLink}
-        className={`w-10 h-10 rounded-lg shadow-sm ${buttonBase} md:h-[44px] md:w-[44px]`}
+        className={`w-10 h-10 rounded-lg ${buttonBase} md:h-[44px] md:w-[44px]`}
         title="Copy link"
         aria-label="Copy link"
       >
