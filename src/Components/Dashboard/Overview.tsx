@@ -79,7 +79,7 @@ const Overview = ({ dashboardShareUrl }: OverviewProps) => {
       </div>
 
       <div className="flex flex-col gap-4 rounded-xl bg-transparent p-0 md:bg-[#f7f7f7] md:p-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <div className="flex flex-row items-center justify-between gap-4 w-full">
           <h2 className="text-base text-[#131313]">Summary</h2>
           {!!dashboardShareUrl && (
             <ShareActions
