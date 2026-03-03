@@ -54,4 +54,33 @@ describe("ShareActions", () => {
             }),
         );
     });
+
+    it("shares backend preview URL but copies frontend URL when copyUrl is provided", async () => {
+        const shareMock = vi.fn().mockResolvedValue(undefined);
+        Object.defineProperty(navigator, "share", {
+            value: shareMock,
+            configurable: true,
+        });
+
+        const backendShareUrl = getPaymentShareUrl("abc123");
+        const frontendCopyUrl = "https://www.obverse.cc/pay/abc123";
+
+        render(
+            <ShareActions
+                shareUrl={backendShareUrl}
+                copyUrl={frontendCopyUrl}
+                shareTitle="Payment Link"
+            />,
+        );
+
+        fireEvent.click(screen.getByRole("button", { name: /share/i }));
+        expect(shareMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                url: expect.stringContaining("/share/payment/abc123"),
+            }),
+        );
+
+        fireEvent.click(screen.getByRole("button", { name: /copy link/i }));
+        expect(navigator.clipboard.writeText).toHaveBeenCalledWith(frontendCopyUrl);
+    });
 });

@@ -5,14 +5,15 @@ import { Button } from "../Button/Button";
 
 interface ShareActionsProps {
     shareUrl: string;
+    copyUrl?: string;
     shareTitle: string;
     className?: string;
 }
 
-const ShareActions: React.FC<ShareActionsProps> = ({ shareUrl, shareTitle, className }) => {
+const ShareActions: React.FC<ShareActionsProps> = ({ shareUrl, copyUrl, shareTitle, className }) => {
     const handleCopyLink = async () => {
         try {
-            await navigator.clipboard.writeText(shareUrl);
+            await navigator.clipboard.writeText(copyUrl || shareUrl);
             toast.success("Link copied to clipboard");
         } catch {
             toast.error("Failed to copy link");

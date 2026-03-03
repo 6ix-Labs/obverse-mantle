@@ -5,7 +5,7 @@ import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
 import { ReactNode } from "react";
 import { logo } from "../assets/icons";
-import { monad } from "../config/monad";
+import { getDefaultEvmChainConfig, getEnabledEvmChains } from "../config/chainRegistry";
 
 // Solana RPC endpoints - replace with your preferred RPC provider (Helius, QuickNode, etc.)
 const SOLANA_RPC_URL = import.meta.env.VITE_SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com";
@@ -15,6 +15,9 @@ const SOLANA_WSS_URL = import.meta.env.VITE_SOLANA_WSS_URL || "wss://api.mainnet
 const solanaConnectors = toSolanaWalletConnectors({
     shouldAutoConnect: true,
 });
+
+const evmChains = getEnabledEvmChains();
+const defaultEvmChain = getDefaultEvmChainConfig().viemChain!;
 
 interface ObversePrivyProviderProps {
     children: ReactNode;
@@ -48,8 +51,8 @@ export function ObversePrivyProvider({ children }: ObversePrivyProviderProps) {
                     logo: logo, // Your logo
                 },
                 // EVM chain configuration
-                defaultChain: monad,
-                supportedChains: [monad],
+                defaultChain: defaultEvmChain,
+                supportedChains: evmChains.map((chain) => chain.viemChain!),
                 // Login methods - email, social, and wallet
                 loginMethods: ["email", "wallet", "google", "twitter"],
                 // External wallet configuration

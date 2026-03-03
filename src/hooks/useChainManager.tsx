@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { useWallets } from "@privy-io/react-auth";
 import type { Chain } from "viem";
-import { baseSepolia, liskSepolia } from "viem/chains";
-import { monad } from "../config/monad";
+import { getEnabledEvmChains } from "../config/chainRegistry";
 
 interface ChainContextValue {
   chainId?: number;
@@ -25,7 +24,7 @@ export const ChainProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const { wallets, ready } = useWallets();
   const activeWallet = wallets?.[0];
 
-  const allChains: Chain[] = [monad, liskSepolia, baseSepolia];
+  const allChains: Chain[] = getEnabledEvmChains().map((chain) => chain.viemChain!);
 
   const resolveChainId = (rawChainId?: string): number | undefined => {
     if (!rawChainId) return undefined;
