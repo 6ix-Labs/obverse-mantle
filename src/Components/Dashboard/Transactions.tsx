@@ -8,6 +8,7 @@ import { Skeleton } from "../Skeleton/Skeleton";
 import type { PaymentsResponse, Payment } from "../../api/types";
 import { toast } from "sonner";
 import { downloadCsv } from "../../lib/utils";
+import TransactionDetailModal from "./TransactionDetailModal";
 
 const Transactions = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -19,6 +20,8 @@ const Transactions = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [visibleCount, setVisibleCount] = useState(5);
   const [isExporting, setIsExporting] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const { data, isLoading, isFetching, refetch } = useQuery<PaymentsResponse>({
     queryKey: [
@@ -45,7 +48,7 @@ const Transactions = () => {
 
   const payments = data?.payments || [];
   const currentPayments = payments.slice(0, visibleCount);
-  const hasMore = data?.pagination?.hasMore;
+  const hasMore = data?.pagination?.hasMore ?? false;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -61,6 +64,11 @@ const Transactions = () => {
   const handleViewMore = () => {
     setVisibleCount((prev) => Math.min(prev + 5, 1000));
     refetch();
+  };
+
+  const handleRowClick = (payment: Payment) => {
+    setSelectedPayment(payment);
+    setModalOpen(true);
   };
 
   // filter selection handled inline for chains
@@ -290,8 +298,12 @@ const Transactions = () => {
                 </td>
               </tr>
             ) : (
-              currentPayments.map((transaction: Payment, index: number) => (
-                <tr key={index}>
+              currentPayments.map((transaction: Payment) => (
+                <tr
+                  key={transaction._id}
+                  onClick={() => handleRowClick(transaction)}
+                  className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                >
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {transaction._id.substring(0, 8)}...
                   </td>
@@ -352,6 +364,12 @@ const Transactions = () => {
           </button>
         </div>
       )}
+
+      <TransactionDetailModal
+        payment={selectedPayment}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+      />
     </div>
   );
 };
