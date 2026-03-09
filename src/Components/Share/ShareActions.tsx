@@ -73,7 +73,7 @@ const ShareActions: React.FC<ShareActionsProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center gap-2 ${className || ""}`.trim()}
+      className={`inline-flex flex-row items-center justify-end gap-2 flex-shrink-0 ${className || ""}`.trim()}
       role="group"
       aria-label="Share dashboard"
     >
