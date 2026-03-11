@@ -72,7 +72,6 @@ const Transactions = () => {
   };
 
   // filter selection handled inline for chains
-
   const handleDateChange = (date: Date | null) => {
     setStartDate(date);
     if (date) {
