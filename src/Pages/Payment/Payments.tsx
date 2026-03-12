@@ -10,7 +10,7 @@ import { FiCheck, FiLoader, FiAlertCircle, FiCopy } from "react-icons/fi";
 import axios from "axios";
 import { logo } from "../../assets/icons";
 import { useUsdcPayment, PaymentStatus } from "../../hooks/useUsdcPayment";
-import { useMonadPayment } from "../../hooks/useMonadPayment";
+import { useEvmUsdcPayment } from "../../hooks/useEvmUsdcPayment";
 import { Wallet } from "lucide-react";
 import {
   Navbar,
@@ -20,8 +20,13 @@ import {
   NavbarLogo,
 } from "../../Components/Navbar/ResizableNavbar";
 import PreviewMeta from "../../Components/Seo/PreviewMeta";
-import ShareActions from "../../Components/Share/ShareActions";
-import { getPaymentShareUrl } from "../../utils/shareUrls";
+import {
+  getChainDisplayName,
+  getChainNativeCurrency,
+  getExplorerNameForChain,
+  getExplorerTxUrlForChain,
+  resolveChainConfig,
+} from "../../config/chainRegistry";
 
 // Types
 interface CustomField {
@@ -89,13 +94,12 @@ interface PaymentSubmitResponse {
 // Payment Step Component
 interface PaymentStepProps {
   step: number;
-  currentStep: number;
   title: string;
   description: string;
   status: "pending" | "active" | "completed" | "error";
 }
 
-const PaymentStep: React.FC<PaymentStepProps> = ({ step, currentStep, title, description, status }) => {
+const PaymentStep: React.FC<PaymentStepProps> = ({ step, title, description, status }) => {
   const getStepIcon = () => {
     switch (status) {
       case "completed":
@@ -166,7 +170,26 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     if (!walletAddress) return;
 
     try {
-      await navigator.clipboard.writeText(walletAddress);
+      if (navigator.clipboard?.writeText && window.isSecureContext) {
+        await navigator.clipboard.writeText(walletAddress);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = walletAddress;
+        textArea.setAttribute("readonly", "");
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        const successful = document.execCommand("copy");
+        document.body.removeChild(textArea);
+
+        if (!successful) {
+          throw new Error("Fallback copy failed");
+        }
+      }
+
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -211,51 +234,28 @@ const WalletButton: React.FC<WalletButtonProps> = ({
   );
 };
 
-// Chain-specific helpers
-const normalizeChain = (chain: string) => chain.toLowerCase().trim();
-
-const isMonadChain = (chain: string) => normalizeChain(chain).includes("monad");
-
-const isSolanaChain = (chain: string) => normalizeChain(chain).includes("solana");
-
-const getChainDisplayName = (chain: string) => {
-  if (isMonadChain(chain)) return "Monad";
-  if (isSolanaChain(chain)) return "Solana";
-  return chain.charAt(0).toUpperCase() + chain.slice(1);
-};
-
-const getNativeCurrencySymbol = (chain: string) => {
-  if (isMonadChain(chain)) return "MON";
-  if (isSolanaChain(chain)) return "SOL";
-  return chain.toUpperCase();
-};
-
-const getExplorerTxUrl = (chain: string, txSignature: string) => {
-  if (isMonadChain(chain)) return `https://monadscan.com/tx/${txSignature}`;
-  if (isSolanaChain(chain)) return `https://solscan.io/tx/${txSignature}`;
-  return `https://solscan.io/tx/${txSignature}`;
-};
-
-const getExplorerName = (chain: string) => {
-  if (isMonadChain(chain)) return "Monadscan";
-  if (isSolanaChain(chain)) return "Solscan";
-  return "Explorer";
-};
-
 const resolveMerchantWalletAddress = (payment: PaymentData): string => {
+  const paymentChain = resolveChainConfig(payment.chain);
   const fallbackAddress = payment.merchantId?.walletAddress;
-  const chain = payment.chain || "";
   const wallets = payment.merchantId?.wallets || [];
 
   const chainMatch = wallets.find((wallet) => {
-    const walletChain = String(wallet.chain || wallet.network || wallet.chainType || "").toLowerCase();
+    const rawWalletChain = String(wallet.chain || wallet.network || wallet.chainType || wallet.chainId || "");
+    const walletChain = rawWalletChain.toLowerCase();
+    const resolvedWalletChain = resolveChainConfig(rawWalletChain);
 
-    if (isMonadChain(chain)) {
-      return walletChain.includes("monad") || walletChain === "evm" || walletChain.includes("ethereum");
+    // Preferred: exact canonical chain match.
+    if (paymentChain && resolvedWalletChain) {
+      return resolvedWalletChain.key === paymentChain.key;
     }
 
-    if (isSolanaChain(chain)) {
-      return walletChain.includes("solana");
+    // Backward-compatible fallback for legacy wallet metadata formats.
+    if (paymentChain?.family === "evm") {
+      return paymentChain.aliases.some((alias) => walletChain === alias || walletChain.includes(alias));
+    }
+
+    if (paymentChain?.family === "solana") {
+      return paymentChain.aliases.some((alias) => walletChain === alias || walletChain.includes(alias));
     }
 
     return false;
@@ -281,16 +281,18 @@ const Payments = () => {
   const url = `https://obverse.onrender.com/payment-links/`;
   const RECEIPT_BASE_URL = "https://www.obverse.cc/reciept";
 
-  const isMonad = isMonadChain(paymentData?.chain || "");
+  const resolvedPaymentChain = resolveChainConfig(paymentData?.chain || "");
+  const isSupportedPaymentChain = !!resolvedPaymentChain;
+  const isEvmPayment = resolvedPaymentChain?.family === "evm";
 
   // Both hooks are always called (React rules), but only the active chain's methods are used
   const solana = useUsdcPayment("mainnet");
-  const monadHook = useMonadPayment();
+  const evm = useEvmUsdcPayment(paymentData?.chain);
 
   // Select the active payment hook based on chain
   const activePayment = useMemo(() => {
-    return isMonad ? monadHook : solana;
-  }, [isMonad, monadHook, solana]);
+    return isEvmPayment ? evm : solana;
+  }, [isEvmPayment, evm, solana]);
 
   const {
     paymentState,
@@ -410,6 +412,11 @@ const Payments = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!isSupportedPaymentChain) {
+      console.error("Unsupported payment chain from backend:", paymentData?.chain);
+      return;
+    }
+
     if (!validateForm()) {
       return;
     }
@@ -420,6 +427,11 @@ const Payments = () => {
 
   const handlePayment = async () => {
     if (!paymentData?.amount) {
+      return;
+    }
+
+    if (!isSupportedPaymentChain) {
+      console.error("Unsupported payment chain from backend:", paymentData?.chain);
       return;
     }
 
@@ -534,13 +546,12 @@ const Payments = () => {
     });
   };
 
-  const chainName = paymentData?.chain ? getChainDisplayName(paymentData.chain) : "Solana";
-  const nativeCurrency = paymentData?.chain ? getNativeCurrencySymbol(paymentData.chain) : "SOL";
+  const chainName = paymentData?.chain ? getChainDisplayName(paymentData.chain) : "Unknown";
+  const nativeCurrency = paymentData?.chain ? getChainNativeCurrency(paymentData.chain) : "ETH";
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";
   const paymentPreviewImageUrl = paymentData?.previewImageUrl || paymentData?.paymentLink?.previewImageUrl;
   const paymentTitle = paymentData?.description ? `${paymentData.description} | Obverse` : "Payment Link | Obverse";
   const paymentDescription = paymentData?.description || "Complete your payment using this secure Obverse payment link.";
-  const paymentShareUrl = id ? getPaymentShareUrl(id) : "";
 
   const renderPaymentFlow = () => {
     const { status, error, txSignature, balance, estimatedFee } = paymentState;
@@ -580,21 +591,18 @@ const Payments = () => {
           <div className="p-4 space-y-4 bg-gray-50 rounded-lg dark:bg-gray-800/50">
             <PaymentStep
               step={1}
-              currentStep={1}
               title="Checking Balance"
               description="Verifying your USDC balance"
               status={getPaymentStepStatus(status, ["checking-balance"])}
             />
             <PaymentStep
               step={2}
-              currentStep={2}
               title="Confirm Payment"
               description={`Sending ${paymentData?.amount} USDC`}
               status={getPaymentStepStatus(status, ["confirming", "sending"])}
             />
             <PaymentStep
               step={3}
-              currentStep={3}
               title="Processing"
               description={`Confirming transaction on ${chainName}`}
               status={getPaymentStepStatus(status, ["confirming-tx"])}
@@ -623,8 +631,8 @@ const Payments = () => {
                         </span>
                       </li>
                       <li>
-                        {isMonad
-                          ? "You can get MON from exchanges or bridges that support Monad"
+                        {isEvmPayment
+                          ? `You need a small ${nativeCurrency} balance to pay gas on ${chainName}`
                           : "You can buy SOL on exchanges (Coinbase, Binance) or swap USDC for SOL on Jupiter"}
                       </li>
                     </ol>
@@ -649,12 +657,12 @@ const Payments = () => {
                   Your payment of {paymentData?.amount} USDC has been sent.
                 </p>
                 <a
-                  href={getExplorerTxUrl(paymentData?.chain || "solana", txSignature)}
+                  href={getExplorerTxUrlForChain(paymentData?.chain || "solana", txSignature)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-[#E7562E] hover:underline mt-2 inline-block"
                 >
-                  View on {getExplorerName(paymentData?.chain || "solana")} &rarr;
+                  View on {getExplorerNameForChain(paymentData?.chain || "solana")} &rarr;
                 </a>
               </div>
             </div>
@@ -805,8 +813,12 @@ const Payments = () => {
               </div>
             </div>
 
-            {!!paymentShareUrl && (
-              <ShareActions shareUrl={paymentShareUrl} shareTitle={paymentTitle} className="mb-4" />
+            {!isSupportedPaymentChain && (
+              <div className="mb-4 p-3 rounded-lg border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800">
+                <p className="text-sm text-red-700 dark:text-red-300">
+                  Unsupported chain from backend: <span className="font-semibold">{paymentData.chain}</span>. Please contact support.
+                </p>
+              </div>
             )}
 
             {showPaymentFlow ? (
@@ -817,6 +829,7 @@ const Payments = () => {
 
                 <button
                   type="submit"
+                  disabled={!isSupportedPaymentChain}
                   className="w-full bg-[#E7562E] hover:bg-[#E0793E] text-white font-semibold py-3 rounded-[10px] transition-colors"
                 >
                   Continue to Payment

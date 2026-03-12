@@ -5,8 +5,7 @@ import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { useActiveChain } from "../../contexts/ActiveChainContext";
-import { monad } from "../../config/monad";
-import { baseSepolia, liskSepolia } from "viem/chains";
+import { getEnabledEvmChains } from "../../config/chainRegistry";
 
 // import {  } from "@privy-io/react-auth/solana";
 // import { baseSepolia, liskSepolia, arbitrumSepolia, optimismSepolia } from "viem/chains";
@@ -22,9 +21,11 @@ interface ChainConfig {
 }
 
 const CHAINS: ChainConfig[] = [
-  { id: Number(monad.id), name: "Monad", type: "evm" },
-  { id: Number(baseSepolia.id), name: "Base Sepolia", type: "evm" },
-  { id: Number(liskSepolia.id), name: "Lisk Sepolia", type: "evm" },
+  ...getEnabledEvmChains().map((chain) => ({
+    id: Number(chain.chainId),
+    name: chain.displayName,
+    type: "evm" as const,
+  })),
   { id: "solana:mainnet", name: "Solana Mainnet", type: "solana", chainId: "solana:mainnet" },
   { id: "solana:devnet", name: "Solana Devnet", type: "solana", chainId: "solana:devnet" },
 ];
@@ -152,8 +153,8 @@ export const ChainDropdown: React.FC = () => {
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
               className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.id === chainId && activeChainType === "evm"
-                  ? "bg-gray-100 text-gray-900 font-medium"
-                  : "text-gray-700 hover:bg-gray-50"
+                ? "bg-gray-100 text-gray-900 font-medium"
+                : "text-gray-700 hover:bg-gray-50"
                 }`}
             >
               {chain.name}
@@ -170,8 +171,8 @@ export const ChainDropdown: React.FC = () => {
               onClick={() => handleChainSelect(chain)}
               disabled={isSwitching}
               className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${chain.chainId === currentChain.chainId && activeChainType === "solana"
-                  ? "bg-gray-100 text-gray-900 font-medium"
-                  : "text-gray-700 hover:bg-gray-50"
+                ? "bg-gray-100 text-gray-900 font-medium"
+                : "text-gray-700 hover:bg-gray-50"
                 }`}
             >
               {chain.name}
