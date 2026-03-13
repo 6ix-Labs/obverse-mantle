@@ -4,7 +4,6 @@ import Transactions from "../../Components/Dashboard/Transactions";
 import { getOverview } from "../../api/services/dashboard";
 import PreviewMeta from "../../Components/Seo/PreviewMeta";
 import Cookies from "js-cookie";
-import ShareActions from "../../Components/Share/ShareActions";
 import { getDashboardShareUrl } from "../../utils/shareUrls";
 
 const OverviewPage = () => {
@@ -34,12 +33,7 @@ const OverviewPage = () => {
         pageUrl={pageUrl}
         previewImageUrl={data?.dashboard?.previewImageUrl}
       />
-      {!!dashboardShareUrl && (
-        <div className="mb-4 flex justify-end">
-          <ShareActions shareUrl={dashboardShareUrl} shareTitle="Obverse Dashboard" />
-        </div>
-      )}
-      <Overview />
+      <Overview dashboardShareUrl={dashboardShareUrl} />
       <div className="mt-8">
         <Transactions />
       </div>

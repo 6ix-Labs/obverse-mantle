@@ -428,7 +428,7 @@ const ReceiptPage: React.FC = () => {
               <FiExternalLink className="h-4 w-4" />
               Open Explorer
             </a>
-            <ShareActions shareUrl={receiptShareUrl} shareTitle={receiptTitle} className="w-full sm:w-auto" />
+            <ShareActions shareUrl={receiptShareUrl} shareTitle={receiptTitle} variant="inline" className="w-full sm:w-auto" />
           </div>
 
           <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white print:border-slate-300">
