@@ -48,7 +48,7 @@ const Transactions = () => {
 
   const payments = data?.payments || [];
   const currentPayments = payments.slice(0, visibleCount);
-  const hasMore = data?.pagination?.hasMore ?? false;
+  const hasMore = data?.pagination?.hasMore;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -145,7 +145,7 @@ const Transactions = () => {
             placeholder="Search by transaction id..."
           />
           {isFetching && searchTerm.trim().length > 0 && (
-            <span className="absolute inset-y-0 right-3 flex items-center text-xs text-gray-400">Searching...</span>
+            <span className="flex absolute inset-y-0 right-3 items-center text-xs text-gray-400">Searching...</span>
           )}
         </div>
 
@@ -167,7 +167,7 @@ const Transactions = () => {
                     setEndDate(null);
                     refetch();
                   }}
-                  className="ml-2 text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                  className="px-2 py-1 ml-2 text-xs text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                   aria-label="Clear date"
                 >
                   ✕
@@ -243,7 +243,7 @@ const Transactions = () => {
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead>
             <tr>
-              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 rounded-tl-lg">
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 rounded-tl-lg dark:bg-gray-700">
                 <span className="hidden md:inline">Transaction ID</span>
                 <span className="md:hidden">ID</span>
               </th>
@@ -254,7 +254,7 @@ const Transactions = () => {
                 Wallet Address
               </th>
               <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700">Status</th>
-              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 rounded-tr-lg">Date</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 rounded-tr-lg dark:bg-gray-700">Date</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-800">
@@ -262,28 +262,28 @@ const Transactions = () => {
               Array.from({ length: 5 }).map((_, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4">
-                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="w-24 h-4" />
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <Skeleton className="h-8 w-8 rounded-full" />
-                      <Skeleton className="h-4 w-16" />
+                    <div className="flex gap-2 items-center">
+                      <Skeleton className="w-8 h-8 rounded-full" />
+                      <Skeleton className="w-16 h-4" />
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="w-16 h-4" />
                   </td>
                   <td className="px-6 py-4">
-                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="w-20 h-4" />
                   </td>
                   <td className="px-6 py-4">
-                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="w-32 h-4" />
                   </td>
                   <td className="px-6 py-4">
-                    <Skeleton className="h-6 w-20 rounded-full" />
+                    <Skeleton className="w-20 h-6 rounded-full" />
                   </td>
                   <td className="px-6 py-4">
-                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="w-24 h-4" />
                   </td>
                 </tr>
               ))
@@ -301,7 +301,7 @@ const Transactions = () => {
                 <tr
                   key={transaction._id}
                   onClick={() => handleRowClick(transaction)}
-                  className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                  className="transition-colors cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50"
                 >
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {transaction._id.substring(0, 8)}...
